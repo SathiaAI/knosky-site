@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KnoSky — your knowledge as a skyline</title>
+<meta name="description" content="Turn any repo or folder of docs into a living, explorable city — and ground your AI in your own source. Local-first. Free." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080c1a; --panel:#0f1830; --panel2:#13203c;
+    --line:rgba(255,255,255,.09); --hair:rgba(255,255,255,.06);
+    --text:#eaf0fb; --dim:#9aa6c2; --faint:#65728f;
+    --gold:#f2c14e; --gold2:#ffd680; --blue:#7aa2ff; --green:#69cf94; --violet:#b79bff;
+    --maxw:1160px;
+    --font:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --eOut:cubic-bezier(.23,1,.32,1);
+    --eIO:cubic-bezier(.77,0,.175,1);
+    --eDrawer:cubic-bezier(.32,.72,0,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--font);color:var(--text);background:var(--bg);
+    -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;position:relative}
+  /* fixed mesh-orb backdrop */
+  .bgmesh{position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+    radial-gradient(820px 520px at 82% -8%, rgba(122,162,255,.20), transparent 60%),
+    radial-gradient(720px 480px at 6% 4%, rgba(242,193,78,.13), transparent 58%),
+    radial-gradient(900px 700px at 50% 118%, rgba(105,207,148,.10), transparent 60%),
+    linear-gradient(180deg,#080c1a,#080c1a 40%,#070a15)}
+  .grain{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.04;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .muted{color:var(--dim)}
+  .eyebrow{display:inline-block;color:var(--gold);font-weight:600;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;padding:6px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.02)}
+
+  /* ── floating glass island nav ── */
+  .navhost{position:sticky;top:0;z-index:40;display:flex;justify-content:center;pointer-events:none}
+  .nav{pointer-events:auto;margin-top:18px;display:flex;align-items:center;gap:22px;
+    padding:9px 9px 9px 18px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(12,18,38,.6);backdrop-filter:blur(18px);
+    box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06)}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
+  .brand small{display:block;font-weight:500;font-size:10.5px;color:var(--faint);letter-spacing:.04em;margin-top:-3px}
+  .brand svg{display:block}
+  .navlinks{display:flex;gap:20px;font-size:14px;color:var(--dim)}
+  .navlinks a{transition:color .2s var(--eOut)}
+  .navlinks a:hover{color:var(--text)}
+
+  /* ── buttons (button-in-button + press physics) ── */
+  .btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;cursor:pointer;
+    border:1px solid transparent;border-radius:999px;font-family:inherit;
+    transition:transform .16s var(--eOut), box-shadow .3s var(--eOut), background .3s var(--eOut)}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{padding:11px 12px 11px 20px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#241a05;
+    box-shadow:0 10px 26px rgba(242,193,78,.26)}
+  .btn-primary:hover{box-shadow:0 14px 34px rgba(242,193,78,.36)}
+  .btn-ghost{padding:11px 18px;border-color:var(--line);color:var(--text);background:rgba(255,255,255,.03)}
+  .btn-ghost:hover{border-color:rgba(255,255,255,.24)}
+  .ico-circ{width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+    background:rgba(36,26,5,.16);transition:transform .25s var(--eOut)}
+  .btn-primary:hover .ico-circ{transform:translate(2px,-1px) scale(1.05)}
+  .ico-circ svg{width:16px;height:16px}
+  svg.li{width:1em;height:1em;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ── hero ── */
+  header{position:relative;padding:120px 0 70px;overflow:hidden}
+  .px{position:absolute;inset:0;z-index:-1;pointer-events:none}
+  .layer{position:absolute;will-change:transform}
+  .l-sky{left:50%;bottom:-2%;width:min(1400px,140%);transform:translateX(-50%)}
+  .l-mid{right:-4%;top:8%;width:520px;opacity:.9}
+  .l-orb{filter:blur(2px)}
+  .hero{position:relative;display:grid;grid-template-columns:1.04fr .96fr;gap:52px;align-items:center}
+  h1{font-size:clamp(36px,5vw,62px);line-height:1.02;letter-spacing:-1.4px;margin:18px 0 16px;font-weight:800}
+  h1 .grad{background:linear-gradient(115deg,var(--gold2),var(--gold) 42%,var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:clamp(16px,1.5vw,19px);color:var(--dim);max-width:560px;margin-bottom:26px}
+  .trust{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+  .chip{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--hair);border-radius:999px;
+    font-size:12.5px;color:var(--dim);background:rgba(255,255,255,.02)}
+  .chip svg{width:14px;height:14px;color:var(--gold)}
+
+  /* email capture */
+  .capture{display:flex;gap:10px;flex-wrap:wrap;max-width:520px}
+  .capture .field{flex:1;min-width:230px;display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:999px;
+    border:1px solid var(--line);background:rgba(255,255,255,.04);transition:border-color .25s var(--eOut),box-shadow .25s var(--eOut)}
+  .capture .field:focus-within{border-color:var(--gold);box-shadow:0 0 0 4px rgba(242,193,78,.14)}
+  .capture .field svg{width:17px;height:17px;color:var(--faint)}
+  .capture input{flex:1;padding:14px 0;border:0;background:transparent;color:var(--text);font-family:inherit;font-size:15px;outline:none}
+  .formnote{font-size:12.5px;color:var(--faint);margin-top:11px}
+  .ok{display:none;padding:15px 18px;border:1px solid rgba(105,207,148,.4);background:rgba(105,207,148,.08);
+    border-radius:16px;max-width:520px;font-size:15px}
+  .ok a{color:var(--gold2);font-weight:700;text-decoration:underline}
+  .err{color:#ff9b9b;font-size:13px;margin-top:8px;display:none}
+
+  /* double-bezel device */
+  .shell{padding:7px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.04);
+    box-shadow:0 40px 90px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06)}
+  .device{border-radius:19px;overflow:hidden;background:#0a1020;border:1px solid var(--hair);
+    box-shadow:inset 0 1px 1px rgba(255,255,255,.12)}
+  .device .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1430;border-bottom:1px solid var(--hair)}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .device iframe{display:block;width:100%;height:430px;border:0;background:#0a1020}
+  .device .cap{font-size:11.5px;color:var(--faint);margin-left:auto;letter-spacing:.04em}
+  .heroart{position:absolute;z-index:2;pointer-events:none;will-change:transform}
+
+  /* sections */
+  section{position:relative;padding:96px 0}
+  h2{font-size:clamp(27px,3.1vw,40px);letter-spacing:-.7px;margin:14px 0 14px;font-weight:800}
+  .lead{color:var(--dim);max-width:680px;font-size:17px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .obz{padding:6px;border-radius:24px;border:1px solid var(--hair);background:rgba(255,255,255,.03)}
+  .card{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--hair);border-radius:19px;padding:26px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .card .ic{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;background:rgba(255,255,255,.04);border:1px solid var(--hair)}
+  .card .ic svg{width:22px;height:22px;color:var(--gold)}
+  .card:nth-child(2) .ic svg{color:var(--blue)}
+  .card:nth-child(3) .ic svg{color:var(--green)}
+  .card h3{margin:0 0 8px;font-size:18.5px}
+  .card p{margin:0;color:var(--dim);font-size:14.5px}
+  .card .cornercity{position:absolute;right:-10px;bottom:-12px;opacity:.5}
+
+  .outcome{border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+    background:linear-gradient(180deg,rgba(122,162,255,.05),rgba(242,193,78,.035))}
+  .ostats{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:32px}
+  .ostat b{display:block;font-size:32px;font-weight:800;letter-spacing:-1px;
+    background:linear-gradient(120deg,var(--gold2),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ostat span{color:var(--dim);font-size:14.5px}
+  .notwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+  .not{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--dim)}
+  .not svg{width:19px;height:19px;flex:0 0 auto;margin-top:2px;color:var(--faint)}
+  .not.yes svg{color:var(--green)}
+
+  .story{display:grid;grid-template-columns:1.15fr .85fr;gap:42px;align-items:center}
+  .story p{color:var(--dim);font-size:16px}
+  .quote{border-left:3px solid var(--gold);padding:6px 0 6px 18px;margin:18px 0;color:var(--text);font-size:17px}
+  .link-gold{color:var(--gold2);text-decoration:underline;text-underline-offset:3px}
+  .codepanel{background:#0a1020;border:1px solid var(--hair);border-radius:16px;padding:18px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .codepanel pre{margin:14px 0 0;overflow:auto;font-size:12.5px;color:#cdd9f5;line-height:1.7}
+  .codepanel .pill2{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--dim);
+    border:1px solid var(--hair);border-radius:999px;padding:5px 11px}
+  .codepanel .pill2 svg{width:13px;height:13px;color:var(--green)}
+
+  .finalcta{position:relative;overflow:hidden;text-align:center;border-radius:28px;border:1px solid var(--line);
+    background:linear-gradient(180deg,var(--panel),#0a1226);padding:54px 28px 150px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .finalcta .capture{position:relative;z-index:2;margin:26px auto 0;justify-content:center}
+  .finalcta .field{background:rgba(13,20,40,.94);backdrop-filter:blur(3px)}
+  .finalcta .err,.finalcta .ok{position:relative;z-index:2}
+  .finalcta .citystrip{position:absolute;left:0;right:0;bottom:0;opacity:.5;pointer-events:none;
+    -webkit-mask-image:linear-gradient(to top,#000 50%,transparent);mask-image:linear-gradient(to top,#000 50%,transparent)}
+
+  footer{border-top:1px solid var(--hair);padding:30px 0 60px;color:var(--faint);font-size:13.5px}
+  .frow{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+  footer a{color:var(--dim)} footer a:hover{color:var(--text)}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(22px);filter:blur(6px);
+    transition:opacity .8s var(--eOut), transform .8s var(--eOut), filter .8s var(--eOut)}
+  .reveal.in{opacity:1;transform:none;filter:none}
+
+  @media(max-width:880px){
+    .hero,.story{grid-template-columns:1fr;gap:30px}
+    .cards,.ostats,.notwrap{grid-template-columns:1fr}
+    header{padding:104px 0 36px}
+    .navlinks{display:none}
+    .l-mid{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{transition:opacity .4s ease}
+    .reveal{transform:none;filter:none}
+    .layer,.heroart,.citystrip{transform:none !important}
+    html{scroll-behavior:auto}
+  }
+  @media (hover:none){ .btn-primary:hover .ico-circ{transform:none} }
+</style>
+</head>
+<body>
+<div class="bgmesh"></div>
+<div class="grain"></div>
+
+<div class="navhost"><nav class="nav">
+  <a class="brand" href="#top"><svg id="logo" width="36" height="36" viewBox="0 0 64 64" aria-label="KnoSky"></svg>
+    <span>KnoSky<small>your knowledge as a skyline</small></span></a>
+  <div class="navlinks"><a href="#what">What</a><a href="#why">Why</a><a href="#story">Story</a></div>
+  <a class="btn btn-primary" href="#get">Get it free <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></a>
+</nav></div>
+
+<a id="top"></a>
+<header>
+  <div class="px">
+    <div class="layer l-orb" data-depth="3" style="left:74%;top:6%;width:320px;height:320px;background:radial-gradient(circle,rgba(122,162,255,.5),transparent 62%)"></div>
+    <div class="layer l-orb" data-depth="2" style="left:2%;top:30%;width:280px;height:280px;background:radial-gradient(circle,rgba(242,193,78,.4),transparent 62%)"></div>
+    <svg class="layer l-mid" data-depth="7" id="midCity" viewBox="0 0 520 340"></svg>
+    <svg class="layer l-sky" data-depth="2.5" id="skyCity" viewBox="0 0 1400 360"></svg>
+  </div>
+
+  <div class="wrap hero">
+    <div>
+      <span class="eyebrow reveal">◆ Local-first · Free · Nothing leaves your machine</span>
+      <h1 class="reveal">See <span class="grad">everything</span><br>you've built.</h1>
+      <p class="sub reveal">KnoSky turns any repo or folder of docs into a living, explorable city — and grounds your AI assistant in your own source, with citations. Point it at a folder, get a skyline in under a minute.</p>
+
+      <form id="form1" class="capture reveal" novalidate>
+        <label class="field"><svg class="li" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <input type="email" name="email" placeholder="you@work.com" aria-label="Email" required /></label>
+        <button class="btn btn-primary" type="submit">Email me the link <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
+      </form>
+      <div class="err" id="err1">Please enter a valid email.</div>
+      <div class="ok" id="ok1">✓ Sent — check your inbox for the link. Or grab it now: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
+      <p class="formnote reveal">No spam. You'll get the GitHub link + the occasional note on what I'm building.</p>
+
+      <div class="trust reveal">
+        <span class="chip"><svg class="li" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>$0 to run</span>
+        <span class="chip"><svg class="li" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>Claude · Cursor · VS Code · Gemini</span>
+        <span class="chip"><svg class="li" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>Opens in your browser</span>
+      </div>
+    </div>
+
+    <div class="reveal" style="position:relative">
+      <svg class="heroart" id="artA" width="120" height="92" viewBox="0 0 120 92" data-depth="14" style="left:-26px;top:-34px"></svg>
+      <svg class="heroart" id="artB" width="96" height="76" viewBox="0 0 96 76" data-depth="-10" style="right:-18px;bottom:-30px"></svg>
+      <div class="shell">
+        <div class="device">
+          <div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="cap">knosky-demo.html · live</span></div>
+          <iframe src="knosky-demo.html" title="KnoSky live demo city" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- WHAT -->
+<section id="what"><div class="wrap">
+  <span class="eyebrow reveal">What it is</span>
+  <h2 class="reveal">A map of your work — not another file tree.</h2>
+  <p class="lead reveal">A file tree tells you what files exist. It doesn't tell you what you've actually <em>built</em>. KnoSky reads your repo or docs folder and renders the <em>shape</em> of it: folders become districts, files become buildings, every building links to the real, live file.</p>
+  <div class="cards">
+    <div class="obz reveal"><div class="card">
+      <div class="ic"><svg class="li" viewBox="0 0 24 24"><path d="M14.1 5.6a2 2 0 0 0 1.8 0l3.6-1.8A1 1 0 0 1 21 4.6v12.8a1 1 0 0 1-.6.9l-4.5 2.3a2 2 0 0 1-1.8 0l-4.2-2.1a2 2 0 0 0-1.8 0l-3.6 1.8A1 1 0 0 1 3 21.4V8.6a1 1 0 0 1 .6-.9l4.5-2.3a2 2 0 0 1 1.8 0Z"/><path d="M15 5.8v15M9 3.2v15"/></svg></div>
+      <h3>See it at a glance</h3><p>Which areas are big, how they connect, where the gaps are — the whole project on one screen. New collaborators orient in minutes, not weeks.</p>
+      <svg class="cornercity" width="120" height="84" viewBox="0 0 120 84" id="cc1"></svg>
+    </div></div>
+    <div class="obz reveal"><div class="card">
+      <div class="ic"><svg class="li" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+      <h3>Find anything in seconds</h3><p>Search the city — or ask your AI “where does auth live / what did we decide about billing” — and jump straight to the live source.</p>
+      <svg class="cornercity" width="120" height="84" viewBox="0 0 120 84" id="cc2"></svg>
+    </div></div>
+    <div class="obz reveal"><div class="card">
+      <div class="ic"><svg class="li" viewBox="0 0 24 24"><path d="m16.2 7.8-1.8 5.4a2 2 0 0 1-1.3 1.3L7.8 16.2l1.8-5.4a2 2 0 0 1 1.3-1.3Z"/><circle cx="12" cy="12" r="10"/></svg></div>
+      <h3>Ground your AI</h3><p>A local connector (MCP) lets Claude, Cursor, VS Code or Gemini answer from <em>your</em> source, with citations — instead of confidently making things up.</p>
+      <svg class="cornercity" width="120" height="84" viewBox="0 0 120 84" id="cc3"></svg>
+    </div></div>
+  </div>
+</div></section>
+
+<!-- WHY / OUTCOME -->
+<section id="why" class="outcome"><div class="wrap">
+  <span class="eyebrow reveal">Why it's worth your minute</span>
+  <h2 class="reveal">Comprehension, recall, and a grounded AI — at zero cost.</h2>
+  <p class="lead reveal">It's an <strong>index, not a copy</strong>. It runs entirely on your machine, stores pointers — never your file contents — and links back to the live source. Always fresh, $0 tokens to keep current, nothing uploaded.</p>
+  <div class="ostats">
+    <div class="ostat reveal"><b>Minutes</b><span>to onboard onto a sprawling repo, instead of weeks of spelunking.</span></div>
+    <div class="ostat reveal"><b>$0</b><span>to build and keep your city fresh — deterministic, no API keys, no tokens.</span></div>
+    <div class="ostat reveal"><b>0 bytes</b><span>leave your machine. Your source stays yours; only pointers are indexed.</span></div>
+  </div>
+  <div class="notwrap">
+    <div class="not reveal"><svg class="li" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg><span><strong>Not a code-RAG engine.</strong> It's a map + router — it tells you where things are and hands the source to you or your AI. (Cursor/Glean still own deep code Q&A.)</span></div>
+    <div class="not reveal"><svg class="li" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg><span><strong>Not a cloud service.</strong> No account, no upload, nothing leaves your laptop.</span></div>
+    <div class="not reveal"><svg class="li" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg><span><strong>Not a copy of your data.</strong> A navigable index of pointers — titles, headings, short excerpts that link to the live file.</span></div>
+    <div class="not yes reveal"><svg class="li" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Just the map — and a grounded AI.</strong> For comprehension, recall, and citations over your own knowledge.</span></div>
+  </div>
+</div></section>
+
+<!-- STORY -->
+<section id="story"><div class="wrap story">
+  <div>
+    <span class="eyebrow reveal">Where it came from</span>
+    <h2 class="reveal">Born from building Sathia.</h2>
+    <p class="reveal">A few weeks into building <a href="https://sathia.ai" target="_blank" rel="noopener" class="link-gold">Sathia</a> — an AI orchestration platform built on a simple idea, <em>just say it, and intent becomes action</em> — I realized I'd lost the map of my own project. Hundreds of decisions, specs, and architecture notes across a sprawling repo, and no way to see how it fit together.</p>
+    <div class="quote reveal">So I built the thing I needed: point it at the repo, and the whole system becomes a city I can walk. KnoSky is that piece, pulled out and given away free.</div>
+    <p class="reveal">If you're a builder buried in your own repo, it's yours. <a href="https://sathia.ai" target="_blank" rel="noopener" class="link-gold">See what Sathia is →</a></p>
+  </div>
+  <div class="obz reveal"><div class="card">
+    <span class="pill2" style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--dim);border:1px solid var(--hair);border-radius:999px;padding:5px 11px"><svg class="li" viewBox="0 0 24 24"><path d="M16 18 22 12 16 6M8 6 2 12l6 6"/></svg>Developers · founders · architects</span>
+    <h3 style="margin:15px 0 4px;font-size:19px">Three steps, one minute</h3>
+    <p class="muted" style="font-size:14px;margin:0 0 6px">Node 18+, then:</p>
+    <div class="codepanel"><pre><code>node core/fs-indexer.mjs --root . --out city.json
+node renderer/build-rich.mjs city.json city.html
+<span style="color:#65728f"># open city.html · add the MCP to your AI</span></code></pre></div>
+    <p class="codepanel" style="background:transparent;border:0;padding:12px 0 0;box-shadow:none"><span class="pill2"><svg class="li" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Everything runs locally — your code never leaves the machine.</span></p>
+  </div></div>
+</div></section>
+
+<!-- FINAL CTA -->
+<section id="get"><div class="wrap">
+  <div class="finalcta reveal">
+    <span class="eyebrow">Get KnoSky</span>
+    <h2 style="margin-top:10px">Drop your email — I'll send you the link.</h2>
+    <p class="lead" style="margin:0 auto">Free under the Functional Source License. Open the demo, point it at your own repo, and tell me what you think.</p>
+    <form id="form2" class="capture" novalidate>
+      <label class="field"><svg class="li" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <input type="email" name="email" placeholder="you@work.com" aria-label="Email" required /></label>
+      <button class="btn btn-primary" type="submit">Email me the link <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
+    </form>
+    <div class="err" id="err2">Please enter a valid email.</div>
+    <div class="ok" id="ok2">✓ Sent — check your inbox. Or grab it now: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
+    <svg class="citystrip" id="ctaCity" width="900" height="120" viewBox="0 0 900 120" preserveAspectRatio="xMidYMax meet"></svg>
+  </div>
+</div></section>
+
+<footer><div class="wrap frow">
+  <div>© 2026 KnoSky™ · Born from <a href="https://sathia.ai" target="_blank" rel="noopener">Sathia</a>. Free under FSL-1.1-MIT.</div>
+  <div>City art by <a href="https://kenney.nl" target="_blank" rel="noopener">Kenney</a> (CC0) · <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">GitHub</a></div>
+</div></footer>
+
+<script>
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ── isometric building generator (top + 2 shaded faces, optional windows) ── */
+const PAL = {
+  gold:["#ffd884","#f2c14e","#cf9a2c"], blue:["#a9c4ff","#7aa2ff","#5b82e0"],
+  green:["#9ee3b8","#69cf94","#46ad72"], violet:["#cdbcff","#b79bff","#9576f0"],
+  slate:["#c3cee2","#9fb0ce","#7e8fad"], ink:["#23304f","#1b2540","#141c33"]
+};
+function poly(parent, pts, fill, op){const p=document.createElementNS(NS,"polygon");
+  p.setAttribute("points",pts.map(a=>a[0].toFixed(1)+","+a[1].toFixed(1)).join(" "));
+  p.setAttribute("fill",fill); if(op!=null)p.setAttribute("opacity",op); parent.appendChild(p);}
+function isoBldg(svg,x,y,tw,h,key,opts){
+  opts=opts||{}; const c=PAL[key]||PAL.slate, th=tw/2;
+  // left & right faces, then top
+  poly(svg,[[x-tw,y],[x,y+th],[x,y+th-h],[x-tw,y-h]],c[1]);            // left
+  poly(svg,[[x,y+th],[x+tw,y],[x+tw,y-h],[x,y+th-h]],c[2]);            // right
+  poly(svg,[[x,y-th-h],[x+tw,y-h],[x,y+th-h],[x-tw,y-h]],c[0]);       // top
+  if(opts.win && h>tw*0.9){                                            // window rows on the lit (left) face
+    const rows=Math.max(1,Math.floor(h/(tw*0.55)));
+    for(let r=0;r<rows;r++){const wy=y-h+ (r+0.6)*(h/(rows+0.4));
+      poly(svg,[[x-tw*0.62,wy],[x-tw*0.30,wy+tw*0.16],[x-tw*0.30,wy+tw*0.16-tw*0.34],[x-tw*0.62,wy-tw*0.34]],"#fff6da",0.5);
+    }
+  }
+}
+// build a cluster from specs [{dx,dy,tw,h,key,win}] painted back-to-front
+function cluster(svg, ox, oy, specs){
+  specs.slice().sort((a,b)=>(a.dx+a.dy)-(b.dx+b.dy)).forEach(s=>isoBldg(svg,ox+s.dx,oy+s.dy,s.tw,s.h,s.key,{win:s.win}));
+}
+function ground(svg,ox,oy,tw,fill){const th=tw/2;poly(svg,[[ox,oy-th],[ox+tw,oy],[ox,oy+th],[ox-tw,oy]],fill,0.9);}
+
+/* logo: a compact mini-city on a faint tile */
+(function(){const s=document.getElementById("logo"); ground(s,32,40,22,"#0e1838");
+  cluster(s,32,40,[
+    {dx:-12,dy:6,tw:8,h:16,key:"blue"},
+    {dx:2,dy:11,tw:9,h:30,key:"gold",win:1},
+    {dx:14,dy:5,tw:8,h:21,key:"green"}
+  ]);
+  const dot=document.createElementNS(NS,"circle");dot.setAttribute("cx",47);dot.setAttribute("cy",10);dot.setAttribute("r",2.6);dot.setAttribute("fill","#ffd680");s.appendChild(dot);
+})();
+
+/* hero far skyline (wide, faint) */
+(function(){const s=document.getElementById("skyCity");const base=300; let specs=[];
+  let seed=7; const rnd=()=>((seed=Math.imul(seed^seed>>>15,2246822519))>>>0)/4294967296;
+  const keys=["ink","ink","ink","slate"];
+  for(let i=0;i<26;i++){const dx=-680+i*54+ (rnd()*18); const h=40+rnd()*150; const tw=18+rnd()*6;
+    specs.push({dx,dy: (rnd()*8), tw, h, key:keys[(rnd()*keys.length)|0], win: h>120?1:0});}
+  cluster(s,700,base,specs);
+})();
+
+/* hero mid cluster (colorful, right) */
+(function(){const s=document.getElementById("midCity");
+  cluster(s,260,250,[
+    {dx:-150,dy:30,tw:26,h:120,key:"ink",win:1},{dx:-95,dy:60,tw:24,h:70,key:"slate"},
+    {dx:-30,dy:80,tw:30,h:150,key:"blue",win:1},{dx:40,dy:55,tw:26,h:96,key:"gold",win:1},
+    {dx:108,dy:78,tw:24,h:66,key:"green"},{dx:160,dy:40,tw:22,h:120,key:"violet",win:1},
+    {dx:-60,dy:18,tw:20,h:54,key:"ink"}
+  ]);
+})();
+
+/* floating hero accent chips */
+(function(){cluster(document.getElementById("artA"),60,52,[
+  {dx:-20,dy:8,tw:13,h:34,key:"gold",win:1},{dx:8,dy:16,tw:14,h:52,key:"blue",win:1},{dx:30,dy:6,tw:12,h:26,key:"green"}]);
+  cluster(document.getElementById("artB"),48,44,[
+  {dx:-14,dy:6,tw:12,h:40,key:"violet",win:1},{dx:14,dy:12,tw:13,h:24,key:"slate"}]);
+})();
+
+/* card corner skylines */
+function cornerCity(id,pals){const s=document.getElementById(id);
+  cluster(s,72,60,[
+    {dx:-30,dy:10,tw:14,h:34,key:pals[0]},{dx:2,dy:20,tw:16,h:58,key:pals[1],win:1},
+    {dx:34,dy:8,tw:13,h:28,key:pals[2]},{dx:18,dy:-2,tw:11,h:44,key:pals[1]}]);}
+cornerCity("cc1",["ink","gold","slate"]);
+cornerCity("cc2",["ink","blue","slate"]);
+cornerCity("cc3",["ink","green","slate"]);
+
+/* CTA bottom skyline strip */
+(function(){const s=document.getElementById("ctaCity");let specs=[];let seed=19;
+  const rnd=()=>((seed=Math.imul(seed^seed>>>15,2246822519))>>>0)/4294967296;
+  const keys=["ink","ink","slate","blue","gold","green","violet"];
+  for(let i=0;i<22;i++){specs.push({dx:-430+i*42+rnd()*10,dy:rnd()*6,tw:16+rnd()*5,h:24+rnd()*78,key:keys[(rnd()*keys.length)|0],win:rnd()>.5?1:0});}
+  cluster(s,450,96,specs);
+})();
+
+/* ── light parallax (scroll + mouse), GPU transform only ── */
+(function(){
+  if(REDUCE) return;
+  const layers=[...document.querySelectorAll(".layer,.heroart")].map(el=>({el,d:parseFloat(el.dataset.depth||"0")}));
+  let mx=0,my=0,tmx=0,tmy=0,sy=window.scrollY;
+  addEventListener("mousemove",e=>{tmx=(e.clientX/innerWidth-.5);tmy=(e.clientY/innerHeight-.5);},{passive:true});
+  addEventListener("scroll",()=>{sy=window.scrollY;},{passive:true});
+  function frame(){
+    mx+=(tmx-mx)*.06; my+=(tmy-my)*.06;
+    for(const l of layers){
+      const baseX = l.el.classList.contains("l-sky") ? -50 : 0; // l-sky keeps its translateX(-50%)
+      const tx = baseX + mx*l.d*2.2;
+      const ty = (sy*l.d*-0.012) + my*l.d*2.0;
+      l.el.style.transform = (baseX? "translateX("+baseX+"%) ":"") + "translate3d("+(mx*l.d*2.2).toFixed(2)+"px,"+ty.toFixed(2)+"px,0)";
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ── scroll reveal (IntersectionObserver, staggered, once) ── */
+(function(){
+  const els=[...document.querySelectorAll(".reveal")];
+  if(REDUCE){els.forEach(e=>e.classList.add("in"));return;}
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{if(e.isIntersecting){const sib=[...e.target.parentElement.children].indexOf(e.target);
+      e.target.style.transitionDelay=Math.min(sib,6)*55+"ms"; e.target.classList.add("in"); io.unobserve(e.target);}});
+  },{threshold:.12, rootMargin:"-60px 0px"});
+  els.forEach(e=>io.observe(e));
+})();
+
+/* ── email capture (same funnel) ──
+   BACKEND TO WIRE AT DEPLOY: set FORM_ENDPOINT to a form/email service (Formspree / ConvertKit /
+   Buttondown / serverless) that emails the submitter the repo link. Until then: demo mode shows
+   success + reveals the public repo link inline. */
+const FORM_ENDPOINT = ""; // e.g. "https://formspree.io/f/xxxxxxx"
+const REPO = "https://github.com/SathiaAI/knosky";
+const valid = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+function wire(formId, errId, okId){
+  const f=document.getElementById(formId), err=document.getElementById(errId), ok=document.getElementById(okId);
+  f.addEventListener("submit", async (ev)=>{ ev.preventDefault();
+    const email=f.email.value.trim(); err.style.display="none";
+    if(!valid(email)){ err.style.display="block"; return; }
+    try{ if(FORM_ENDPOINT){ await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify({email,source:"knosky-landing",repo:REPO})}); } }catch(_){}
+    f.style.display="none"; ok.style.display="block";
+  });
+}
+wire("form1","err1","ok1"); wire("form2","err2","ok2");
+</script>
+</body>
+</html>
