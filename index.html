@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KnoSky — your knowledge as a skyline</title>
 <meta name="description" content="Turn any repo or folder of docs into a living, explorable city — and ground your AI in your own source, with citations. Local-first. Free." />
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="180x180" href="assets/favicon-180.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
 <meta property="og:title" content="KnoSky — your knowledge as a skyline">
 <meta property="og:description" content="Turn any repo into an explorable city, and ground your AI in your own source. Local-first. Free.">
@@ -117,7 +117,7 @@
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
 
   /* full-width city band — decorative divider, NO text over it */
-  .cityband{position:relative;height:150px;margin-top:34px;overflow:hidden;pointer-events:none}
+  .cityband{position:relative;height:172px;margin-top:30px;overflow:hidden;pointer-events:none}
   .cityband .row{position:absolute;left:50%;bottom:0;transform:translateX(-50%);display:flex;align-items:flex-end;line-height:0;
     -webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent)}
   .cityband .row img{display:block;height:auto;filter:drop-shadow(0 10px 14px rgba(40,52,100,.22))}
@@ -137,12 +137,13 @@
   .card h3{margin:0 0 8px;font-size:18.5px;color:var(--ink)}
   .card p{margin:0;color:var(--body);font-size:14.5px}
 
-  .outcome{background:linear-gradient(180deg,rgba(79,110,247,.06),rgba(232,156,8,.05));border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
-  .ostats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
-  .ostat b{display:block;font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--blue)}
+  .outcome{padding:100px 0;background:linear-gradient(180deg,rgba(79,110,247,.06),rgba(232,156,8,.05));border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .ostats{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:50px}
+  .ostat b{display:block;font-size:40px;font-weight:800;letter-spacing:-1.2px;color:var(--blue);margin-bottom:8px;line-height:1}
   .ostat:nth-child(2) b{color:var(--gold)} .ostat:nth-child(3) b{color:var(--green)}
-  .ostat span{color:var(--body);font-size:14.5px}
-  .notwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+  .ostat span{color:var(--body);font-size:14.5px;line-height:1.5}
+  .notwrap{display:grid;grid-template-columns:1fr 1fr;gap:26px 44px;margin-top:54px;padding-top:42px;border-top:1px solid var(--hair)}
+  .not{line-height:1.55}
   .not{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--body)}
   .not svg{width:19px;height:19px;flex:0 0 auto;margin-top:2px;color:var(--faint)}
   .not.yes svg{color:var(--green)}
@@ -185,7 +186,7 @@
   @media (prefers-reduced-motion: reduce){
     .reveal{transition:opacity .4s ease;transform:none;filter:none}
     .float,.cloud,.plane{animation:none}.plane{display:none}
-    [data-depth]{transform:none !important}
+    [data-speed]{transform:none !important}
     .cityband .row,.cta-sky{transform:translateX(-50%) !important}
     html{scroll-behavior:auto}
   }
@@ -196,7 +197,7 @@
 <div class="bgmesh"></div>
 
 <div class="navhost"><nav class="nav">
-  <a class="brand" href="#top"><svg id="logo" width="36" height="36" viewBox="0 0 64 64" aria-label="KnoSky"></svg>
+  <a class="brand" href="#top"><img src="assets/logo-mark.png" width="34" height="34" alt="KnoSky" style="display:block;filter:drop-shadow(0 3px 5px rgba(40,52,100,.28))">
     <span>KnoSky<small>your knowledge as a skyline</small></span></a>
   <div class="navlinks"><a href="#what">What</a><a href="#why">Why</a><a href="#story">Story</a></div>
   <a class="btn btn-primary" href="#get">Get it free <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></a>
@@ -205,8 +206,8 @@
 <a id="top"></a>
 <header>
   <div class="px">
-    <div class="orb" data-depth="3" style="left:72%;top:2%;width:300px;height:300px;background:radial-gradient(circle,rgba(79,110,247,.3),transparent 62%)"></div>
-    <div class="orb" data-depth="2" style="left:-2%;top:26%;width:280px;height:280px;background:radial-gradient(circle,rgba(232,156,8,.26),transparent 62%)"></div>
+    <div class="orb" data-speed="0.10" data-mouse="18" style="left:72%;top:2%;width:300px;height:300px;background:radial-gradient(circle,rgba(79,110,247,.3),transparent 62%)"></div>
+    <div class="orb" data-speed="0.08" data-mouse="14" style="left:-2%;top:26%;width:280px;height:280px;background:radial-gradient(circle,rgba(232,156,8,.26),transparent 62%)"></div>
     <div class="cloud c1"><span style="left:0;top:-12px;width:120px;height:56px"></span><span style="left:60px;top:-24px;width:90px;height:66px"></span><span style="left:128px;top:-10px;width:78px;height:44px"></span></div>
     <div class="cloud c2"><span style="left:0;top:-8px;width:100px;height:48px"></span><span style="left:50px;top:-20px;width:78px;height:56px"></span></div>
     <svg class="plane" viewBox="0 0 120 60" aria-hidden="true">
@@ -240,8 +241,8 @@
     </div>
 
     <div class="scene reveal">
-      <div class="scene-art float" data-depth="14" style="left:-34px;top:-30px;width:74px"><img src="assets/sprites/b03.png" alt=""></div>
-      <div class="scene-art float b2" data-depth="-10" style="right:-22px;bottom:-26px;width:66px"><img src="assets/sprites/b06.png" alt=""></div>
+      <div class="scene-art float" data-speed="0.05" data-mouse="20" style="left:-34px;top:-30px;width:72px"><img src="assets/sprites/b03.png" alt=""></div>
+      <div class="scene-art float b2" data-speed="-0.04" data-mouse="-16" style="right:-22px;bottom:-26px;width:64px"><img src="assets/sprites/b06.png" alt=""></div>
       <div class="shell">
         <div class="device">
           <div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="cap">knosky-demo.html · live</span></div>
@@ -251,7 +252,7 @@
     </div>
   </div>
 
-  <div class="cityband"><div class="row" id="bandSky" data-depth="2"></div></div>
+  <div class="cityband"><div class="row" id="bandSky" data-speed="0.08" data-mouse="7"></div></div>
 </header>
 
 <section id="what"><div class="wrap">
@@ -322,7 +323,7 @@ node renderer/build-rich.mjs city.json city.html
     </form>
     <div class="err" id="err2">Please enter a valid email.</div>
     <div class="ok" id="ok2">✓ You're in. Here's your link: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
-    <div class="cta-sky" id="ctaSky"></div>
+    <div class="cta-sky" id="ctaSky" data-speed="0.06" data-mouse="6"></div>
   </div>
 </div></section>
 
@@ -338,42 +339,34 @@ const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const NB = 16;
 const rng = (s)=>()=>((s=Math.imul(s^s>>>15,2246822519))>>>0)/4294967296;
 
-/* logo (iso-city mark, matches favicon) */
-(function(){const s=document.getElementById("logo");
-  const P=(p,f)=>{const e=document.createElementNS(NS,"polygon");e.setAttribute("points",p);e.setAttribute("fill",f);s.appendChild(e);};
-  P("11,44 20,48.5 20,32.5 11,28","#7aa2ff");P("20,48.5 29,44 29,28 20,32.5","#5b82e0");P("20,28 29,32.5 20,37 11,32.5","#a9c4ff");
-  P("23,47 33,52 33,22 23,17","#f2c14e");P("33,52 43,47 43,17 33,22","#cf9a2c");P("33,12 43,17 33,22 23,17","#ffd884");
-  P("38,46 47,50.5 47,32.5 38,28","#69cf94");P("47,50.5 55,46 55,28 47,32.5","#46ad72");P("47,28 55,32.5 47,37 38,32.5","#9ee3b8");
-  const d=document.createElementNS(NS,"circle");d.setAttribute("cx",49);d.setAttribute("cy",13);d.setAttribute("r",3);d.setAttribute("fill","#ffd680");s.appendChild(d);})();
-
 /* sprite skyline rows — REAL KnoSky Kenney buildings, in dedicated bands only */
 function skyline(el, n, minW, maxW, seed){
-  const r=rng(seed); let h="";
+  const r=rng(seed), avg=(minW+maxW)/2; let h="";
   for(let i=0;i<n;i++){
-    const idx=(r()*NB)|0, w=Math.round(minW+r()*(maxW-minW)), ov=i?-Math.round(w*(0.32+r()*0.12)):0, jb=Math.round(r()*6);
-    h+=`<img src="assets/sprites/b${String(idx).padStart(2,"0")}.png" style="width:${w}px;margin-left:${ov}px;margin-bottom:${jb}px" alt="">`;
-    if(r()>0.82) h+=`<img src="assets/sprites/tree.png" style="width:${Math.round(w*0.28)}px;margin-left:${-Math.round(w*0.1)}px" alt="">`;
+    const idx=(r()*NB)|0, w=Math.round(minW+r()*(maxW-minW));
+    h+=`<img src="assets/sprites/b${String(idx).padStart(2,"0")}.png" style="width:${w}px;margin-left:${i?Math.round(w*(0.12+r()*0.16)):0}px" alt="">`;
+    if(r()>0.45){ const tw=Math.round(avg*0.46); h+=`<img class="tree" src="assets/sprites/tree.png" style="width:${tw}px;margin-left:${Math.round(tw*0.55)}px" alt="">`; }
   }
   el.innerHTML=h;
 }
-skyline(document.getElementById("bandSky"), 30, 58, 118, 7);   // divider band
-skyline(document.getElementById("ctaSky"), 24, 50, 96, 23);    // CTA ground
+skyline(document.getElementById("bandSky"), 14, 62, 112, 7);   // divider band — fewer, spaced, trees visible
+skyline(document.getElementById("ctaSky"), 11, 54, 94, 23);    // CTA ground
 
-/* light parallax on bands + orbs + scene-art (scroll + mouse) */
+/* proper parallax: background bands/sprites drift slower than the foreground (rect-center based) */
 (function(){
   if(REDUCE) return;
-  const items=[...document.querySelectorAll("[data-depth]")].map(el=>{
-    const center = el.classList.contains("row")||el.classList.contains("cta-sky");
-    return {el,d:parseFloat(el.dataset.depth||"0"),center};
-  });
-  let mx=0,my=0,tmx=0,tmy=0,sy=window.scrollY;
+  const items=[...document.querySelectorAll("[data-speed]")].map(el=>({
+    el, sp:parseFloat(el.dataset.speed||"0"), mo:parseFloat(el.dataset.mouse||"0"),
+    center: el.classList.contains("row")||el.classList.contains("cta-sky")
+  }));
+  let mx=0,my=0,tmx=0,tmy=0;
   addEventListener("mousemove",e=>{tmx=(e.clientX/innerWidth-.5);tmy=(e.clientY/innerHeight-.5);},{passive:true});
-  addEventListener("scroll",()=>{sy=window.scrollY;},{passive:true});
   (function frame(){
-    mx+=(tmx-mx)*.06; my+=(tmy-my)*.06;
+    mx+=(tmx-mx)*.07; my+=(tmy-my)*.07; const vh=innerHeight;
     for(const l of items){
-      const tx=mx*l.d*2.2, ty=(sy*l.d*-0.012)+my*l.d*1.8;
-      l.el.style.transform=(l.center?`translateX(-50%) `:``)+`translate3d(${tx.toFixed(2)}px,${ty.toFixed(2)}px,0)`;
+      const r=l.el.getBoundingClientRect(), fc=(r.top+r.height/2)-vh/2;
+      const ty=(-fc*l.sp)+(my*l.mo), tx=mx*l.mo;
+      l.el.style.transform=(l.center?`translateX(-50%) `:``)+`translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0)`;
     }
     requestAnimationFrame(frame);
   })();
