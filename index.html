@@ -211,7 +211,7 @@
         <button class="btn btn-primary" type="submit">Email me the link <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
       </form>
       <div class="err" id="err1">Please enter a valid email.</div>
-      <div class="ok" id="ok1">✓ Sent — check your inbox for the link. Or grab it now: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
+      <div class="ok" id="ok1">✓ Almost there — check your inbox to confirm, and your link is on the way. Or grab it now: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
       <p class="formnote reveal">No spam. You'll get the GitHub link + the occasional note on what I'm building.</p>
 
       <div class="trust reveal">
@@ -308,7 +308,7 @@ node renderer/build-rich.mjs city.json city.html
       <button class="btn btn-primary" type="submit">Email me the link <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
     </form>
     <div class="err" id="err2">Please enter a valid email.</div>
-    <div class="ok" id="ok2">✓ Sent — check your inbox. Or grab it now: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
+    <div class="ok" id="ok2">✓ Almost there — check your inbox to confirm, and your link is on the way. Or grab it now: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
     <svg class="citystrip" id="ctaCity" width="900" height="120" viewBox="0 0 900 120" preserveAspectRatio="xMidYMax meet"></svg>
   </div>
 </div></section>
@@ -439,7 +439,7 @@ cornerCity("cc3",["ink","green","slate"]);
    BACKEND TO WIRE AT DEPLOY: set FORM_ENDPOINT to a form/email service (Formspree / ConvertKit /
    Buttondown / serverless) that emails the submitter the repo link. Until then: demo mode shows
    success + reveals the public repo link inline. */
-const FORM_ENDPOINT = "https://formspree.io/f/xnjkvdyb"; // Formspree — KnoSky signups
+const KIT_ENDPOINT = "https://app.kit.com/forms/9619648/subscriptions"; // Kit (ConvertKit) — KnoSky signups
 const REPO = "https://github.com/SathiaAI/knosky";
 const valid = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 function wire(formId, errId, okId){
@@ -447,7 +447,7 @@ function wire(formId, errId, okId){
   f.addEventListener("submit", async (ev)=>{ ev.preventDefault();
     const email=f.email.value.trim(); err.style.display="none";
     if(!valid(email)){ err.style.display="block"; return; }
-    try{ if(FORM_ENDPOINT){ await fetch(FORM_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify({email,source:"knosky-landing",repo:REPO})}); } }catch(_){}
+    try{ await fetch(KIT_ENDPOINT,{method:"POST",headers:{"Accept":"application/json"},body:new URLSearchParams({email_address:email})}); }catch(_){}
     f.style.display="none"; ok.style.display="block";
   });
 }
