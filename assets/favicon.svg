@@ -1,0 +1,18 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#12203c"/><stop offset="1" stop-color="#0a1226"/></linearGradient></defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- blue (back-left) -->
+  <polygon points="11,44 20,48.5 20,32.5 11,28" fill="#7aa2ff"/>
+  <polygon points="20,48.5 29,44 29,28 20,32.5" fill="#5b82e0"/>
+  <polygon points="20,28 29,32.5 20,37 11,32.5" fill="#a9c4ff"/>
+  <!-- gold (center, tall) -->
+  <polygon points="23,47 33,52 33,22 23,17" fill="#f2c14e"/>
+  <polygon points="33,52 43,47 43,17 33,22" fill="#cf9a2c"/>
+  <polygon points="33,12 43,17 33,22 23,17" fill="#ffd884"/>
+  <!-- green (front-right) -->
+  <polygon points="38,46 47,50.5 47,32.5 38,28" fill="#69cf94"/>
+  <polygon points="47,50.5 55,46 55,28 47,32.5" fill="#46ad72"/>
+  <polygon points="47,28 55,32.5 47,37 38,32.5" fill="#9ee3b8"/>
+  <circle cx="49" cy="13" r="3" fill="#ffd680"/>
+</svg>
