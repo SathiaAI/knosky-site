@@ -13,11 +13,13 @@
 <meta property="og:image" content="https://knosky.com/assets/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
   :root{
     --bg:#eef2fb;
-    --ink:#18203c; --body:#4b5778; --faint:#8a93b4;
+    --ink:#18203c; --body:#4b5778; --faint:#5b6585;
     --card:#ffffff;
     --line:rgba(24,32,60,.12); --hair:rgba(24,32,60,.07);
     --gold:#e89c08; --gold2:#ffc23d; --blue:#4f6ef7; --green:#1fb07a; --violet:#7c5cf0; --coral:#f2683f;
@@ -109,6 +111,11 @@
   .device .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1430;border-bottom:1px solid rgba(255,255,255,.06)}
   .dot{width:11px;height:11px;border-radius:50%}
   .device iframe{display:block;width:100%;height:420px;border:0;background:#0a1020}
+  .demoload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;height:420px;
+    border:0;cursor:pointer;color:#cdd9f5;font:inherit;font-weight:600;font-size:14px;
+    background:radial-gradient(120% 120% at 50% 0,#13203f,#0a1020)}
+  .demoload-play{width:54px;height:54px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+    font-size:20px;color:#3a2700;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 10px 24px rgba(232,156,8,.4)}
   .expandbtn{margin-left:8px;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:11.5px;font-weight:600;color:#cdd9f5;
     background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:4px 9px;cursor:pointer;transition:background .2s var(--eOut)}
   .expandbtn:hover{background:rgba(255,255,255,.18)}
@@ -212,7 +219,7 @@
 
   footer{border-top:1px solid var(--hair);padding:30px 0 60px;color:var(--faint);font-size:13.5px}
   .frow{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
-  footer a{color:var(--body)} footer a:hover{color:var(--ink)}
+  footer a{color:var(--body);text-decoration:underline;text-underline-offset:2px} footer a:hover{color:var(--ink)}
 
   .reveal{opacity:0;transform:translateY(20px);filter:blur(5px);
     transition:opacity .75s var(--eOut), transform .75s var(--eOut), filter .75s var(--eOut)}
@@ -248,6 +255,7 @@
 </nav></div>
 
 <a id="top"></a>
+<main>
 <header>
   <div class="px">
     <div class="orb" data-speed="0.10" data-mouse="18" style="left:72%;top:2%;width:300px;height:300px;background:radial-gradient(circle,rgba(79,110,247,.3),transparent 62%)"></div>
@@ -290,7 +298,9 @@
       <div class="shell">
         <div class="device">
           <div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="cap">● Live demo</span><button type="button" class="expandbtn js-open-demo"><svg class="li" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>Full screen</button></div>
-          <iframe src="knosky-demo.html" title="KnoSky live demo city" loading="lazy"></iframe>
+          <button type="button" class="demoload js-load-inline" aria-label="Load the interactive demo">
+            <span class="demoload-play" aria-hidden="true">▶</span>Load the interactive demo
+          </button>
         </div>
       </div>
       <p class="demohint reveal"><b>This is a live, interactive demo</b> — drag to pan, scroll to zoom, click a building. <button type="button" class="linkbtn js-open-demo">Open full screen ↗</button></p>
@@ -422,6 +432,7 @@
   </div>
 </div></section>
 
+</main>
 <footer><div class="wrap frow">
   <div>© 2026 KnoSky™ · Born from <a href="https://sathia.ai" target="_blank" rel="noopener">Sathia</a>. Free under FSL-1.1-MIT.</div>
   <div><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · City art by <a href="https://kenney.nl" target="_blank" rel="noopener">Kenney</a> (CC0)</div>
@@ -452,19 +463,21 @@ function skyline(el, n, minW, maxW, seed){
 skyline(document.getElementById("bandSky"), 14, 62, 112, 7);   // divider band — fewer, spaced, trees visible
 skyline(document.getElementById("ctaSky"), 11, 54, 94, 23);    // CTA ground
 
-/* proper parallax: background bands/sprites drift slower than the foreground (rect-center based) */
+/* parallax: measure layout ONCE (and on resize/load); per-frame uses cached centers + scrollY (no reflow) */
 (function(){
   if(REDUCE) return;
   const items=[...document.querySelectorAll("[data-speed]")].map(el=>({
     el, sp:parseFloat(el.dataset.speed||"0"), mo:parseFloat(el.dataset.mouse||"0"),
-    center: el.classList.contains("row")||el.classList.contains("cta-sky")
+    center: el.classList.contains("row")||el.classList.contains("cta-sky"), mid:0
   }));
+  function measure(){ const sy=scrollY; for(const l of items){ const r=l.el.getBoundingClientRect(); l.mid=r.top+sy+r.height/2; } }
+  measure(); addEventListener("resize", measure, {passive:true}); addEventListener("load", measure);
   let mx=0,my=0,tmx=0,tmy=0;
   addEventListener("mousemove",e=>{tmx=(e.clientX/innerWidth-.5);tmy=(e.clientY/innerHeight-.5);},{passive:true});
   (function frame(){
-    mx+=(tmx-mx)*.07; my+=(tmy-my)*.07; const vh=innerHeight;
+    mx+=(tmx-mx)*.07; my+=(tmy-my)*.07; const vh=innerHeight, sy=scrollY;
     for(const l of items){
-      const r=l.el.getBoundingClientRect(), fc=(r.top+r.height/2)-vh/2;
+      const fc=(l.mid - sy) - vh/2;
       const ty=(-fc*l.sp)+(my*l.mo), tx=mx*l.mo;
       l.el.style.transform=(l.center?`translateX(-50%) `:``)+`translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0)`;
     }
@@ -497,6 +510,14 @@ function wire(formId, errId, okId){
   });
 }
 wire("form1","err1","ok1"); wire("form2","err2","ok2");
+
+/* inline hero demo: load the heavy iframe only on click (keeps 2.6 MB out of initial load) */
+document.querySelectorAll(".js-load-inline").forEach(b=>b.addEventListener("click",()=>{
+  const f=document.createElement("iframe");
+  f.src="knosky-demo.html"; f.title="KnoSky live demo city";
+  f.style.cssText="display:block;width:100%;height:420px;border:0;background:#0a1020";
+  b.replaceWith(f);
+}));
 
 /* expandable full-screen demo */
 (function(){
