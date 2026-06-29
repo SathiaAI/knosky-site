@@ -481,6 +481,7 @@ skyline(document.getElementById("ctaSky"), 11, 54, 94, 23);    // CTA ground
       e.target.style.transitionDelay=Math.min(sib,6)*55+"ms"; e.target.classList.add("in"); io.unobserve(e.target);}});
   },{threshold:.12, rootMargin:"-50px 0px"});
   els.forEach(e=>io.observe(e));
+  setTimeout(()=>els.forEach(e=>e.classList.add("in")),1400); // safety net: always reveal, even if the observer is slow/throttled
 })();
 
 /* email capture → Kit (ConvertKit) form 9619648. Auto-confirm ON → link shown on page. */
