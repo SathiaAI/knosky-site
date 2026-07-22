@@ -80,21 +80,51 @@
         </div>
       </header>
       <article class="content">
-        <h1>Claim ladder L0–L3</h1>
-        
-    <p class="lede">Public guarantee ladder. Wording never exceeds what <code>doctor</code> shows on the install.</p>
-    <div class="clay"><h3>L0 — Local map</h3><p>Index and navigate locally. No KnoSky upload by default.</p></div>
-    <div class="clay" style="margin-top:10px"><h3>L1 — Share-safe artifact</h3><p>Share only after fail-closed secret controls and human review.</p></div>
-    <div class="clay" style="margin-top:10px"><h3>L2 — Governed (Mode B)</h3><p>Lease + policy + audit receipt on ALLOW, or safe DENY.</p></div>
-    <div class="clay" style="margin-top:10px"><h3>L3 — Swarm domain</h3>
-      <p><strong>Foundation ship:</strong> coordinator module, leases, quotas, claims, heatmap, benches may exist on main.</p>
-      <p><strong>Do not market</strong> “production swarm-safe at every install” or blanket fleet safety until <code>doctor</code> reports full L3 green <em>for that domain</em>.</p>
-    </div>
-    <div class="maturity" style="margin-top:16px">Algorithm: public_copy.claim_level ≤ doctor ceiling. Windows lockdown is loud when inactive.</div>
-    <div class="next"><a class="btn btn-coral" href="../start-here.html">Start here</a>
-    <a class="btn btn-ghost" href="trust.html">Trust</a></div>
-    
-      </article>
+              <h1>What you can claim (L0–L3)</h1>
+
+              <p class="lede">
+                KnoSky grows in layers. Only promise what your own install can show with
+                <code>npx knosky@latest doctor</code> — a simple health check on your machine.
+              </p>
+
+              <div class="clay">
+                <h3>L0 — Local map</h3>
+                <p>KnoSky builds a map of your project on <strong>your computer</strong> and helps assistants find the right files. Nothing is uploaded to KnoSky by default.</p>
+              </div>
+
+              <div class="clay" style="margin-top:10px">
+                <h3>L1 — Safer sharing</h3>
+                <p>If you choose to share a map package with someone else, treat it carefully: secret-looking text should be blocked, and a person should review what leaves your machine.</p>
+              </div>
+
+              <div class="clay" style="margin-top:10px">
+                <h3>L2 — Checked answers (Mode B)</h3>
+                <p>When you want firmer control, assistants identify themselves and get a clear <strong>yes</strong> or <strong>no</strong> with a record when allowed. Otherwise the request is refused safely.</p>
+              </div>
+
+              <div class="clay" style="margin-top:10px">
+                <h3>L3 — Several AI helpers together</h3>
+                <p>
+                  <strong>L3</strong> is for when more than one AI helper works in the same project
+                  (sometimes called a “swarm”). KnoSky includes an <strong>early helper layer</strong> so those workers collide less — for example light turn-taking and a simple status board.
+                </p>
+                <p>
+                  It is <strong>not</strong> a finished “always-safe multi-AI factory on every laptop” product.
+                  Use basic map + routing freely; treat multi-helper coordination as early.
+                  Run <code>doctor</code> on <em>your</em> install before stronger promises.
+                </p>
+              </div>
+
+              <div class="maturity" style="margin-top:16px">
+                Rule of thumb: public claims stay at or below what <code>doctor</code> shows for that install.
+                Some advanced Windows lockdown features may still show a warning when they are not active yet.
+              </div>
+
+              <div class="next">
+                <a class="btn btn-coral" href="../start-here.html">Start here</a>
+                <a class="btn btn-ghost" href="trust.html">Trust</a>
+              </div>
+            </article>
     </div>
   </div>
   <script>
