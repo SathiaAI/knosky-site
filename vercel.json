@@ -37,9 +37,36 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+    {
+      "source": "/wiki/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "knosky.wiki" }],
+      "destination": "/wiki/",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.knosky.wiki" }],
+      "destination": "/wiki/",
+      "permanent": false
     }
   ],
   "rewrites": [
+    {
+      "source": "/wiki",
+      "destination": "/wiki/index.html"
+    },
     {
       "source": "/docs",
       "destination": "/wiki/index.html"
