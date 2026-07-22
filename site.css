@@ -138,6 +138,14 @@ header.site-header {
   padding-top: 4px;
 }
 .actions .btn { margin: 0; }
+/* After card grids / clay blocks — more air before bottom CTAs */
+.grid-2 + .actions,
+.grid-3 + .actions,
+.grid-4 + .actions,
+.clay + .actions {
+  margin-top: 32px;
+}
+
 
 /* Type */
 .eyebrow {
