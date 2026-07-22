@@ -20,7 +20,7 @@
   })();
 
   // Cache-bust FAQ JSON when we ship content changes
-  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=3";
+  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=4";
 
   var STOP = {
     a: 1, an: 1, the: 1, is: 1, are: 1, was: 1, were: 1, be: 1, been: 1, being: 1,
@@ -238,7 +238,7 @@
       '<span class="ks-ask-fab-ico" aria-hidden="true">' +
       '<img src="' +
       ASSET_BASE +
-      'logo-mark.png" width="22" height="22" alt="" />' +
+      'ks-ask-mark.svg?v=4" width="24" height="24" alt="" />' +
       "</span><span>Ask KnoSky</span>";
 
     var panel = el("div", "ks-ask-panel");

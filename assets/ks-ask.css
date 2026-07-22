@@ -146,19 +146,20 @@
   outline-offset: 2px;
 }
 .ks-ask-fab .ks-ask-fab-ico {
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.96);
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: #FFF8F1;
   display: grid;
   place-items: center;
   overflow: hidden;
   flex-shrink: 0;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  box-shadow: 0 1px 0 rgba(255,255,255,.55) inset;
+  border: 1px solid rgba(255,255,255,.35);
 }
 .ks-ask-fab .ks-ask-fab-ico img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: block;
   object-fit: contain;
   border-radius: 6px;
