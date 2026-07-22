@@ -1,647 +1,566 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="assets/favicon-32.png" />
-  <link rel="apple-touch-icon" href="assets/favicon-180.png" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KnoSky — GPS for AI agents</title>
-  <meta name="description" content="KnoSky is the GPS protocol for AI agents: route through a maze of code and docs to the right work. Local-first. The city is the human skin — elsewhere on the page." />
-  <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #FFF8F1;
-      --bg-warm: #FFF1E4;
-      --bg-mint: #EAF7F1;
-      --bg-peach: #FFE8DC;
-      --elev: #FFFFFF;
-      --ink: #2C2420;
-      --body: #5C534C;
-      --muted: #8A8178;
-      --line: #E8DFD4;
-      --coral: #FF5A3C;
-      --coral-h: #E84428;
-      --coral-soft: #FFE0D6;
-      --mint: #1FA97A;
-      --mint-d: #0E8A62;
-      --mint-soft: #D8F3E7;
-      --sand: #F0E6D8;
-      --paper: #FFFCFA;
-      --code: #3D3834;
-      --code-ink: #FFF6EE;
-      --shadow: 0 10px 30px rgba(44,36,32,.08), 0 1px 0 rgba(255,255,255,.9) inset;
-      --r: 14px; --rl: 22px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Inter, system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--body);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; text-decoration: none; }
-    .wrap { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }
-    .wrap-wide { width: min(1280px, calc(100% - 32px)); margin: 0 auto; }
+ <link rel="icon" href="assets/favicon-32.png" />
+ <link rel="apple-touch-icon" href="assets/favicon-180.png" />
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>KnoSky — GPS for AI agents</title>
+ <meta name="description" content="KnoSky is the GPS protocol for AI agents: route through a maze of code and docs to the right work. Local-first. The city is the human skin — elsewhere on the page." />
+ <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+ <style>
+ :root {
+ --bg: #FFF8F1;
+ --bg-warm: #FFF1E4;
+ --bg-mint: #EAF7F1;
+ --bg-peach: #FFE8DC;
+ --elev: #FFFFFF;
+ --ink: #2C2420;
+ --body: #5C534C;
+ --muted: #8A8178;
+ --line: #E8DFD4;
+ --coral: #FF5A3C;
+ --coral-h: #E84428;
+ --coral-soft: #FFE0D6;
+ --mint: #1FA97A;
+ --mint-d: #0E8A62;
+ --mint-soft: #D8F3E7;
+ --sand: #F0E6D8;
+ --paper: #FFFCFA;
+ --code: #3D3834;
+ --code-ink: #FFF6EE;
+ --shadow: 0 10px 30px rgba(44,36,32,.08), 0 1px 0 rgba(255,255,255,.9) inset;
+ --r: 14px; --rl: 22px;
+ }
+ * { box-sizing: border-box; margin: 0; padding: 0; }
+ body {
+ font-family: Inter, system-ui, sans-serif;
+ background: var(--bg);
+ color: var(--body);
+ line-height: 1.55;
+ -webkit-font-smoothing: antialiased;
+ }
+ a { color: inherit; text-decoration: none; }.wrap { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }.wrap-wide { width: min(1280px, calc(100% - 32px)); margin: 0 auto; }.proto-banner {
+ background: #2C2420; color: #FFF6EE; text-align: center;
+ font-size: 12px; font-weight: 600; letter-spacing:.04em; text-transform: uppercase; padding: 8px;
+ }.proto-banner a { color: #FFB59F; text-decoration: underline; margin: 0 8px; }.agent-rail {
+ background: var(--mint-soft); border-bottom: 1px solid #c6ebd9;
+ font-size: 13px; padding: 10px 0; color: var(--ink);
+ }.agent-rail.wrap {
+ display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between;
+ }.agent-rail strong { color: var(--mint-d); }.agent-rail code {
+ font-family: "JetBrains Mono", monospace; background: #fff; border: 1px solid var(--line);
+ padding: 4px 8px; border-radius: 8px; font-size: 12px;
+ }.agent-rail a { color: var(--coral-h); font-weight: 600; text-decoration: underline; }
 
-    .proto-banner {
-      background: #2C2420; color: #FFF6EE; text-align: center;
-      font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 8px;
-    }
-    .proto-banner a { color: #FFB59F; text-decoration: underline; margin: 0 8px; }
+ header {
+ position: sticky; top: 0; z-index: 40;
+ background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+ border-bottom: 1px solid var(--line);
+ }.nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; height: auto; padding: 10px 0; gap: 20px; }.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); }.brand img { width: 40px; height: 40px; border-radius: 10px; }.brand.brand-lockup img { width: auto !important; height: 40px !important; border-radius: 0 !important; max-width: min(240px, 42vw); display: block; }.nav-links { display: flex; gap: 20px; font-size: 14px; font-weight: 500; }.nav-cta { display: flex; align-items: center; gap: 14px; font-size: 14px; font-weight: 500; }.nav-cta.quiet { color: var(--muted); }.btn {
+ display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+ border-radius: var(--r); font-weight: 600; font-size: 14px;
+ padding: 11px 18px; border: 1px solid transparent; cursor: pointer;
+ transition: transform.15s ease, background.15s ease;
+ }.btn:active { transform: translateY(1px); }.btn-coral {
+ background: var(--coral); color: #fff;
+ box-shadow: 0 6px 16px rgba(255,90,60,.28), 0 1px 0 rgba(255,255,255,.35) inset;
+ }.btn-coral:hover { background: var(--coral-h); }.btn-ghost { background: var(--elev); color: var(--ink); border-color: var(--line); }
 
-    .agent-rail {
-      background: var(--mint-soft); border-bottom: 1px solid #c6ebd9;
-      font-size: 13px; padding: 10px 0; color: var(--ink);
-    }
-    .agent-rail .wrap {
-      display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between;
-    }
-    .agent-rail strong { color: var(--mint-d); }
-    .agent-rail code {
-      font-family: "JetBrains Mono", monospace; background: #fff; border: 1px solid var(--line);
-      padding: 4px 8px; border-radius: 8px; font-size: 12px;
-    }
-    .agent-rail a { color: var(--coral-h); font-weight: 600; text-decoration: underline; }
+ /* ===== HERO: large GPS infographic first ===== */.hero {
+ padding: 36px 0 28px;
+ display: flex;
+ flex-direction: column;
+ gap: 22px;
+ align-items: stretch;
+ }.hero-copy {
+ max-width: 720px;
+ }.hero-figure-wrap {
+ width: 100%;
+ }.eyebrow {
+ display: inline-flex; align-items: center; gap: 8px;
+ font-size: 12px; font-weight: 700; letter-spacing:.05em; text-transform: uppercase;
+ color: var(--mint-d); background: var(--mint-soft); padding: 6px 12px; border-radius: 999px;
+ margin-bottom: 16px;
+ }
+ h1 {
+ font-size: clamp(2.15rem, 4vw, 3.2rem); line-height: 1.06;
+ letter-spacing: -0.035em; color: var(--ink); font-weight: 700; margin-bottom: 16px;
+ }
+ h1 em { font-style: normal; color: var(--coral); }.lede { font-size: 1.08rem; max-width: 34em; margin-bottom: 14px; }.soul {
+ font-size:.9rem; color: var(--muted); border-left: 3px solid var(--coral-soft);
+ padding-left: 14px; max-width: 38em; margin: 14px 0 24px;
+ }.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }.trust-micro {
+ display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; color: var(--muted);
+ }
 
-    header {
-      position: sticky; top: 0; z-index: 40;
-      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; height: auto; padding: 10px 0; gap: 20px; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); }
-    .brand img { width: 40px; height: 40px; border-radius: 10px; }
-    .brand.brand-lockup img { width: auto !important; height: 40px !important; border-radius: 0 !important; max-width: min(240px, 42vw); display: block; }
-    .nav-links { display: flex; gap: 20px; font-size: 14px; font-weight: 500; }
-    .nav-cta { display: flex; align-items: center; gap: 14px; font-size: 14px; font-weight: 500; }
-    .nav-cta .quiet { color: var(--muted); }
+ /* ===== GPS INFOGRAPHIC STAGE (large) ===== */.gps-stage {
+ position: relative;
+ border-radius: 28px;
+ background: #FFFCFA;
+ border: 1px solid var(--line);
+ box-shadow: var(--shadow);
+ overflow: hidden;
+ padding: 0;
+ width: 100%;
+ }.gps-stage.chrome { display: none; }.chip {
+ font-size: 11px; font-weight: 700; letter-spacing:.04em; text-transform: uppercase;
+ padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.95);
+ border: 1px solid var(--line); color: var(--ink); box-shadow: 0 2px 8px rgba(44,36,32,.05);
+ }.chip.mint { color: var(--mint-d); background: var(--mint-soft); border-color: #bfe8d4; }.chip.coral { color: var(--coral-h); background: var(--coral-soft); border-color: #ffc9b8; }.gps-hero-img {
+ display: block; width: 100%; height: auto;
+ min-height: min(62vh, 720px);
+ max-height: 820px;
+ object-fit: contain;
+ object-position: center center;
+ background: #FFF8F1;
+ border-radius: 28px;
+ }.stage-note { display: none; }.hud-strip { display: none; }.hero-caption {
+ /* Keep class for potential lit captions elsewhere; GPS hero uses sr-only */
+ text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px;
+ }.sr-only {
+ position: absolute !important; width: 1px !important; height: 1px !important;
+ padding: 0 !important; margin: -1px !important; overflow: hidden !important;
+ clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important;
+ }
 
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      border-radius: var(--r); font-weight: 600; font-size: 14px;
-      padding: 11px 18px; border: 1px solid transparent; cursor: pointer;
-      transition: transform .15s ease, background .15s ease;
-    }
-    .btn:active { transform: translateY(1px); }
-    .btn-coral {
-      background: var(--coral); color: #fff;
-      box-shadow: 0 6px 16px rgba(255,90,60,.28), 0 1px 0 rgba(255,255,255,.35) inset;
-    }
-    .btn-coral:hover { background: var(--coral-h); }
-    .btn-ghost { background: var(--elev); color: var(--ink); border-color: var(--line); }
+ /* rest of page */
+ section { padding: 56px 0; }.band-sand { background: var(--bg-warm); }.band-mint { background: var(--bg-mint); }
+ h2 {
+ font-size: clamp(1.55rem, 2.4vw, 2rem); color: var(--ink);
+ letter-spacing: -0.025em; margin-bottom: 10px;
+ }.section-lede { max-width: 38em; margin-bottom: 28px; }.clay {
+ background: var(--elev); border: 1px solid var(--line); border-radius: var(--rl);
+ box-shadow: var(--shadow); padding: 22px;
+ }.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }.clay h3 { color: var(--ink); font-size: 1.02rem; margin-bottom: 6px; }.clay p { font-size:.93rem; }.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }.stat {
+ text-align: center; padding: 28px 12px; background: var(--elev);
+ border-radius: var(--rl); border: 1px solid var(--line); box-shadow: var(--shadow);
+ }.stat b {
+ display: block; font-size: clamp(2.6rem, 4.5vw, 3.8rem); line-height: 1;
+ letter-spacing: -0.04em; color: var(--coral); font-weight: 700; margin-bottom: 8px;
+ }.stat-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
 
-    /* ===== HERO: large GPS infographic first ===== */
-    .hero {
-      padding: 36px 0 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      align-items: stretch;
-    }
-    .hero-copy {
-      max-width: 720px;
-    }
-    .hero-figure-wrap {
-      width: 100%;
-    }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
-      color: var(--mint-d); background: var(--mint-soft); padding: 6px 12px; border-radius: 999px;
-      margin-bottom: 16px;
-    }
-    h1 {
-      font-size: clamp(2.15rem, 4vw, 3.2rem); line-height: 1.06;
-      letter-spacing: -0.035em; color: var(--ink); font-weight: 700; margin-bottom: 16px;
-    }
-    h1 em { font-style: normal; color: var(--coral); }
-    .lede { font-size: 1.08rem; max-width: 34em; margin-bottom: 14px; }
-    .soul {
-      font-size: .9rem; color: var(--muted); border-left: 3px solid var(--coral-soft);
-      padding-left: 14px; max-width: 38em; margin: 14px 0 24px;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }
-    .trust-micro {
-      display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; color: var(--muted);
-    }
+ /* City as human skin — separate philosophy */.city-band {
+ display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: center;
+ }.city-frame {
+ background: linear-gradient(180deg, #F7FBFF 0%, #EEF9F3 55%, #FFF6EE 100%);
+ border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow);
+ padding: 20px 16px 12px; text-align: center; overflow: hidden;
+ }.city-frame img {
+ width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;
+ border-radius: 16px;
+ filter: drop-shadow(0 12px 20px rgba(44,36,32,.1));
+ }.city-band { grid-template-columns: 1.25fr 0.85fr; gap: 32px; }.city-frame.cap {
+ margin-top: 10px; font-size: 12px; color: var(--muted); font-weight: 500;
+ }.city-copy.pill {
+ display: inline-block; font-size: 12px; font-weight: 700; letter-spacing:.04em;
+ text-transform: uppercase; color: var(--muted); background: var(--sand);
+ padding: 5px 10px; border-radius: 999px; margin-bottom: 12px;
+ }.dock {
+ background: var(--code); color: var(--code-ink); border-radius: var(--rl);
+ padding: 18px 18px 18px 22px; display: flex; align-items: center; justify-content: space-between;
+ gap: 16px; box-shadow: var(--shadow);
+ }.dock code { font-family: "JetBrains Mono", monospace; font-size: 15px; font-weight: 500; }
 
-    /* ===== GPS INFOGRAPHIC STAGE (large) ===== */
-    .gps-stage {
-      position: relative;
-      border-radius: 28px;
-      background: #FFFCFA;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      padding: 0;
-      width: 100%;
-    }
-    .gps-stage .chrome { display: none; }
-    .chip {
-      font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-      padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.95);
-      border: 1px solid var(--line); color: var(--ink); box-shadow: 0 2px 8px rgba(44,36,32,.05);
-    }
-    .chip.mint { color: var(--mint-d); background: var(--mint-soft); border-color: #bfe8d4; }
-    .chip.coral { color: var(--coral-h); background: var(--coral-soft); border-color: #ffc9b8; }
-    .gps-hero-img {
-      display: block; width: 100%; height: auto;
-      min-height: min(62vh, 720px);
-      max-height: 820px;
-      object-fit: contain;
-      object-position: center center;
-      background: #FFF8F1;
-      border-radius: 28px;
-    }
-    .stage-note { display: none; }
-    .hud-strip { display: none; }
-    .hero-caption {
-          /* Keep class for potential lit captions elsewhere; GPS hero uses sr-only */
-          text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px;
-        }
-        .sr-only {
-          position: absolute !important; width: 1px !important; height: 1px !important;
-          padding: 0 !important; margin: -1px !important; overflow: hidden !important;
-          clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important;
-        }
+ footer {
+ border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 13px; color: var(--muted);
+ }.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 
+ 
+ /* Mobile collapsible header */.nav-toggle {
+ display: none; align-items: center; justify-content: center;
+ width: 44px; height: 44px; border-radius: 12px;
+ border: 1px solid var(--line); background: #fff; cursor: pointer; flex-shrink: 0;
+ }.nav-toggle-bars { display: flex; flex-direction: column; gap: 4px; width: 18px; }.nav-toggle-bars i { display: block; height: 2px; background: var(--ink); border-radius: 2px; transition:.15s ease; }
+ header.is-open.nav-toggle-bars i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+ header.is-open.nav-toggle-bars i:nth-child(2) { opacity: 0; }
+ header.is-open.nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }.nav-panel-mobile { display: none; }
 
-    /* rest of page */
-    section { padding: 56px 0; }
-    .band-sand { background: var(--bg-warm); }
-    .band-mint { background: var(--bg-mint); }
-    h2 {
-      font-size: clamp(1.55rem, 2.4vw, 2rem); color: var(--ink);
-      letter-spacing: -0.025em; margin-bottom: 10px;
-    }
-    .section-lede { max-width: 38em; margin-bottom: 28px; }
-    .clay {
-      background: var(--elev); border: 1px solid var(--line); border-radius: var(--rl);
-      box-shadow: var(--shadow); padding: 22px;
-    }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .clay h3 { color: var(--ink); font-size: 1.02rem; margin-bottom: 6px; }
-    .clay p { font-size: .93rem; }
+ @media (max-width: 920px) {.hero,.city-band,.grid-4,.grid-3,.grid-2,.stats { grid-template-columns: 1fr; }.nav-toggle { display: inline-flex; }.nav-links,.nav-cta.quiet { display: none; }.nav-panel-mobile { display: none; border-top: 1px solid var(--line); background: rgba(255,255,255,.98); padding: 10px 0 14px; }
+ header.is-open.nav-panel-mobile { display: block; }.nav-panel-mobile.wrap { display: flex; flex-direction: column; gap: 4px; }.nav-panel-mobile a { display: block; padding: 12px 4px; font-size: 15px; font-weight: 600; color: var(--ink); border-radius: 10px; }.nav-panel-mobile.btn { width: 100%; margin-top: 8px; text-align: center; }.gps-hero-img { min-height: 260px; max-height: none; }.agent-rail { font-size: 12px; }
+ }
 
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .stat {
-      text-align: center; padding: 28px 12px; background: var(--elev);
-      border-radius: var(--rl); border: 1px solid var(--line); box-shadow: var(--shadow);
-    }
-    .stat b {
-      display: block; font-size: clamp(2.6rem, 4.5vw, 3.8rem); line-height: 1;
-      letter-spacing: -0.04em; color: var(--coral); font-weight: 700; margin-bottom: 8px;
-    }
-    .stat-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; }
-
-    /* City as human skin — separate philosophy */
-    .city-band {
-      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: center;
-    }
-    .city-frame {
-      background: linear-gradient(180deg, #F7FBFF 0%, #EEF9F3 55%, #FFF6EE 100%);
-      border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow);
-      padding: 20px 16px 12px; text-align: center; overflow: hidden;
-    }
-    .city-frame img {
-      width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;
-      border-radius: 16px;
-      filter: drop-shadow(0 12px 20px rgba(44,36,32,.1));
-    }
-    .city-band { grid-template-columns: 1.25fr 0.85fr; gap: 32px; }
-    .city-frame .cap {
-      margin-top: 10px; font-size: 12px; color: var(--muted); font-weight: 500;
-    }
-    .city-copy .pill {
-      display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .04em;
-      text-transform: uppercase; color: var(--muted); background: var(--sand);
-      padding: 5px 10px; border-radius: 999px; margin-bottom: 12px;
-    }
-
-    .dock {
-      background: var(--code); color: var(--code-ink); border-radius: var(--rl);
-      padding: 18px 18px 18px 22px; display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; box-shadow: var(--shadow);
-    }
-    .dock code { font-family: "JetBrains Mono", monospace; font-size: 15px; font-weight: 500; }
-
-    footer {
-      border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 13px; color: var(--muted);
-    }
-    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
-
-    
-    /* Mobile collapsible header */
-    .nav-toggle {
-      display: none; align-items: center; justify-content: center;
-      width: 44px; height: 44px; border-radius: 12px;
-      border: 1px solid var(--line); background: #fff; cursor: pointer; flex-shrink: 0;
-    }
-    .nav-toggle-bars { display: flex; flex-direction: column; gap: 4px; width: 18px; }
-    .nav-toggle-bars i { display: block; height: 2px; background: var(--ink); border-radius: 2px; transition: .15s ease; }
-    header.is-open .nav-toggle-bars i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    header.is-open .nav-toggle-bars i:nth-child(2) { opacity: 0; }
-    header.is-open .nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-    .nav-panel-mobile { display: none; }
-
-    @media (max-width: 920px) {
-      .hero, .city-band, .grid-4, .grid-3, .grid-2, .stats { grid-template-columns: 1fr; }
-      .nav-toggle { display: inline-flex; }
-      .nav-links, .nav-cta .quiet { display: none; }
-      .nav-panel-mobile { display: none; border-top: 1px solid var(--line); background: rgba(255,255,255,.98); padding: 10px 0 14px; }
-      header.is-open .nav-panel-mobile { display: block; }
-      .nav-panel-mobile .wrap { display: flex; flex-direction: column; gap: 4px; }
-      .nav-panel-mobile a { display: block; padding: 12px 4px; font-size: 15px; font-weight: 600; color: var(--ink); border-radius: 10px; }
-      .nav-panel-mobile .btn { width: 100%; margin-top: 8px; text-align: center; }
-      .gps-hero-img { min-height: 260px; max-height: none; }
-      .agent-rail { font-size: 12px; }
-    }
-
-  </style>
-  <link rel="stylesheet" href="assets/ks-ask.css?v=4" />
+ </style>
+ <link rel="stylesheet" href="assets/ks-ask.css?v=5" />
 </head>
 <body>
-  <aside class="agent-rail" data-ai="product-summary" aria-label="Quick facts">
-    <div class="wrap">
-      <div>
-        <strong>What:</strong> GPS protocol for AI agents ·
-        <strong>Does:</strong> routes through code/docs maze ·
-        <strong>Skin:</strong> city map for humans (not the hero story)
-      </div>
-      <div>
-        <strong>Try:</strong> <code>npx knosky .</code>
-        · <a href="install.html">Install</a>
-        · <a href="llms.txt">llms.txt</a>
-      </div>
-    </div>
-  </aside>
+ <aside class="agent-rail" data-ai="product-summary" aria-label="Quick facts">
+ <div class="wrap">
+ <div>
+ <strong>What:</strong> GPS protocol for AI agents ·
+ <strong>Does:</strong> routes through code/docs maze ·
+ <strong>Skin:</strong> city map for humans (not the hero story)
+ </div>
+ <div>
+ <strong>Try:</strong> <code>npx knosky.</code>
+ · <a href="install.html">Install</a>
+ · <a href="llms.txt">llms.txt</a>
+ </div>
+ </div>
+ </aside>
 
-  <header id="siteHeader">
-  <div class="wrap nav">
-    <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
-    <nav class="nav-links" aria-label="Primary">
-        <a href="why.html">Why</a>
-        <a href="how-it-works.html">How</a>
-        <a href="#package">Package</a>
-        <a href="use-cases.html">Use cases</a>
-        <a href="compare.html">Compare</a>
-        <a href="#skin">City</a>
-      </nav>
-    <div class="nav-cta">
-        <a class="quiet" href="https://knosky.wiki/">Docs</a>
-        <a class="quiet" href="https://github.com/SathiaAI/knosky">GitHub</a>
-        <a class="btn btn-coral" href="install.html">Try it free</a>
-      </div>
-    <button type="button" class="nav-toggle" id="comNavToggle" aria-expanded="false" aria-controls="comNavPanel" aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-      </button>
-  </div>
-  <div class="nav-panel-mobile" id="comNavPanel">
-    <div class="wrap">
-      <a href="why.html">Why</a>
-        <a href="how-it-works.html">How</a>
-        <a href="#package">Package</a>
-        <a href="use-cases.html">Use cases</a>
-        <a href="compare.html">Compare</a>
-        <a href="#skin">City</a>
-      <a class="quiet" href="https://knosky.wiki/">Docs</a>
-        <a class="quiet" href="https://github.com/SathiaAI/knosky">GitHub</a>
-        <a class="btn btn-coral" href="install.html">Try it free</a>
-    </div>
-  </div>
+ <header id="siteHeader">
+ <div class="wrap nav">
+ <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
+ <nav class="nav-links" aria-label="Primary">
+ <a href="why.html">Why</a>
+ <a href="how-it-works.html">How</a>
+ <a href="#package">Package</a>
+ <a href="use-cases.html">Use cases</a>
+ <a href="compare.html">Compare</a>
+ <a href="#skin">City</a>
+ </nav>
+ <div class="nav-cta">
+ <a class="quiet" href="https://knosky.wiki/">Guides & docs</a>
+ <a class="quiet" href="https://github.com/SathiaAI/knosky">GitHub</a>
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ </div>
+ <button type="button" class="nav-toggle" id="comNavToggle" aria-expanded="false" aria-controls="comNavPanel" aria-label="Open menu">
+ <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+ </button>
+ </div>
+ <div class="nav-panel-mobile" id="comNavPanel">
+ <div class="wrap">
+ <a href="why.html">Why</a>
+ <a href="how-it-works.html">How</a>
+ <a href="#package">Package</a>
+ <a href="use-cases.html">Use cases</a>
+ <a href="compare.html">Compare</a>
+ <a href="#skin">City</a>
+ <a class="quiet" href="https://knosky.wiki/">Guides & docs</a>
+ <a class="quiet" href="https://github.com/SathiaAI/knosky">GitHub</a>
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ </div>
+ </div>
 </header>
 
-  <main id="main">
-        <div class="wrap wrap-wide hero" id="gps">
-      <div class="hero-copy">
-        <div class="eyebrow">GPS protocol · for agentic systems</div>
-        <h1>Your agents can write code.<br /><em>They still get lost.</em></h1>
-        <p class="lede">
-          <strong style="color:var(--ink)">KnoSky is the GPS layer</strong> —
-          it gives assistants a map of the maze of files and documents,
-          then a <strong>route</strong> to the right work — with optional allow/deny receipts.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-coral" href="install.html">Try it free</a>
-          <a class="btn btn-ghost" href="#why">See the problem</a>
-        </div>
-        <div class="trust-micro">
-          <span>Local-first</span>
-          <span>Free protocol</span>
-          <span>Claude · Cursor · Codex · Hermes</span>
-          <span>Not code intelligence</span>
-        </div>
-      </div>
+ <main id="main">
+ <div class="wrap wrap-wide hero" id="gps">
+ <div class="hero-copy">
+ <div class="eyebrow">GPS protocol · for agentic systems</div>
+ <h1>Your agents can write code.<br /><em>They still get lost.</em></h1>
+ <p class="lede">
+ <strong style="color:var(--ink)">KnoSky is the GPS layer</strong> —
+ it gives assistants a map of the maze of files and documents,
+ then a <strong>route</strong> to the right work — with optional allow/deny receipts.
+ </p>
+ <div class="hero-actions">
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ <a class="btn btn-ghost" href="#why">See the problem</a>
+ </div>
+ <div class="trust-micro">
+ <span>Local-first</span>
+ <span>Free protocol</span>
+ <span>Claude · Cursor Codex Hermes</span>
+ <span>Not code intelligence</span>
+ </div>
+ </div>
 
-      <div class="hero-figure-wrap">
-        <figure class="gps-stage">
-          <img
-            class="gps-hero-img"
-            src="assets/hero-gps-infographic.png"
-            width="1920"
-            height="1080"
-            alt="Circular KnoSky GPS hub: multi-agent mint routes reach the right files across a knowledge field; coral thrash paths fade out. Compass-ring hub, not a diamond."
-          />
-          <figcaption class="hero-caption sr-only" id="gps-cap">
-            Circular GPS hub infographic for agent routing. Decorative large hero; product is GPS for AI agents.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
+ <div class="hero-figure-wrap">
+ <figure class="gps-stage">
+ <img
+ class="gps-hero-img"
+ src="assets/hero-gps-infographic.png"
+ width="1920"
+ height="1080"
+ alt="Circular KnoSky GPS hub: multi-agent mint routes reach the right files across a knowledge field; coral thrash paths fade out. Compass-ring hub, not a diamond."
+ />
+ <figcaption class="hero-caption sr-only" id="gps-cap">
+ Circular GPS hub infographic for agent routing. Decorative large hero; product is GPS for AI agents.
+ </figcaption>
+ </figure>
+ </div>
+ </div>
 
-    <!-- Problem -->
-    <section class="band-sand" id="why">
-      <div class="wrap">
-        <h2>The maze is the product problem</h2>
-        <p class="section-lede">Agents don’t need another chat box. They need navigation through thousands of files and docs — without thrashing.</p>
-        <div class="grid-4">
-          <div class="clay"><h3>Wrong corridor</h3><p>Open twelve files. Miss the one that matters.</p></div>
-          <div class="clay"><h3>Token thrash</h3><p>Every dead end is money before a good edit.</p></div>
-          <div class="clay"><h3>No shared GPS</h3><p>Each tool invents its own shortcuts.</p></div>
-          <div class="clay"><h3>No receipt</h3><p>Permission is vibes after the fact.</p></div>
-        </div>
-        <div class="clay" style="margin-top:20px;">
-          <div class="eyebrow" style="background:var(--coral-soft);color:var(--coral-h)">Even GitHub hit the bill</div>
-          <p style="font-size:1.15rem;font-weight:600;color:var(--ink);letter-spacing:-0.02em;margin:10px 0 8px;">
-            Agentic workflows on every PR can quietly accumulate <span style="color:var(--coral)">large API bills</span>.
-          </p>
-          <p style="font-size:13px;color:var(--muted);">
-            Industry problem proof — not a KnoSky score.
-            <a style="color:var(--mint-d);font-weight:600;text-decoration:underline;" href="https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/" target="_blank" rel="noopener">GitHub Blog →</a>
-          </p>
-        </div>
-      </div>
-    </section>
+ <!-- Problem -->
+ <section class="band-sand" id="why">
+ <div class="wrap">
+ <h2>The maze is the product problem</h2>
+ <p class="section-lede">Agents don’t need another chat box. They need navigation through thousands of files and docs — without thrashing.</p>
+ <div class="grid-4">
+ <div class="clay"><h3>Wrong corridor</h3><p>Open twelve files. Miss the one that matters.</p></div>
+ <div class="clay"><h3>Token thrash</h3><p>Every dead end is money before a good edit.</p></div>
+ <div class="clay"><h3>No shared GPS</h3><p>Each tool invents its own shortcuts.</p></div>
+ <div class="clay"><h3>No receipt</h3><p>Permission is vibes after the fact.</p></div>
+ </div>
+ <div class="clay" style="margin-top:20px;">
+ <div class="eyebrow" style="background:var(--coral-soft);color:var(--coral-h)">Even GitHub hit the bill</div>
+ <p style="font-size:1.15rem;font-weight:600;color:var(--ink);letter-spacing:-0.02em;margin:10px 0 8px;">
+ Agentic workflows on every PR can quietly accumulate <span style="color:var(--coral)">large API bills</span>.
+ </p>
+ <p style="font-size:13px;color:var(--muted);">
+ Industry problem proof — not a KnoSky score.
+ <a style="color:var(--mint-d);font-weight:600;text-decoration:underline;" href="https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/" target="_blank" rel="noopener">GitHub Blog →</a>
+ </p>
+ </div>
+ </div>
+ </section>
 
-    <section id="value">
-      <div class="wrap">
-        <h2>When navigation is guided</h2>
-                <p class="section-lede">From our own small test suite — not someone else’s marketing numbers.</p>
-        <div class="stats">
-          <div class="stat"><b>68%</b><span>fewer tokens</span></div>
-          <div class="stat"><b>70%</b><span>fewer tool calls</span></div>
-          <div class="stat"><b>6×</b><span>faster to the right file</span></div>
-        </div>
-        <p class="stat-note">Small guided-vs-wandering test (5 tasks): guided found the right file every time; wandering didn’t. Details in the docs if you want them.</p>
-      </div>
-    </section>
+ <section id="value">
+ <div class="wrap">
+ <h2>When navigation is guided</h2>
+ <p class="section-lede">From our own small test suite — not someone else’s marketing numbers.</p>
+ <div class="stats">
+ <div class="stat"><b>68%</b><span>fewer tokens</span></div>
+ <div class="stat"><b>70%</b><span>fewer tool calls</span></div>
+ <div class="stat"><b>6×</b><span>faster to the right file</span></div>
+ </div>
+ <p class="stat-note">Small guided-vs-wandering test (5 tasks): guided found the right file every time; wandering didn’t. Details in the docs if you want them.</p>
+ </div>
+ </section>
 
-    <section class="band-mint" id="how">
-      <div class="wrap">
-        <h2>Three GPS moves</h2>
-                <div class="grid-3">
-          <div class="clay">
-            <div class="eyebrow">1 · Map</div>
-            <h3>Index the maze</h3>
-            <p>Build a navigable model of repos & docs on the user’s machine.</p>
-          </div>
-          <div class="clay">
-            <div class="eyebrow">2 · Route</div>
-            <h3>Share one menu</h3>
-            <p>Assistants ask for paths via MCP — not freestyle monorepo walks.</p>
-          </div>
-          <div class="clay">
-            <div class="eyebrow">3 · Prove</div>
-            <h3>Optional Mode B</h3>
-            <p>Identity → policy → receipt (or a useful deny).</p>
-          </div>
-        </div>
-        <div style="margin-top:22px;">
-          <a class="btn btn-coral" href="install.html">Try it free</a>
-        </div>
-      </div>
-    </section>
+ <section class="band-mint" id="how">
+ <div class="wrap">
+ <h2>Three GPS moves</h2>
+ <div class="grid-3">
+ <div class="clay">
+ <div class="eyebrow">1 · Map</div>
+ <h3>Index the maze</h3>
+ <p>Build a navigable model of repos & docs on the user’s machine.</p>
+ </div>
+ <div class="clay">
+ <div class="eyebrow">2 · Route</div>
+ <h3>Share one menu</h3>
+ <p>Assistants ask for paths via MCP — not freestyle monorepo walks.</p>
+ </div>
+ <div class="clay">
+ <div class="eyebrow">3 · Prove</div>
+ <h3>Optional Mode B</h3>
+ <p>Identity → policy → receipt (or a useful deny).</p>
+ </div>
+ </div>
+ <div style="margin-top:22px;">
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ </div>
+ </div>
+ </section>
 
+ <!-- What's in the package -->
+ <section class="pkg-showcase band-sand" id="package">
+ <div class="wrap">
+ <div class="pkg-intro">
+ <div>
+ <div class="pkg-kicker">What's in the box</div>
+ <h2>Everything that ships with KnoSky</h2>
+ <p class="section-lede" style="margin:10px 0 0;max-width:40em">
+ One local protocol for <strong>map to route to optional receipt</strong> —
+ not a mystery AI platform. Here’s what you get when you install it.
+ </p>
+ </div>
+ <a class="btn btn-ghost" href="https://github.com/SathiaAI/knosky">See package on GitHub</a>
+ </div>
 
-    <!-- What's in the package -->
-    <section class="pkg-showcase band-sand" id="package">
-      <div class="wrap">
-        <div class="pkg-intro">
-          <div>
-            <div class="pkg-kicker">What's in the box</div>
-            <h2>Everything that ships with KnoSky</h2>
-            <p class="section-lede" style="margin:10px 0 0;max-width:40em">
-              One local protocol for <strong>map to route to optional receipt</strong> —
-              not a mystery AI platform. Here is the open-source package Wave 1 actually includes.
-            </p>
-          </div>
-          <a class="btn btn-ghost" href="https://github.com/SathiaAI/knosky">See package on GitHub</a>
-        </div>
+ <div class="pkg-grid">
+ <div class="pkg-card featured">
+ <div class="pkg-icon">1</div>
+ <h3>Local maze map</h3>
+ <p>Indexer turns repos and docs into a navigable graph on <strong>your machine</strong>.</p>
+ <ul>
+ <li>Districts and buildings from folders/files</li>
+ <li>Share-safe / fail-closed secret scan options</li>
+ <li><code>npx knosky@latest .</code></li>
+ </ul>
+ <span class="tag">Local map</span>
+ </div>
+ <div class="pkg-card">
+ <div class="pkg-icon">2</div>
+ <h3>City HTML (human skin)</h3>
+ <p>Isometric city so people can walk the same map agents route through.</p>
+ <ul>
+ <li>Not the agent GPS hero metaphor</li>
+ <li>Self-contained city file</li>
+ <li>Teammate-shareable picture of the system</li>
+ </ul>
+ <span class="tag">For people</span>
+ </div>
+ <div class="pkg-card featured">
+ <div class="pkg-icon">3</div>
+ <h3>MCP GPS tools</h3>
+ <p>One frozen menu assistants share — search, route, bundle, policy check.</p>
+ <ul>
+ <li>Map lookup tools</li>
+ <li>Checked route tools</li>
+ <li>Security profile: audit query / verify</li>
+ </ul>
+ <span class="tag">Assistant tools</span>
+ </div>
+ <div class="pkg-card">
+ <div class="pkg-icon">4</div>
+ <h3>Mode A and Mode B</h3>
+ <p>Advisory tips or identity + policy + audit receipts.</p>
+ <ul>
+ <li>Mode A: labeled <code>ADVISORY_UNAUTH</code></li>
+ <li>Mode B: <code>ALLOW</code> / <code>DENY_*</code> + lease</li>
+ <li><code>agent-register</code> mints leaseId</li>
+ </ul>
+ <span class="tag">Checked answers</span>
+ </div>
+ <div class="pkg-card">
+ <div class="pkg-icon">5</div>
+ <h3>Connect your tools</h3>
+ <p>Wire once, same GPS across tools you already use.</p>
+ <ul>
+ <li>: Claude Code, Cursor, Codex, Hermes</li>
+ <li>: VS Code, Greptile recipe, GHA PR-GPS</li>
+ <li>Coding packs omit audit tools on purpose</li>
+ </ul>
+ <span class="tag">Connect your tools</span>
+ </div>
+ <div class="pkg-card">
+ <div class="pkg-icon">6</div>
+ <h3>Doctor and honest limits</h3>
+ <p>Know what you may honestly say for <em>this</em> install.</p>
+ <ul>
+ <li><code>knosky doctor</code> scorecard</li>
+ <li>Ladder L0 to L3 honesty</li>
+ <li>Windows lockdown realism</li>
+ </ul>
+ <span class="tag">Health check</span>
+ </div>
+ <div class="pkg-card coralish">
+ <div class="pkg-icon" style="background:#ffe0d6;color:#e84428">7</div>
+ <h3>L3 swarm foundation</h3>
+ <p>Local multi-agent coordinator — leases, claims, quotas, heatmap, bench.</p>
+ <ul>
+ <li>Not multi-tenant cloud fleet product</li>
+ <li>Not swarm-safe everywhere marketing</li>
+ <li>Doctor: FOUNDATION present</li>
+ </ul>
+ <span class="tag">Several helpers (early)</span>
+ </div>
+ <div class="pkg-card">
+ <div class="pkg-icon">8</div>
+ <h3>PR-GPS Action</h3>
+ <p>Advisory navigation comments on pull requests.</p>
+ <ul>
+ <li><strong>Never blocks</strong> the build by default</li>
+ <li>Structure/import hints — not a body store</li>
+ </ul>
+ <span class="tag">Pull request tips</span>
+ </div>
+ <div class="pkg-card">
+ <div class="pkg-icon">9</div>
+ <h3>Docs and guides</h3>
+ <p>Tool menu, decision codes, ladder, wiki, llms.txt.</p>
+ <ul>
+ <li>knosky.com and knosky.wiki</li>
+ <li>Agent-readable product summary</li>
+ <li>Open protocol under FSL-1.1-MIT</li>
+ </ul>
+ <span class="tag">Guides & docs</span>
+ </div>
+ </div>
 
-        <div class="pkg-grid">
-          <div class="pkg-card featured">
-            <div class="pkg-icon">1</div>
-            <h3>Local maze map</h3>
-            <p>Indexer turns repos and docs into a navigable graph on <strong>your machine</strong>.</p>
-            <ul>
-              <li>Districts and buildings from folders/files</li>
-              <li>Share-safe / fail-closed secret scan options</li>
-              <li><code>npx knosky@latest .</code></li>
-            </ul>
-            <span class="tag">L0 map</span>
-          </div>
-          <div class="pkg-card">
-            <div class="pkg-icon">2</div>
-            <h3>City HTML (human skin)</h3>
-            <p>Isometric city so people can walk the same map agents route through.</p>
-            <ul>
-              <li>Not the agent GPS hero metaphor</li>
-              <li>Self-contained city file</li>
-              <li>Teammate-shareable picture of the system</li>
-            </ul>
-            <span class="tag">Human skin</span>
-          </div>
-          <div class="pkg-card featured">
-            <div class="pkg-icon">3</div>
-            <h3>MCP GPS tools</h3>
-            <p>One frozen menu assistants share — search, route, bundle, policy check.</p>
-            <ul>
-              <li>Tier 0 map tools</li>
-              <li>Tier 1 governed route tools</li>
-              <li>Security profile: audit query / verify</li>
-            </ul>
-            <span class="tag">DEC-108 menu</span>
-          </div>
-          <div class="pkg-card">
-            <div class="pkg-icon">4</div>
-            <h3>Mode A and Mode B</h3>
-            <p>Advisory tips or identity + policy + audit receipts.</p>
-            <ul>
-              <li>Mode A: labeled <code>ADVISORY_UNAUTH</code></li>
-              <li>Mode B: <code>ALLOW</code> / <code>DENY_*</code> + lease</li>
-              <li><code>agent-register</code> mints leaseId</li>
-            </ul>
-            <span class="tag">L2 governed</span>
-          </div>
-          <div class="pkg-card">
-            <div class="pkg-icon">5</div>
-            <h3>Assistant packs</h3>
-            <p>Wire once, same GPS across tools you already use.</p>
-            <ul>
-              <li>P0: Claude Code, Cursor, Codex, Hermes</li>
-              <li>P1: VS Code, Greptile recipe, GHA PR-GPS</li>
-              <li>Coding packs omit audit tools on purpose</li>
-            </ul>
-            <span class="tag">Wave 1 packs</span>
-          </div>
-          <div class="pkg-card">
-            <div class="pkg-icon">6</div>
-            <h3>Doctor and claim ceiling</h3>
-            <p>Know what you may honestly say for <em>this</em> install.</p>
-            <ul>
-              <li><code>knosky doctor</code> scorecard</li>
-              <li>Ladder L0 to L3 honesty</li>
-              <li>Windows lockdown realism</li>
-            </ul>
-            <span class="tag">Truth layer</span>
-          </div>
-          <div class="pkg-card coralish">
-            <div class="pkg-icon" style="background:#ffe0d6;color:#e84428">7</div>
-            <h3>L3 swarm foundation</h3>
-            <p>Local multi-agent coordinator — leases, claims, quotas, heatmap, bench.</p>
-            <ul>
-              <li>Not multi-tenant cloud fleet product</li>
-              <li>Not swarm-safe everywhere marketing</li>
-              <li>Doctor: FOUNDATION present</li>
-            </ul>
-            <span class="tag">L3 foundation</span>
-          </div>
-          <div class="pkg-card">
-            <div class="pkg-icon">8</div>
-            <h3>PR-GPS Action</h3>
-            <p>Advisory navigation comments on pull requests.</p>
-            <ul>
-              <li><strong>Never blocks</strong> the build by default</li>
-              <li>Structure/import hints — not a body store</li>
-            </ul>
-            <span class="tag">GitHub Action</span>
-          </div>
-          <div class="pkg-card">
-            <div class="pkg-icon">9</div>
-            <h3>SSOT and docs rails</h3>
-            <p>Tool menu, decision codes, ladder, wiki, llms.txt.</p>
-            <ul>
-              <li>knosky.com and knosky.wiki</li>
-              <li>Agent-readable product summary</li>
-              <li>Open protocol under FSL-1.1-MIT</li>
-            </ul>
-            <span class="tag">Docs and SSOT</span>
-          </div>
-        </div>
+ <div class="pkg-not">
+ <strong>Not in the box:</strong>
+ a coding model, a hosted vault of your source, always-on product telemetry,
+ or a promise of production swarm-safe fleets on every laptop.
+ Those are either non-goals or later packaging/DEC work —
+ public copy stays within <code>doctor</code> on that install.
+ </div>
+ <div class="pkg-actions">
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ <a class="btn btn-ghost" href="https://knosky.wiki/wiki/start-here.html">10-minute start</a>
+ <a class="btn btn-ghost" href="works-with.html">Works with</a>
+ </div>
+ </div>
+ </section>
 
-        <div class="pkg-not">
-          <strong>Not in the box:</strong>
-          a coding model, a hosted vault of your source, always-on product telemetry,
-          or a promise of production swarm-safe fleets on every laptop.
-          Those are either non-goals or later packaging/DEC work —
-          public copy stays within <code>doctor</code> on that install.
-        </div>
-        <div class="pkg-actions">
-          <a class="btn btn-coral" href="install.html">Try it free</a>
-          <a class="btn btn-ghost" href="https://knosky.wiki/wiki/start-here.html">10-minute start</a>
-          <a class="btn btn-ghost" href="works-with.html">Works with</a>
-        </div>
-      </div>
-    </section>
+ <!-- CITY = human skin only, separate band -->
+ <section id="skin" class="band-sand">
+ <div class="wrap city-band">
+ <div class="city-frame">
+ <img
+ src="assets/city-isometric-hf.png"
+ width="1600"
+ height="900"
+ alt="True multi-depth isometric KnoSky city skin — buildings, streets, and districts in 3D isometric view for humans exploring the map"
+ />
+ <p class="cap">Human skin · multi-depth isometric city · not the agent GPS metaphor</p>
+ </div>
+ <div class="city-copy">
+ <span class="pill">For people, not agents</span>
+ <h2>The city is how humans see the map</h2>
+ <p class="section-lede" style="margin-bottom:14px;">
+ Agents need routes through a maze. Humans need a place they can walk.
+ The multi-depth isometric city is the <strong>skin</strong> of KnoSky — a place humans walk, on the same local map agents route through.
+ It is intentionally not the hero: product category is <strong>GPS for agents</strong>.
+ </p>
+ <p style="font-size:.95rem;color:var(--muted);margin-bottom:18px;">
+ Explore districts, find buildings, hand a teammate a picture of the system.
+ Depth and protocol still live behind install + wiki.
+ </p>
+ <div class="city-cta" style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+ <a class="btn btn-coral" href="install.html">Install KnoSky — see the city from <em>your</em> code</a>
+ <p style="margin:0;font-size:13px;color:var(--muted);max-width:34em;line-height:1.45">
+ Run <code style="font-size:12px">npx knosky@latest .</code> in your repo. KnoSky builds a local city from <strong>your</strong> folders and files — not a canned marketing skyline.
+ </p>
+ </div>
+ </div>
+ </div>
+ </section>
 
-    <!-- CITY = human skin only, separate band -->
-    <section id="skin" class="band-sand">
-      <div class="wrap city-band">
-        <div class="city-frame">
-          <img
-            src="assets/city-isometric-hf.png"
-            width="1600"
-            height="900"
-            alt="True multi-depth isometric KnoSky city skin — buildings, streets, and districts in 3D isometric view for humans exploring the map"
-          />
-          <p class="cap">Human skin · multi-depth isometric city · not the agent GPS metaphor</p>
-        </div>
-        <div class="city-copy">
-          <span class="pill">For people, not agents</span>
-          <h2>The city is how humans see the map</h2>
-          <p class="section-lede" style="margin-bottom:14px;">
-            Agents need routes through a maze. Humans need a place they can walk.
-            The multi-depth isometric city is the <strong>skin</strong> of KnoSky — a place humans walk, on the same local map agents route through.
-            It is intentionally not the hero: product category is <strong>GPS for agents</strong>.
-          </p>
-          <p style="font-size:.95rem;color:var(--muted);margin-bottom:18px;">
-            Explore districts, find buildings, hand a teammate a picture of the system.
-            Depth and protocol still live behind install + wiki.
-          </p>
-          <div class="city-cta" style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
-            <a class="btn btn-coral" href="install.html">Install KnoSky — see the city from <em>your</em> code</a>
-            <p style="margin:0;font-size:13px;color:var(--muted);max-width:34em;line-height:1.45">
-              Run <code style="font-size:12px">npx knosky@latest .</code> in your repo. KnoSky builds a local city from <strong>your</strong> folders and files — not a canned marketing skyline.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+ <section>
+ <div class="wrap">
+ <h2>Install on your machine</h2>
+ <p class="section-lede">One command in your project folder. No account. Builds a local map from your code.</p>
+ <div class="dock">
+ <code>npx knosky@latest .</code>
+ <a class="btn btn-coral" href="install.html">Install steps</a>
+ </div>
+ </div>
+ </section>
+ </main>
 
-    <section>
-          <div class="wrap">
-            <h2>Install on your machine</h2>
-            <p class="section-lede">One command in your project folder. No account. Builds a local map from your code.</p>
-            <div class="dock">
-              <code>npx knosky@latest .</code>
-              <a class="btn btn-coral" href="install.html">Install steps</a>
-            </div>
-          </div>
-        </section>
-  </main>
+ <footer>
+ <div class="wrap foot" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px">
+ <div>© KnoSky · GPS for AI agents · circular hub · city = human skin · FSL-1.1-MIT</div>
+ <div style="display:flex;gap:14px;flex-wrap:wrap">
+ <a href="https://knosky.wiki/" style="color:var(--mint-d);font-weight:600;">Guides & docs</a>
+ <a href="compare.html" style="color:var(--mint-d);font-weight:600;">Not code intel</a>
+ <a href="llms.txt" style="color:var(--mint-d);font-weight:600;">llms.txt</a>
+ <a href="privacy.html" style="color:var(--mint-d);font-weight:600;">Privacy</a>
+ <a href="https://github.com/SathiaAI/knosky" style="color:var(--mint-d);font-weight:600;">GitHub</a>
+ </div>
+ </div>
+ </footer>
 
-  <footer>
-    <div class="wrap foot" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px">
-      <div>© KnoSky · GPS for AI agents · circular hub · city = human skin · FSL-1.1-MIT</div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap">
-        <a href="https://knosky.wiki/" style="color:var(--mint-d);font-weight:600;">Docs</a>
-        <a href="compare.html" style="color:var(--mint-d);font-weight:600;">Not code intel</a>
-        <a href="llms.txt" style="color:var(--mint-d);font-weight:600;">llms.txt</a>
-        <a href="privacy.html" style="color:var(--mint-d);font-weight:600;">Privacy</a>
-        <a href="https://github.com/SathiaAI/knosky" style="color:var(--mint-d);font-weight:600;">GitHub</a>
-      </div>
-    </div>
-  </footer>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "KnoSky",
-    "applicationCategory": "DeveloperApplication",
-    "description": "GPS protocol for AI agents: route through code and document mazes to the right work. Local-first. City map is optional human skin.",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-  }
-  </script>
+ <script type="application/ld+json">
+ {
+ "@context": "https://schema.org",
+ "@type": "SoftwareApplication",
+ "name": "KnoSky",
+ "applicationCategory": "DeveloperApplication",
+ "description": "GPS protocol for AI agents: route through code and document mazes to the right work. Local-first. City map is optional human skin.",
+ "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+ }
+ </script>
 
 <script>
-(function () {
-  var header = document.getElementById("siteHeader") || document.querySelector("header");
-  var btn = document.getElementById("comNavToggle");
-  var panel = document.getElementById("comNavPanel");
-  if (!header || !btn || !panel) return;
-  function setOpen(open) {
-    header.classList.toggle("is-open", open);
-    btn.setAttribute("aria-expanded", open ? "true" : "false");
-    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-  }
-  btn.addEventListener("click", function () {
-    setOpen(!header.classList.contains("is-open"));
-  });
-  panel.querySelectorAll("a").forEach(function (a) {
-    a.addEventListener("click", function () { setOpen(false); });
-  });
-  window.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") setOpen(false);
-  });
-})();
+(function {
+ var header = document.getElementById("siteHeader") || document.querySelector("header");
+ var btn = document.getElementById("comNavToggle");
+ var panel = document.getElementById("comNavPanel");
+ if (!header || !btn || !panel) return;
+ function setOpen(open) {
+ header.classList.toggle("is-open", open);
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+ }
+ btn.addEventListener("click", function {
+ setOpen(!header.classList.contains("is-open"));
+ });
+ panel.querySelectorAll("a").forEach(function (a) {
+ a.addEventListener("click", function { setOpen(false); });
+ });
+ window.addEventListener("keydown", function (e) {
+ if (e.key === "Escape") setOpen(false);
+ });
+});
 </script>
 
-  <script src="assets/ks-ask.js?v=4" defer></script>
+ <script src="assets/ks-ask.js?v=5" defer></script>
 </body>
 </html>

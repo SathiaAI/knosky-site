@@ -29,7 +29,7 @@
         "how to start",
         "begin"
       ],
-      "simple": "1. Install **Node.js 20 or newer** on your computer (if you don’t have it).\n2. Open a terminal in **your project folder**.\n3. Run:\n\n`npx knosky@latest .`\n\nKnoSky builds a **map of your files** on your machine (and can open a **city view** of that map). No KnoSky account. Your code stays local by default.\n\nOptional next step: connect one AI tool you already use (Claude, Cursor, Codex, or Hermes) so it can follow the map.",
+      "simple": "1. Install **Node.js 20 or newer** on your computer (if you don’t have it).\n2. Open a terminal in **your project folder**.\n3. Run:\n\n`npx knosky@latest.`\n\nKnoSky builds a **map of your files** on your machine (and can open a **city view** of that map). No KnoSky account. Your code stays local by default.\n\nOptional next step: connect one AI tool you already use (Claude, Cursor, Codex, or Hermes) so it can follow the map.",
       "technical": "That command runs the published `knosky` package. It indexes the folder into local files under `.knosky/` (including city data) and can print connection snippets for assistant tools. After install, `npx knosky@latest doctor` is a health check for what this machine can honestly claim. Guided steps: install page and wiki “start here.”",
       "links": [
         {
@@ -215,7 +215,7 @@
         "demo"
       ],
       "simple": "The **city** is a simple picture of your project so **people** can browse it — areas as neighborhoods, files as buildings.\n\nAI tools care more about **directions to the right file**. The city is the friendly face of the same map. Build it from **your** project with install — not a fake sample skyline on worldview marketing alone.",
-      "technical": "City HTML is generated from the local index. Product story leads with GPS/routing for agents; city is intentionally the human skin band. Command reminder: `npx knosky@latest .` in your repo.",
+      "technical": "City HTML is generated from the local index. Product story leads with GPS/routing for agents; city is intentionally the human skin band. Command reminder: `npx knosky@latest.` in your repo.",
       "links": [
         {
           "label": "Install — your city",
@@ -261,7 +261,7 @@
         "many assistants"
       ],
       "simple": "**First: what “swarm” means here**\n\nA **swarm** is just **more than one AI helper working on the same project at the same time** — like several assistants editing, searching, or reviewing together. It is **not** insects, and it is **not** “AI takes over the company by itself.”\n\n**What L3 is**\n\n**L3** is KnoSky’s **early traffic helper** for that situation: when several AI helpers share one project, try to **reduce collisions** — for example two of them slamming the same file at once — and keep a simple board of who is doing what.\n\n**What L3 is not**\n\n- Not a finished “always safe multi-AI factory for every business” product\n- Not something you must turn on to get basic mapping and directions\n- Not a promise that nothing will ever go wrong\n\nIf you only want KnoSky to **map your project** and **guide one assistant to the right files**, you can ignore L3 for now.",
-      "technical": "**If you want more detail (still in plain language):**\n\nL3 is Stage 3 on KnoSky’s honesty ladder. Earlier stages are: local map (L0), safer sharing of map packaging (L1), and checked yes/no routes for a known assistant (L2).\n\nThe early L3 pieces on your machine can include:\n- temporary passes so each assistant is a known worker\n- “I’m working on this file” holds so others wait or pick another task\n- simple rate limits so one helper can’t spam the system\n- a status board / activity picture for operators\n- small practice runs to see conflict behavior\n\n**Honesty:** those pieces exist as an **early foundation**. The product will not claim “production multi-AI is fully safe everywhere” from this alone. A local health check (`doctor`) is the nicer way to see what *this install* actually supports.\n\n**Ops tip without jargon:** if you run multi-agent practice tests, use a **throwaway project folder**, not your real working map, so test noise doesn’t clutter day-to-day status.\n\n**Security note in ordinary words:** a project admin pass can still cancel a worker’s temporary pass on its own today — treat admin access carefully. Fuller dual-control rules for that may come later. Written up in SECURITY on GitHub if you need the engineer version.",
+      "technical": "**If you want more detail (still in plain language):**\n\nL3 is Stage 3 on KnoSky’s levels of promise. Earlier stages are: local map (L0), safer sharing of map packaging (L1), and checked yes/no routes for a known assistant (L2).\n\nThe early L3 pieces on your machine can include:\n- temporary passes so each assistant is a known worker\n- “I’m working on this file” holds so others wait or pick another task\n- simple rate limits so one helper can’t spam the system\n- a status board / activity picture for operators\n- small practice runs to see conflict behavior\n\n**Honesty:** those pieces exist as an **early foundation**. The product will not claim “production multi-AI is fully safe everywhere” from this alone. A local health check (`doctor`) is the nicer way to see what *this install* actually supports.\n\n**Ops tip without jargon:** if you run multi-agent practice tests, use a **throwaway project folder**, not your real working map, so test noise doesn’t clutter day-to-day status.\n\n**Security note in ordinary words:** a project admin pass can still cancel a worker’s temporary pass on its own today — treat admin access carefully. Fuller dual-control rules for that may come later. Written up in SECURITY on GitHub if you need the engineer version.",
       "links": [
         {
           "label": "Levels of promise (wiki)",
@@ -286,7 +286,7 @@
         "green"
       ],
       "simple": "`doctor` is a **health check**. It tells you what looks ready on your machine and where you should stay modest in public claims.\n\nRun:\n\n`npx knosky@latest doctor`",
-      "technical": "It reports items like map/Mode B wiring, packs, honesty ladder notes, multi-agent early features presence, and some platform caveats. Marketing language should not promise higher than this check for that install.",
+      "technical": "It reports items like map/Mode B wiring, packs, levels of promise notes, multi-agent early features presence, and some platform caveats. Marketing language should not promise higher than this check for that install.",
       "links": [
         {
           "label": "Install",
@@ -299,7 +299,6 @@
       "title": "Does it actually help?",
       "keywords": [
         "proof",
-        "sat-439",
         "tokens",
         "benchmark",
         "faster",

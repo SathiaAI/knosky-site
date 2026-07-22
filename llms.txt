@@ -1,45 +1,44 @@
-# KnoSky — llms.txt
-# https://llmstxt.org/
+# KnoSky
 
-> KnoSky is the **GPS layer** for AI agents and agentic systems.
-> It maps local repos/docs and shares routes to the right files — with optional allow/deny receipts.
-> The isometric city is a **human skin** only. Product category = agent GPS / route governance.
+Local GPS for AI assistants in code and doc folders.
 
-## In the package (Wave 1)
-- Local indexer + city HTML skin
-- MCP server (Tier 0 map + Tier 1 governed tools)
-- Mode A (advisory) / Mode B (lease + policy + audit)
-- Packs: Claude Code, Cursor, Codex, Hermes (+ P1 stubs)
-- doctor claim ceiling · L3 local swarm coordinator foundation
-- PR-GPS GitHub Action (never blocks by default)
-- SSOT: tool menu, decision codes, L0–L3 ladder
+## Install
 
-## Not
-- Not a coding model, IDE, or code-intelligence replacement
-- Not multi-tenant SaaS isolation of customer source in Wave 1
-- Not a blanket "swarm-safe everywhere" claim (L3 = foundation until doctor says so)
-
-## Try
-```
+```bash
 npx knosky@latest .
 ```
-Node 20+. Local-first. Nothing uploaded by default.
 
-## FAQ widget
-Sites ship an on-page **Ask KnoSky** FAQ (keyword match over published answers; no cloud LLM).
+Requires Node.js 20+. Runs on your machine. No account.
 
-## Proof
-- First-party SAT-439: ~68% fewer tokens, ~70% fewer tool calls, ~6x faster to right file (guided vs naive)
-- Industry problem proof (not our score): GitHub Blog on token efficiency in Agentic Workflows
-  https://github.blog/ai-and-ml/github-copilot/improving-token-efficiency-in-github-agentic-workflows/
+## In the package
 
-## Humans
-- Marketing: / #package, /why, /how-it-works, /use-cases, /compare, /install, /works-with, /trust
-- Docs: knosky.wiki start-here, protocol, install, packs, ladder
-- Code: https://github.com/SathiaAI/knosky
+- Local map / indexer of your project
+- City HTML view for people
+- MCP server (map tools + optional checked route tools)
+- Mode A (tips) and Mode B (checked yes/no)
+- Packs: Claude Code, Cursor, Codex, Hermes
+- doctor health check · early multi-helper coordination (L3)
+- Optional PR navigation tips (never blocks builds by default)
+- Docs on knosky.wiki and GitHub
 
-## Visual lock
-- Cream / coral CTA / mint routes; circular GPS hub (not diamond); city never competes in GPS hero
+## Not included
 
-## Claims ceiling
-Public wording <= knosky doctor / dogfood on that install.
+- A coding model or IDE replacement
+- A cloud vault of your source by default
+- A promise that multi-AI work is finished and risk-free everywhere
+
+## Sites
+
+- Product: https://www.knosky.com/
+- Docs: https://knosky.wiki/
+- GitHub: https://github.com/SathiaAI/knosky
+- Install: https://www.knosky.com/install.html
+- What’s in the box: https://www.knosky.com/#package
+
+## Proof note
+
+Our own small test: about 68% fewer tokens, 70% fewer tool calls, about 6× faster to the right file (guided vs wandering). One internal study — not a guarantee for every project.
+
+## Honesty
+
+Public claims should stay at or below what `npx knosky@latest doctor` shows on that install. L3 multi-helper support is early scaffolding.

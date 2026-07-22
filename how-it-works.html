@@ -1,143 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>How KnoSky works — Map · Route · Prove</title>
-  <meta name="description" content="Enterprise GPS for agents: map the maze, share routes, optional allow/deny receipts." />
-  <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
-  <link rel="icon" href="assets/favicon-32.png" />
-  <link rel="apple-touch-icon" href="assets/favicon-180.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="site.css" />
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"KnoSky","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform","description":"GPS protocol for AI agents — map and route through code and documents.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
-  </script>
-  <link rel="stylesheet" href="assets/ks-ask.css?v=4" />
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>How KnoSky works — Map · Route · Prove</title>
+ <meta name="description" content="Enterprise GPS for agents: map the maze, share routes, optional allow/deny receipts." />
+ <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
+ <link rel="icon" href="assets/favicon-32.png" />
+ <link rel="apple-touch-icon" href="assets/favicon-180.png" />
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+ <link rel="stylesheet" href="site.css" />
+ <script type="application/ld+json">
+ {"@context":"https://schema.org","@type":"SoftwareApplication","name":"KnoSky","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform","description":"GPS protocol for AI agents — map and route through code and documents.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+ </script>
+ <link rel="stylesheet" href="assets/ks-ask.css?v=5" />
 </head>
 <body>
 
 <aside class="agent-rail" aria-label="Quick facts for people and agents">
-  <div class="wrap">
-    <div><strong>What:</strong> GPS protocol for AI agents · <strong>Does:</strong> routes through code/docs maze · <strong>Skin:</strong> city map for humans</div>
-    <div><strong>Try:</strong> <code>npx knosky .</code> · <a href="install.html">Install</a> · <a href="llms.txt">llms.txt</a></div>
-  </div>
+ <div class="wrap">
+ <div><strong>What:</strong> GPS protocol for AI agents · <strong>Does:</strong> routes through code/docs maze · <strong>Skin:</strong> city map for humans</div>
+ <div><strong>Try:</strong> <code>npx knosky .</code> · <a href="install.html">Install</a> · <a href="llms.txt">llms.txt</a></div>
+ </div>
 </aside>
 <header id="siteHeader" class="site-header">
-  <div class="wrap nav">
-    <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="why.html">Why</a>
-      <a href="how-it-works.html">How</a>
-      <a href="use-cases.html">Use cases</a>
-      <a href="compare.html">Compare</a>
-      <a href="install.html">Install</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="quiet" href="https://knosky.wiki/">Docs</a>
-      <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
-      <a class="btn btn-coral" href="install.html">Try it free</a>
-    </div>
-    <button type="button" class="nav-toggle" id="comNavToggle" aria-expanded="false" aria-controls="comNavPanel" aria-label="Open menu">
-        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-      </button>
-  </div>
-  <div class="nav-panel-mobile" id="comNavPanel">
-    <div class="wrap">
-      <a href="why.html">Why</a>
-      <a href="how-it-works.html">How</a>
-      <a href="use-cases.html">Use cases</a>
-      <a href="compare.html">Compare</a>
-      <a href="install.html">Install</a>
-      <a class="quiet" href="https://knosky.wiki/">Docs</a>
-      <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
-      <a class="btn btn-coral" href="install.html">Try it free</a>
-    </div>
-  </div>
+ <div class="wrap nav">
+ <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
+ <nav class="nav-links" aria-label="Primary">
+ <a href="why.html">Why</a>
+ <a href="how-it-works.html">How</a>
+ <a href="use-cases.html">Use cases</a>
+ <a href="compare.html">Compare</a>
+ <a href="install.html">Install</a>
+ </nav>
+ <div class="nav-cta">
+ <a class="quiet" href="https://knosky.wiki/">Docs</a>
+ <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ </div>
+ <button type="button" class="nav-toggle" id="comNavToggle" aria-expanded="false" aria-controls="comNavPanel" aria-label="Open menu">
+ <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+ </button>
+ </div>
+ <div class="nav-panel-mobile" id="comNavPanel">
+ <div class="wrap">
+ <a href="why.html">Why</a>
+ <a href="how-it-works.html">How</a>
+ <a href="use-cases.html">Use cases</a>
+ <a href="compare.html">Compare</a>
+ <a href="install.html">Install</a>
+ <a class="quiet" href="https://knosky.wiki/">Docs</a>
+ <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ </div>
+ </div>
 </header>
 
 <main>
 
-  <div class="wrap page-hero">
-    <div class="eyebrow">Solution shape</div>
-    <h1>Three GPS moves</h1>
-    <p class="lede">The city is how <strong>humans</strong> see the map. Agents need <strong>routes</strong> — with optional receipts when you govern.</p>
-  </div>
-  <section>
-    <div class="wrap">
-      <figure class="clay" style="padding:10px;overflow:hidden">
-        <img src="assets/hero-gps-infographic.png" alt="KnoSky GPS: circular hub, multi-agent mint routes across a knowledge field, coral thrash contrast" style="width:100%;height:auto;display:block;border-radius:14px" width="1600" height="900" />
-      </figure>
-      <div class="grid-3" style="margin-top:28px">
-        <div class="clay"><div class="eyebrow">1 · Map</div><h3>Index the maze</h3><p>Build a navigable model of repos and docs on the user’s machine. Live files stay the source of truth.</p></div>
-        <div class="clay"><div class="eyebrow">2 · Route</div><h3>Share one menu</h3><p>Assistants ask for paths via MCP — not freestyle monorepo walks. Multiple agents, one protocol.</p></div>
-        <div class="clay"><div class="eyebrow">3 · Prove</div><h3>Optional Mode B</h3><p>Identity → policy → receipt (or a useful deny). Advisory and governed paths stay labeled honestly.</p></div>
-      </div>
-      <div class="clay" style="margin-top:20px">
-        <h3>Doctor honesty</h3>
-        <p style="margin-top:8px">Only promise what <code>knosky doctor</code> shows on that install. Help for several AI helpers (L3) is early — not a finished “safe multi-AI everywhere” product.</p>
-      </div>
-      <div class="actions" style="margin-top:32px">
-        <a class="btn btn-coral" href="install.html">Try it free</a>
-        <a class="btn btn-ghost" href="wiki/protocol/overview.html">Protocol on wiki</a>
-      </div>
-    </div>
-  </section>
-  <section class="band-sand">
-    <div class="wrap" class="grid-2" style="align-items:center">
-      <div>
-        <div class="eyebrow">Human skin only</div>
-        <h2>The city is not the hero story</h2>
-        <p class="section-lede">Multi-depth isometric city = how people walk the map. Product category stays <strong>GPS for agents</strong>.</p>
-        <a class="btn btn-coral" href="install.html">Install & open the city from your code</a>
-      </div>
-      <img src="assets/city-isometric-hf.png" alt="Isometric KnoSky city for humans" style="width:100%;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow)" />
-    </div>
-  </section>
+ <div class="wrap page-hero">
+ <div class="eyebrow">Solution shape</div>
+ <h1>Three GPS moves</h1>
+ <p class="lede">The city is how <strong>humans</strong> see the map. Agents need <strong>routes</strong> — with optional receipts when you govern.</p>
+ </div>
+ <section>
+ <div class="wrap">
+ <figure class="clay" style="padding:10px;overflow:hidden">
+ <img src="assets/hero-gps-infographic.png" alt="KnoSky GPS: circular hub, multi-agent mint routes across a knowledge field, coral thrash contrast" style="width:100%;height:auto;display:block;border-radius:14px" width="1600" height="900" />
+ </figure>
+ <div class="grid-3" style="margin-top:28px">
+ <div class="clay"><div class="eyebrow">1 · Map</div><h3>Index the maze</h3><p>Build a navigable model of repos and docs on the user’s machine. Live files stay the source of truth.</p></div>
+ <div class="clay"><div class="eyebrow">2 · Route</div><h3>Share one menu</h3><p>Assistants ask for paths via MCP — not freestyle monorepo walks. Multiple agents, one protocol.</p></div>
+ <div class="clay"><div class="eyebrow">3 · Prove</div><h3>Optional Mode B</h3><p>Identity → policy → receipt (or a useful deny). Advisory and governed paths stay labeled honestly.</p></div>
+ </div>
+ <div class="clay" style="margin-top:20px">
+ <h3>Doctor honesty</h3>
+ <p style="margin-top:8px">Only promise what <code>knosky doctor</code> shows on that install. Help for several AI helpers (L3) is early — not a finished “safe multi-AI everywhere” product.</p>
+ </div>
+ <div class="actions" style="margin-top:32px">
+ <a class="btn btn-coral" href="install.html">Try it free</a>
+ <a class="btn btn-ghost" href="wiki/protocol/overview.html">Protocol on wiki</a>
+ </div>
+ </div>
+ </section>
+ <section class="band-sand">
+ <div class="wrap" class="grid-2" style="align-items:center">
+ <div>
+ <div class="eyebrow">Human skin only</div>
+ <h2>The city is not the hero story</h2>
+ <p class="section-lede">Multi-depth isometric city = how people walk the map. Product category stays <strong>GPS for agents</strong>.</p>
+ <a class="btn btn-coral" href="install.html">Install & open the city from your code</a>
+ </div>
+ <img src="assets/city-isometric-hf.png" alt="Isometric KnoSky city for humans" style="width:100%;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow)" />
+ </div>
+ </section>
 
 </main>
 
 <footer>
-  <div class="wrap">
-    <div>
-      <p><strong style="color:var(--ink)">KnoSky</strong> — GPS for AI agents. Complement to code intelligence, not a replacement.</p>
-      <p style="margin-top:8px">Claims ≤ what <code>doctor</code> proves · L3 multi-agent = foundation, not blanket swarm-safe · FSL-1.1-MIT</p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:6px;text-align:right">
-      <a href="https://knosky.wiki/">knosky.wiki docs</a>
-      <a href="llms.txt">llms.txt</a>
-      <a href="compare.html">Not code intelligence</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="https://github.com/SathiaAI/knosky">GitHub</a>
-    </div>
-  </div>
+ <div class="wrap">
+ <div>
+ <p><strong style="color:var(--ink)">KnoSky</strong> — GPS for AI agents. Complement to code intelligence, not a replacement.</p>
+ <p style="margin-top:8px">Claims ≤ what <code>doctor</code> proves · L3 multi-agent = foundation, not blanket swarm-safe · FSL-1.1-MIT</p>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:6px;text-align:right">
+ <a href="https://knosky.wiki/">knosky.wiki docs</a>
+ <a href="llms.txt">llms.txt</a>
+ <a href="compare.html">Not code intelligence</a>
+ <a href="privacy.html">Privacy</a>
+ <a href="terms.html">Terms</a>
+ <a href="https://github.com/SathiaAI/knosky">GitHub</a>
+ </div>
+ </div>
 </footer>
 
 
 <script>
 (function () {
-  var header = document.getElementById("siteHeader") || document.querySelector("header");
-  var btn = document.getElementById("comNavToggle");
-  var panel = document.getElementById("comNavPanel");
-  if (!header || !btn || !panel) return;
-  function setOpen(open) {
-    header.classList.toggle("is-open", open);
-    btn.setAttribute("aria-expanded", open ? "true" : "false");
-    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-  }
-  btn.addEventListener("click", function () {
-    setOpen(!header.classList.contains("is-open"));
-  });
-  panel.querySelectorAll("a").forEach(function (a) {
-    a.addEventListener("click", function () { setOpen(false); });
-  });
-  window.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") setOpen(false);
-  });
+ var header = document.getElementById("siteHeader") || document.querySelector("header");
+ var btn = document.getElementById("comNavToggle");
+ var panel = document.getElementById("comNavPanel");
+ if (!header || !btn || !panel) return;
+ function setOpen(open) {
+ header.classList.toggle("is-open", open);
+ btn.setAttribute("aria-expanded", open ? "true" : "false");
+ btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+ }
+ btn.addEventListener("click", function () {
+ setOpen(!header.classList.contains("is-open"));
+ });
+ panel.querySelectorAll("a").forEach(function (a) {
+ a.addEventListener("click", function () { setOpen(false); });
+ });
+ window.addEventListener("keydown", function (e) {
+ if (e.key === "Escape") setOpen(false);
+ });
 })();
 </script>
 
-  <script src="assets/ks-ask.js?v=4" defer></script>
+ <script src="assets/ks-ask.js?v=5" defer></script>
 </body>
 </html>
