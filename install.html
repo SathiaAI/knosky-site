@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Install KnoSky — try free</title>
+  <meta name="description" content="Install KnoSky locally in one command. No account. Connect Claude, Cursor, Codex, or Hermes." />
+  <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
+  <link rel="icon" href="assets/favicon-32.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"KnoSky","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform","description":"GPS protocol for AI agents — map and route through code and documents.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+</head>
+<body>
+
+<aside class="agent-rail" aria-label="Quick facts for people and agents">
+  <div class="wrap">
+    <div><strong>What:</strong> GPS protocol for AI agents · <strong>Does:</strong> routes through code/docs maze · <strong>Skin:</strong> city map for humans</div>
+    <div><strong>Try:</strong> <code>npx knosky .</code> · <a href="install.html">Install</a> · <a href="llms.txt">llms.txt</a></div>
+  </div>
+</aside>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><img src="assets/logo-mark.png" width="28" height="28" alt="" />KnoSky</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="why.html">Why</a>
+      <a href="how-it-works.html">How</a>
+      <a href="use-cases.html">Use cases</a>
+      <a href="compare.html">Compare</a>
+      <a href="install.html">Install</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="quiet" href="wiki/index.html">Docs</a>
+      <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
+      <a class="btn btn-coral" href="install.html">Try it free</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="wrap page-hero">
+    <div class="eyebrow">Command-first · local</div>
+    <h1>Try it before the meeting ends</h1>
+    <p class="lede">One command. Your machine. Then connect <strong>one</strong> agent pack. Technical depth lives on the wiki.</p>
+  </div>
+  <section>
+    <div class="wrap" style="max-width:760px">
+      <div class="dock">
+        <code id="cmd">npx knosky .</code>
+        <button class="btn btn-mint" type="button" onclick="navigator.clipboard.writeText('npx knosky .')">Copy command</button>
+      </div>
+      <p class="hint"><strong style="color:var(--ink)">Node 18+</strong> · runs in the current folder · nothing uploaded by default</p>
+
+      <h2 style="margin-top:36px">Then pick one pack</h2>
+      <div class="grid-2" style="margin-top:14px">
+        <a class="clay" href="wiki/packs/claude-code.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Claude Code</h3><p class="section-lede" style="margin:0">MCP pack · first lease route</p></a>
+        <a class="clay" href="wiki/start-here.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Cursor</h3><p class="section-lede" style="margin:0">Drop-in MCP config</p></a>
+        <a class="clay" href="wiki/start-here.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Codex</h3><p class="section-lede" style="margin:0">CLI + AGENTS.md</p></a>
+        <a class="clay" href="wiki/start-here.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Hermes</h3><p class="section-lede" style="margin:0">Skill + MCP path</p></a>
+      </div>
+
+      <div class="clay" style="margin-top:24px;background:var(--bg-mint);border-color:#bfe8d4">
+        <h3>What you should feel</h3>
+        <p style="margin-top:8px">Agents stop thrashing random files. You get a map, a route, and optional allow/deny receipts. Doctor keeps public claims honest.</p>
+        <div class="actions">
+          <a class="btn btn-coral" href="wiki/start-here.html">Continue on wiki</a>
+          <a class="btn btn-ghost" href="how-it-works.html">How it works</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p><strong style="color:var(--ink)">KnoSky</strong> — GPS for AI agents. Complement to code intelligence, not a replacement.</p>
+      <p style="margin-top:8px">Claims ≤ what <code>doctor</code> proves · L3 multi-agent = foundation, not blanket swarm-safe · FSL-1.1-MIT</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;text-align:right">
+      <a href="wiki/index.html">knosky.wiki docs</a>
+      <a href="llms.txt">llms.txt</a>
+      <a href="compare.html">Not code intelligence</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://github.com/SathiaAI/knosky">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

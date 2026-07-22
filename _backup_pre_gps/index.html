@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KnoSky — your knowledge as a skyline</title>
+<meta name="description" content="Ground your AI in your own code. KnoSky turns any repo or docs folder into an explorable city and a local connector, so Claude, Cursor, or Gemini answer from your source — with citations. Local-first. Free." />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="180x180" href="assets/favicon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
+<meta property="og:title" content="KnoSky — your knowledge as a skyline">
+<meta property="og:description" content="Ground your AI in your own code. Turn any repo or docs folder into an explorable city + a local connector, so Claude, Cursor, or Gemini answer from your source — with citations. Local-first. Free.">
+<meta property="og:image" content="https://knosky.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<style>
+  :root{
+    --bg:#eef2fb;
+    --ink:#18203c; --body:#4b5778; --faint:#5b6585;
+    --card:#ffffff;
+    --line:rgba(24,32,60,.12); --hair:rgba(24,32,60,.07);
+    --gold:#e89c08; --gold2:#ffc23d; --blue:#4f6ef7; --green:#1fb07a; --violet:#7c5cf0; --coral:#f2683f;
+    --maxw:1140px;
+    --font:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --shadow:0 26px 54px rgba(48,60,110,.14);
+    --shadowSoft:0 14px 30px rgba(48,60,110,.10);
+    --eOut:cubic-bezier(.22,1,.32,1); --eExpo:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--font);color:var(--ink);background:var(--bg);
+    -webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden;position:relative}
+  .bgmesh{position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+    radial-gradient(820px 520px at 85% -10%, rgba(79,110,247,.18), transparent 60%),
+    radial-gradient(720px 480px at 4% 2%, rgba(232,156,8,.16), transparent 58%),
+    radial-gradient(820px 640px at 50% 116%, rgba(31,176,122,.14), transparent 60%),
+    linear-gradient(180deg,#eef2fb,#f4f1fb 52%,#edf6f1)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .muted{color:var(--body)}
+  .eyebrow{display:inline-block;color:var(--blue);font-weight:700;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;padding:6px 12px;border:1px solid rgba(79,110,247,.25);border-radius:999px;background:rgba(79,110,247,.07)}
+
+  /* nav */
+  .navhost{position:sticky;top:0;z-index:40;display:flex;justify-content:center;pointer-events:none}
+  .nav{pointer-events:auto;margin-top:18px;display:flex;align-items:center;gap:22px;
+    padding:9px 9px 9px 18px;border-radius:999px;border:1px solid var(--line);
+    background:rgba(255,255,255,.72);backdrop-filter:blur(16px);
+    box-shadow:0 12px 34px rgba(48,60,110,.12), inset 0 1px 0 rgba(255,255,255,.7)}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.2px}
+  .brand small{display:block;font-weight:500;font-size:10.5px;color:var(--faint);letter-spacing:.04em;margin-top:-3px}
+  .navlinks{display:flex;gap:20px;font-size:14px;color:var(--body)}
+  .navlinks a{transition:color .2s var(--eOut)}
+  .navlinks a:hover{color:var(--ink)}
+
+  .btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;cursor:pointer;
+    border:1px solid transparent;border-radius:999px;font-family:inherit;
+    transition:transform .16s var(--eOut), box-shadow .3s var(--eOut)}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{padding:11px 12px 11px 20px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#3a2700;
+    box-shadow:0 12px 26px rgba(232,156,8,.34)}
+  .btn-primary:hover{box-shadow:0 18px 38px rgba(232,156,8,.46)}
+  .ico-circ{width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+    background:rgba(58,39,0,.14);transition:transform .25s var(--eOut)}
+  .btn-primary:hover .ico-circ{transform:translate(3px,-1px) scale(1.06)}
+  .ico-circ svg{width:16px;height:16px}
+  svg.li{width:1em;height:1em;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+  /* hero */
+  header{position:relative;padding:118px 0 56px;overflow:hidden}
+  .px{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .orb{position:absolute;filter:blur(3px);border-radius:50%}
+  .cloud{position:absolute;height:0;z-index:1}
+  .cloud span{position:absolute;background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.95), rgba(255,255,255,0) 70%);border-radius:50%}
+  .c1{top:13%;animation:drift 52s linear infinite}
+  .c2{top:24%;animation:drift 72s linear infinite;animation-delay:-26s;opacity:.7}
+  @keyframes drift{from{transform:translateX(-240px)}to{transform:translateX(calc(100vw + 240px))}}
+  .plane{position:absolute;top:15%;left:0;z-index:2;width:120px;animation:fly 28s linear infinite}
+  @keyframes fly{0%{transform:translateX(-180px) translateY(0)}50%{transform:translateX(48vw) translateY(-14px)}100%{transform:translateX(calc(100vw + 200px)) translateY(6px)}}
+
+  .hero{position:relative;z-index:2;display:grid;grid-template-columns:1.02fr .98fr;gap:48px;align-items:center}
+  h1{font-size:clamp(38px,5vw,64px);line-height:1.0;letter-spacing:-1.6px;margin:18px 0 16px;font-weight:800;color:var(--ink)}
+  h1 .grad{color:var(--blue)}
+  .sub{font-size:clamp(16px,1.5vw,19px);color:var(--body);max-width:540px;margin-bottom:24px}
+  .trust{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+  .chip{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;
+    font-size:12.5px;color:var(--body);background:rgba(255,255,255,.6)}
+  .chip svg{width:14px;height:14px;color:var(--gold)}
+
+  .capture{display:flex;gap:10px;flex-wrap:wrap;max-width:500px}
+  .capture .field{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;padding:0 14px;border-radius:999px;
+    border:1px solid var(--line);background:#fff;box-shadow:var(--shadowSoft);transition:border-color .25s var(--eOut),box-shadow .25s var(--eOut)}
+  .capture .field:focus-within{border-color:var(--gold);box-shadow:0 0 0 4px rgba(232,156,8,.16)}
+  .capture .field svg{width:17px;height:17px;color:var(--faint)}
+  .capture input{flex:1;padding:14px 0;border:0;background:transparent;color:var(--ink);font-family:inherit;font-size:15px;outline:none}
+  .capture input::placeholder{color:var(--faint)}
+  .formnote{font-size:12.5px;color:var(--faint);margin-top:11px}
+  .ok{display:none;padding:15px 18px;border:1px solid rgba(31,176,122,.4);background:rgba(31,176,122,.1);
+    border-radius:16px;max-width:520px;font-size:15px;color:#0d7a52}
+  .ok a{color:#0c6f4a;font-weight:800;text-decoration:underline}
+  .err{color:#d23b39;font-size:13px;margin-top:8px;display:none}
+
+  /* hero scene (right) — buildings stay in here, never behind the text */
+  .scene{position:relative}
+  .shell{position:relative;z-index:3;padding:7px;border-radius:24px;border:1px solid var(--line);background:rgba(255,255,255,.7);
+    box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.8)}
+  .device{border-radius:18px;overflow:hidden;background:#0a1020;border:1px solid rgba(255,255,255,.08)}
+  .device .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#0c1430;border-bottom:1px solid rgba(255,255,255,.06)}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .device iframe{display:block;width:100%;height:420px;border:0;background:#0a1020}
+  .demoload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;height:420px;
+    border:0;cursor:pointer;color:#cdd9f5;font:inherit;font-weight:600;font-size:14px;
+    background:radial-gradient(120% 120% at 50% 0,#13203f,#0a1020)}
+  .demoload-play{width:54px;height:54px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+    font-size:20px;color:#3a2700;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 10px 24px rgba(232,156,8,.4)}
+  .expandbtn{margin-left:8px;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:11.5px;font-weight:600;color:#cdd9f5;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:4px 9px;cursor:pointer;transition:background .2s var(--eOut)}
+  .expandbtn:hover{background:rgba(255,255,255,.18)}
+  .demohint{margin-top:12px;text-align:center;font-size:12.5px;color:var(--faint)}
+  .demohint b{color:var(--body);font-weight:700}
+  .linkbtn{background:none;border:0;color:var(--blue);font:inherit;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:0}
+  .demomodal{position:fixed;inset:0;z-index:100;display:none;background:rgba(10,14,28,.88);backdrop-filter:blur(10px);padding:clamp(14px,3vw,30px)}
+  .demomodal.open{display:flex;flex-direction:column}
+  .demohead{display:flex;align-items:center;gap:12px;width:100%;max-width:1240px;margin:0 auto 12px;color:#eef3fb}
+  .demohead b{font-size:16px}
+  .demohead .dm-sub{font-size:12.5px;color:#9db4ff}
+  .democlose{margin-left:auto;font:inherit;font-weight:700;font-size:14px;color:#3a2700;background:linear-gradient(180deg,var(--gold2),var(--gold));border:0;border-radius:999px;padding:9px 18px;cursor:pointer}
+  .demoframe{flex:1;width:100%;max-width:1240px;margin:0 auto;border:1px solid rgba(255,255,255,.14);border-radius:16px;overflow:hidden;background:#0a1020;box-shadow:var(--shadow)}
+  .demoframe iframe{width:100%;height:100%;border:0;display:block}
+  .device .cap{font-size:11.5px;color:#65728f;margin-left:auto;letter-spacing:.04em}
+  .scene-art{position:absolute;z-index:2;pointer-events:none}
+  .scene-art img{display:block;width:100%;filter:drop-shadow(0 14px 18px rgba(40,52,100,.28))}
+  .float{animation:bob 7s ease-in-out infinite}
+  .float.b2{animation-duration:9.5s;animation-delay:-3s}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+
+  /* full-width city band — decorative divider, NO text over it */
+  .cityband{position:relative;height:172px;margin-top:30px;overflow:hidden;pointer-events:none}
+  .cityband .row{position:absolute;left:50%;bottom:0;transform:translateX(-50%);display:flex;align-items:flex-end;line-height:0;
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(to right,transparent,#000 9%,#000 91%,transparent)}
+  .cityband .row img{display:block;height:auto;filter:drop-shadow(0 10px 14px rgba(40,52,100,.22))}
+
+  /* use-cases */
+  .ucgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .uc{background:var(--card);border:1px solid var(--hair);border-radius:18px;padding:22px;box-shadow:var(--shadowSoft);
+    transition:transform .4s var(--eExpo),box-shadow .4s var(--eExpo)}
+  .uc:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+  .uctag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--c,var(--blue));
+    background:color-mix(in srgb,var(--c,#4f6ef7) 12%,transparent);border:1px solid color-mix(in srgb,var(--c,#4f6ef7) 26%,transparent);
+    border-radius:999px;padding:5px 11px;margin-bottom:13px}
+  .ucq{font-size:16.5px;font-weight:700;color:var(--ink);margin:0 0 8px;line-height:1.35}
+  .uco{font-size:14px;color:var(--body);margin:0}
+  .uc.loop{background:#0d1426;border-color:rgba(255,255,255,.07)}
+  .uc.loop .uctag{color:#9db4ff;background:rgba(79,110,247,.16);border-color:rgba(79,110,247,.3)}
+  .chatq{font-size:13.5px;color:#cdd9f5;background:rgba(255,255,255,.06);border-radius:10px;padding:9px 12px;margin-bottom:9px;font-family:ui-monospace,Menlo,monospace}
+  .chatq::before{content:"\203A  ";color:#65728f}
+  .chata{font-size:13px;color:#cdd9f5;line-height:1.6;margin:0}
+  .chata b{color:#fff} .chata code{color:#ffc23d;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+  .cites{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .cites span{font-size:11px;color:#9db4ff;border:1px solid rgba(120,140,200,.3);border-radius:7px;padding:3px 8px}
+
+  /* technical differentiators */
+  .techwrap{margin-top:34px;border-top:1px solid var(--hair);padding-top:30px}
+  .techlabel{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:20px}
+  .techgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 30px}
+  .tech{display:flex;gap:12px;align-items:flex-start}
+  .tech svg{width:18px;height:18px;color:var(--blue);flex:0 0 auto;margin-top:3px;stroke-width:1.7}
+  .tech h4{margin:0 0 3px;font-size:14.5px;color:var(--ink);font-weight:700}
+  .tech p{margin:0;font-size:13px;color:var(--body);line-height:1.5}
+  .tech code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--blue);background:rgba(79,110,247,.08);padding:1px 5px;border-radius:5px}
+
+  section{position:relative;padding:84px 0}
+  h2{font-size:clamp(27px,3.1vw,40px);letter-spacing:-.7px;margin:14px 0 14px;font-weight:800;color:var(--ink)}
+  .lead{color:var(--body);max-width:680px;font-size:17px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:38px}
+  .card{position:relative;background:var(--card);border:1px solid var(--hair);border-radius:20px;padding:26px;
+    box-shadow:var(--shadowSoft);transition:transform .4s var(--eExpo),box-shadow .4s var(--eExpo)}
+  .card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .card .ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .card:nth-child(1) .ic{background:rgba(232,156,8,.12)} .card:nth-child(1) .ic svg{color:var(--gold)}
+  .card:nth-child(2) .ic{background:rgba(79,110,247,.12)} .card:nth-child(2) .ic svg{color:var(--blue)}
+  .card:nth-child(3) .ic{background:rgba(31,176,122,.12)} .card:nth-child(3) .ic svg{color:var(--green)}
+  .card .ic svg{width:23px;height:23px}
+  .card h3{margin:0 0 8px;font-size:18.5px;color:var(--ink)}
+  .card p{margin:0;color:var(--body);font-size:14.5px}
+
+  .outcome{padding:100px 0;background:linear-gradient(180deg,rgba(79,110,247,.06),rgba(232,156,8,.05));border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .ostats{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:50px}
+  .ostat b{display:block;font-size:40px;font-weight:800;letter-spacing:-1.2px;color:var(--blue);margin-bottom:8px;line-height:1}
+  .ostat:nth-child(2) b{color:var(--gold)} .ostat:nth-child(3) b{color:var(--green)}
+  .ostat span{color:var(--body);font-size:14.5px;line-height:1.5}
+  .notwrap{display:grid;grid-template-columns:1fr 1fr;gap:26px 44px;margin-top:54px;padding-top:42px;border-top:1px solid var(--hair)}
+  .not{line-height:1.55}
+  .not{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--body)}
+  .not svg{width:19px;height:19px;flex:0 0 auto;margin-top:2px;color:var(--faint)}
+  .not.yes svg{color:var(--green)}
+  .not strong{color:var(--ink)}
+
+  .story{display:grid;grid-template-columns:1.12fr .88fr;gap:42px;align-items:center}
+  .story p{color:var(--body);font-size:16px}
+  .quote{border-left:3px solid var(--gold);padding:6px 0 6px 18px;margin:18px 0;color:var(--ink);font-size:17px}
+  .link-gold{color:var(--blue);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+  .codepanel{background:#0d1426;border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .codepanel pre{margin:14px 0 0;overflow:auto;font-size:12.5px;color:#cdd9f5;line-height:1.7}
+  .codepanel .pill2{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#aeb9d6;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:5px 11px}
+  .codepanel .pill2 svg{width:13px;height:13px;color:var(--green)}
+
+  .finalcta{position:relative;overflow:hidden;text-align:center;border-radius:28px;border:1px solid var(--line);
+    background:#fff;padding:54px 28px 158px;box-shadow:var(--shadow)}
+  .finalcta .capture{position:relative;z-index:3;margin:26px auto 0;justify-content:center}
+  .finalcta h2,.finalcta .lead{position:relative;z-index:3}
+  .finalcta .err,.finalcta .ok{position:relative;z-index:3}
+  .cta-sky{position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);z-index:1;display:flex;align-items:flex-end;line-height:0;
+    -webkit-mask-image:linear-gradient(to top,#000 62%,transparent);mask-image:linear-gradient(to top,#000 62%,transparent)}
+  .cta-sky img{display:block;height:auto;filter:drop-shadow(0 8px 12px rgba(40,52,100,.2))}
+
+  footer{border-top:1px solid var(--hair);padding:30px 0 60px;color:var(--faint);font-size:13.5px}
+  .frow{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+  footer a{color:var(--body);text-decoration:underline;text-underline-offset:2px} footer a:hover{color:var(--ink)}
+
+  .reveal{opacity:0;transform:translateY(20px);filter:blur(5px);
+    transition:opacity .75s var(--eOut), transform .75s var(--eOut), filter .75s var(--eOut)}
+  .reveal.in{opacity:1;transform:none;filter:none}
+
+  @media(max-width:880px){
+    .hero,.story{grid-template-columns:1fr;gap:30px}
+    .cards,.ostats,.notwrap,.ucgrid{grid-template-columns:1fr}
+    .techgrid{grid-template-columns:1fr}
+    header{padding:102px 0 28px}
+    .navlinks{display:none}
+    .scene-art{display:none}
+    .cityband{height:110px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{transition:opacity .4s ease;transform:none;filter:none}
+    .float,.cloud,.plane{animation:none}.plane{display:none}
+    [data-speed]{transform:none !important}
+    .cityband .row,.cta-sky{transform:translateX(-50%) !important}
+    html{scroll-behavior:auto}
+  }
+  @media (hover:none){ .btn-primary:hover .ico-circ{transform:none} }
+</style>
+</head>
+<body>
+<div class="bgmesh"></div>
+
+<div class="navhost"><nav class="nav">
+  <a class="brand" href="#top"><img src="assets/logo-mark.png" width="34" height="34" alt="KnoSky" style="display:block;filter:drop-shadow(0 3px 5px rgba(40,52,100,.28))">
+    <span>KnoSky<small>your knowledge as a skyline</small></span></a>
+  <div class="navlinks"><a href="#uses">Uses</a><a href="#what">What</a><a href="#why">Why</a><a href="#story">Story</a></div>
+  <a class="btn btn-primary" href="#get">Get it free <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></a>
+</nav></div>
+
+<a id="top"></a>
+<main>
+<header>
+  <div class="px">
+    <div class="orb" data-speed="0.10" data-mouse="18" style="left:72%;top:2%;width:300px;height:300px;background:radial-gradient(circle,rgba(79,110,247,.3),transparent 62%)"></div>
+    <div class="orb" data-speed="0.08" data-mouse="14" style="left:-2%;top:26%;width:280px;height:280px;background:radial-gradient(circle,rgba(232,156,8,.26),transparent 62%)"></div>
+    <div class="cloud c1"><span style="left:0;top:-12px;width:120px;height:56px"></span><span style="left:60px;top:-24px;width:90px;height:66px"></span><span style="left:128px;top:-10px;width:78px;height:44px"></span></div>
+    <div class="cloud c2"><span style="left:0;top:-8px;width:100px;height:48px"></span><span style="left:50px;top:-20px;width:78px;height:56px"></span></div>
+    <svg class="plane" viewBox="0 0 120 60" aria-hidden="true">
+      <line x1="6" y1="33" x2="58" y2="31" stroke="rgba(120,134,170,.45)" stroke-width="3" stroke-linecap="round"/>
+      <g fill="#fff" stroke="rgba(120,134,170,.6)" stroke-width="1">
+        <path d="M58 31 q22 -3 40 0 q-6 4 -16 4 l-24 0 z"/><path d="M70 31 l16 -16 6 0 -8 17 z"/>
+        <path d="M70 33 l14 14 6 0 -6 -15 z"/><path d="M62 30 l-6 -10 4 0 8 10 z"/>
+      </g>
+      <circle cx="97" cy="33" r="2.4" fill="#f2683f"/>
+    </svg>
+  </div>
+
+  <div class="wrap hero">
+    <div>
+      <span class="eyebrow reveal">◆ Local-first · Free · Your code never leaves your machine</span>
+      <h1 class="reveal">Your AI, <span class="grad">grounded in your code.</span></h1>
+      <p class="sub reveal">Point KnoSky at any repo or docs folder. It becomes a city you can explore, and a local connector so Claude, Cursor, VS&nbsp;Code or Gemini answer from <em>your</em> source, with citations, instead of guessing. Runs on your machine. Nothing uploaded.</p>
+      <form id="form1" class="capture reveal" novalidate>
+        <label class="field"><svg class="li" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <input type="email" name="email" placeholder="you@work.com" aria-label="Email" required /></label>
+        <button class="btn btn-primary" type="submit">Get the link <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
+      </form>
+      <div class="err" id="err1">Please enter a valid email.</div>
+      <div class="ok" id="ok1">✓ You're in. Here's your link: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
+      <p class="formnote reveal">No spam. Your link shows up instantly, plus the occasional note on what I'm building.</p>
+      <div class="trust reveal">
+        <span class="chip"><svg class="li" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>$0 to run</span>
+        <span class="chip"><svg class="li" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>Claude · Cursor · VS Code · Gemini</span>
+        <span class="chip"><svg class="li" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>Opens in your browser</span>
+      </div>
+    </div>
+
+    <div class="scene reveal">
+      <div class="scene-art float" data-speed="0.05" data-mouse="20" style="left:-34px;top:-30px;width:72px"><img src="assets/sprites/b03.png" alt=""></div>
+      <div class="scene-art float b2" data-speed="-0.04" data-mouse="-16" style="right:-22px;bottom:-26px;width:64px"><img src="assets/sprites/b06.png" alt=""></div>
+      <div class="shell">
+        <div class="device">
+          <div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="cap">● Live demo</span><button type="button" class="expandbtn js-open-demo"><svg class="li" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>Full screen</button></div>
+          <button type="button" class="demoload js-load-inline" aria-label="Load the interactive demo">
+            <span class="demoload-play" aria-hidden="true">▶</span>Load the interactive demo
+          </button>
+        </div>
+      </div>
+      <p class="demohint reveal"><b>This is a live, interactive demo</b> — drag to pan, scroll to zoom, click a building. <button type="button" class="linkbtn js-open-demo">Open full screen ↗</button></p>
+    </div>
+  </div>
+
+  <div class="cityband"><div class="row" id="bandSky" data-speed="0.08" data-mouse="7"></div></div>
+</header>
+
+<section id="uses"><div class="wrap">
+  <span class="eyebrow reveal">Made for the moment you're in</span>
+  <h2 class="reveal">Five times you'll reach for it.</h2>
+  <p class="lead reveal">The city is the hook. These are what you'll actually do with it, real moments, not features.</p>
+  <div class="ucgrid">
+    <div class="uc reveal">
+      <span class="uctag" style="--c:var(--blue)">New to a repo</span>
+      <p class="ucq">“Where's the auth logic?”</p>
+      <p class="uco">Point KnoSky at the repo and ask your AI <em>“which files handle login?”</em>, and get a cited path. Oriented in minutes, not a day of clicking around.</p>
+    </div>
+    <div class="uc reveal">
+      <span class="uctag" style="--c:var(--gold)">Your AI keeps guessing</span>
+      <p class="ucq">“Claude invented our API again.”</p>
+      <p class="uco">The local connector grounds every answer in <em>your</em> source, with citations you can click straight to the live file.</p>
+    </div>
+    <div class="uc reveal">
+      <span class="uctag" style="--c:var(--green)">Docs everywhere</span>
+      <p class="ucq">“We wrote it down… somewhere.”</p>
+      <p class="uco">Index a docs folder too. Find the source of truth and jump to it, instead of grepping 200 folders.</p>
+    </div>
+    <div class="uc reveal">
+      <span class="uctag" style="--c:var(--violet)">About to refactor</span>
+      <p class="ucq">“What will this change break?”</p>
+      <p class="uco">See the neighborhood around a file, what connects to it and what changed recently, before you touch it.</p>
+    </div>
+    <div class="uc reveal">
+      <span class="uctag" style="--c:var(--coral)">Explaining the system</span>
+      <p class="ucq">“It's all in my head.”</p>
+      <p class="uco">Hand a teammate or co-founder a map they can walk. Same mental model, no slide deck that rots.</p>
+    </div>
+    <div class="uc loop reveal">
+      <span class="uctag">The loop</span>
+      <div class="chatq">where does billing live?</div>
+      <p class="chata">Billing lives in <b>services/billing/</b>, entry at <code>charge.ts</code>, plus <code>webhooks.ts</code> and <code>plans.ts</code>.
+        <span class="cites"><span>services/billing/charge.ts</span><span>services/billing/webhooks.ts</span></span></p>
+    </div>
+  </div>
+</div></section>
+
+<section id="what"><div class="wrap">
+  <span class="eyebrow reveal">What it is</span>
+  <h2 class="reveal">A map of your work, not another file tree.</h2>
+  <p class="lead reveal">A file tree tells you what files exist. It doesn't tell you what you've actually <em>built</em>. KnoSky reads your repo or docs folder and renders the <em>shape</em> of it: folders become districts, files become buildings, every building links to the real, live file.</p>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="ic"><svg class="li" viewBox="0 0 24 24"><path d="M14.1 5.6a2 2 0 0 0 1.8 0l3.6-1.8A1 1 0 0 1 21 4.6v12.8a1 1 0 0 1-.6.9l-4.5 2.3a2 2 0 0 1-1.8 0l-4.2-2.1a2 2 0 0 0-1.8 0l-3.6 1.8A1 1 0 0 1 3 21.4V8.6a1 1 0 0 1 .6-.9l4.5-2.3a2 2 0 0 1 1.8 0Z"/><path d="M15 5.8v15M9 3.2v15"/></svg></div>
+      <h3>See it at a glance</h3><p>Which areas are big, how they connect, where the gaps are. The whole project on one screen. New collaborators orient in minutes, not weeks.</p>
+    </div>
+    <div class="card reveal">
+      <div class="ic"><svg class="li" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+      <h3>Find anything in seconds</h3><p>Search the city, or ask your AI “where does auth live / what did we decide about billing”, and jump straight to the live source.</p>
+    </div>
+    <div class="card reveal">
+      <div class="ic"><svg class="li" viewBox="0 0 24 24"><path d="m16.2 7.8-1.8 5.4a2 2 0 0 1-1.3 1.3L7.8 16.2l1.8-5.4a2 2 0 0 1 1.3-1.3Z"/><circle cx="12" cy="12" r="10"/></svg></div>
+      <h3>Ground your AI</h3><p>A local connector (MCP) lets Claude, Cursor, VS Code or Gemini answer from <em>your</em> source, with citations, instead of confidently making things up.</p>
+    </div>
+  </div>
+  <div class="techwrap reveal">
+    <div class="techlabel">What sets it apart, technically</div>
+    <div class="techgrid">
+      <div class="tech"><svg class="li" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg><div><h4>Pointers, not a copy</h4><p>Indexes titles, headings, and short excerpts that link to the live file, never your file bodies. No vector DB or embeddings to rebuild.</p></div></div>
+      <div class="tech"><svg class="li" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><div><h4>Deterministic &amp; $0</h4><p>The index builds with no LLM and no API keys, fully reproducible. AI categorization is opt-in and metadata-only.</p></div></div>
+      <div class="tech"><svg class="li" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg><div><h4>Zero egress by design</h4><p>Runs entirely on your machine. No account, no upload, no telemetry. Privacy is architectural, not a checkbox.</p></div></div>
+      <div class="tech"><svg class="li" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><div><h4>MCP-native, read-only</h4><p>A local stdio MCP exposes read-only tools (search, get-node, provenance). Your assistant gets citations, never write access.</p></div></div>
+      <div class="tech"><svg class="li" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5Z"/><path d="m9 12 2 2 4-4"/></svg><div><h4>Fail-closed safety</h4><p><code>--share-safe</code> strips absolute paths and blocks the build on a secret-like value. Honors <code>.gitignore</code> + git's own ignore rules.</p></div></div>
+      <div class="tech"><svg class="li" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><div><h4>One portable file</h4><p>The city is a single self-contained HTML, art inlined, opens anywhere with no server. Source-available under FSL.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="why" class="outcome"><div class="wrap">
+  <span class="eyebrow reveal">Why it's worth your minute</span>
+  <h2 class="reveal">Comprehension, recall, and a grounded AI, at zero cost.</h2>
+  <p class="lead reveal">It's an <strong>index, not a copy</strong>. It runs entirely on your machine, stores pointers, never your file contents, and links back to the live source. Always fresh, $0 tokens to keep current, nothing uploaded.</p>
+  <div class="ostats">
+    <div class="ostat reveal"><b>Minutes</b><span>to onboard onto a sprawling repo, instead of weeks of spelunking.</span></div>
+    <div class="ostat reveal"><b>$0</b><span>to build and keep your city fresh. Deterministic, no API keys, no tokens.</span></div>
+    <div class="ostat reveal"><b>0 bytes</b><span>leave your machine. Your source stays yours; only pointers are indexed.</span></div>
+  </div>
+  <div class="notwrap">
+    <div class="not reveal"><svg class="li" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg><span><strong>Not a code-RAG engine.</strong> It's a map and a router. It tells you where things are and hands the source to you or your AI. (Cursor and Glean still own deep code Q&A.)</span></div>
+    <div class="not reveal"><svg class="li" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg><span><strong>Not a cloud service.</strong> No account, no upload, nothing leaves your laptop.</span></div>
+    <div class="not reveal"><svg class="li" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg><span><strong>Not a copy of your data.</strong> A navigable index of pointers: titles, headings, short excerpts that link to the live file.</span></div>
+    <div class="not yes reveal"><svg class="li" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Just the map, and a grounded AI.</strong> For comprehension, recall, and citations over your own knowledge.</span></div>
+  </div>
+</div></section>
+
+<section id="story"><div class="wrap story">
+  <div>
+    <span class="eyebrow reveal">Where it came from</span>
+    <h2 class="reveal">Born from building Sathia.</h2>
+    <p class="reveal">A few weeks into building <a href="https://sathia.ai" target="_blank" rel="noopener" class="link-gold">Sathia</a>, an AI orchestration platform built on a simple idea (<em>just say it, and intent becomes action</em>), I realized I'd lost the map of my own project. Hundreds of decisions, specs, and architecture notes across a sprawling repo, and no way to see how it fit together.</p>
+    <div class="quote reveal">So I built the thing I needed: point it at the repo, and the whole system becomes a city I can walk. KnoSky is that piece, pulled out and given away free.</div>
+    <p class="reveal">If you're a builder buried in your own repo, it's yours. <a href="https://sathia.ai" target="_blank" rel="noopener" class="link-gold">See what Sathia is →</a></p>
+  </div>
+  <div class="codepanel reveal">
+    <span class="pill2"><svg class="li" viewBox="0 0 24 24"><path d="M16 18 22 12 16 6M8 6 2 12l6 6"/></svg>Developers · founders · architects</span>
+    <h3 style="margin:15px 0 4px;font-size:19px;color:#eef3fb">One command</h3>
+    <p style="font-size:14px;margin:0 0 6px;color:#aeb9d6">Node 18+, then point it at any repo:</p>
+    <pre><code>npx knosky .
+<span style="color:#65728f"># builds the city, opens it, and prints the</span>
+<span style="color:#65728f"># MCP config for Claude / Cursor / VS Code</span></code></pre>
+    <p style="margin:14px 0 0"><span class="pill2"><svg class="li" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Everything runs locally. Your code never leaves the machine.</span></p>
+  </div>
+</div></section>
+
+<section id="get"><div class="wrap">
+  <div class="finalcta reveal">
+    <span class="eyebrow">Get KnoSky</span>
+    <h2 style="margin-top:10px">Drop your email, grab the link.</h2>
+    <p class="lead" style="margin:0 auto">Free under the Functional Source License. Open the demo, point it at your own repo, and tell me what you think.</p>
+    <form id="form2" class="capture" novalidate>
+      <label class="field"><svg class="li" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <input type="email" name="email" placeholder="you@work.com" aria-label="Email" required /></label>
+      <button class="btn btn-primary" type="submit">Get the link <span class="ico-circ"><svg class="li" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></button>
+    </form>
+    <div class="err" id="err2">Please enter a valid email.</div>
+    <div class="ok" id="ok2">✓ You're in. Here's your link: <a href="https://github.com/SathiaAI/knosky" target="_blank" rel="noopener">github.com/SathiaAI/knosky</a></div>
+    <div class="cta-sky" id="ctaSky" data-speed="0.06" data-mouse="6"></div>
+  </div>
+</div></section>
+
+</main>
+<footer><div class="wrap frow">
+  <div>© 2026 KnoSky™ · Born from <a href="https://sathia.ai" target="_blank" rel="noopener">Sathia</a>. Free under FSL-1.1-MIT.</div>
+  <div><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · City art by <a href="https://kenney.nl" target="_blank" rel="noopener">Kenney</a> (CC0)</div>
+</div></footer>
+
+<div class="demomodal" id="demoModal" role="dialog" aria-modal="true" aria-label="KnoSky live demo">
+  <div class="demohead"><b>KnoSky — live demo</b><span class="dm-sub">drag · scroll to zoom · click a building</span><button type="button" class="democlose" id="closeDemo">✕ Close</button></div>
+  <div class="demoframe"><iframe id="demoFrame" title="KnoSky demo (full screen)"></iframe></div>
+</div>
+
+<script>
+"use strict";
+const NS="http://www.w3.org/2000/svg";
+const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const NB = 16;
+const rng = (s)=>()=>((s=Math.imul(s^s>>>15,2246822519))>>>0)/4294967296;
+
+/* sprite skyline rows — REAL KnoSky Kenney buildings, in dedicated bands only */
+function skyline(el, n, minW, maxW, seed){
+  const r=rng(seed), avg=(minW+maxW)/2; let h="";
+  for(let i=0;i<n;i++){
+    const idx=(r()*NB)|0, w=Math.round(minW+r()*(maxW-minW));
+    h+=`<img src="assets/sprites/b${String(idx).padStart(2,"0")}.png" style="width:${w}px;margin-left:${i?Math.round(w*(0.12+r()*0.16)):0}px" alt="">`;
+    if(r()>0.45){ const tw=Math.round(avg*0.46); h+=`<img class="tree" src="assets/sprites/tree.png" style="width:${tw}px;margin-left:${Math.round(tw*0.55)}px" alt="">`; }
+  }
+  el.innerHTML=h;
+}
+skyline(document.getElementById("bandSky"), 14, 62, 112, 7);   // divider band — fewer, spaced, trees visible
+skyline(document.getElementById("ctaSky"), 11, 54, 94, 23);    // CTA ground
+
+/* parallax: measure layout ONCE (and on resize/load); per-frame uses cached centers + scrollY (no reflow) */
+(function(){
+  if(REDUCE) return;
+  const items=[...document.querySelectorAll("[data-speed]")].map(el=>({
+    el, sp:parseFloat(el.dataset.speed||"0"), mo:parseFloat(el.dataset.mouse||"0"),
+    center: el.classList.contains("row")||el.classList.contains("cta-sky"), mid:0
+  }));
+  function measure(){ const sy=scrollY; for(const l of items){ const r=l.el.getBoundingClientRect(); l.mid=r.top+sy+r.height/2; } }
+  measure(); addEventListener("resize", measure, {passive:true}); addEventListener("load", measure);
+  let mx=0,my=0,tmx=0,tmy=0;
+  addEventListener("mousemove",e=>{tmx=(e.clientX/innerWidth-.5);tmy=(e.clientY/innerHeight-.5);},{passive:true});
+  (function frame(){
+    mx+=(tmx-mx)*.07; my+=(tmy-my)*.07; const vh=innerHeight, sy=scrollY;
+    for(const l of items){
+      const fc=(l.mid - sy) - vh/2;
+      const ty=(-fc*l.sp)+(my*l.mo), tx=mx*l.mo;
+      l.el.style.transform=(l.center?`translateX(-50%) `:``)+`translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0)`;
+    }
+    requestAnimationFrame(frame);
+  })();
+})();
+
+/* scroll reveal */
+(function(){
+  const els=[...document.querySelectorAll(".reveal")];
+  if(REDUCE){els.forEach(e=>e.classList.add("in"));return;}
+  const io=new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{if(e.isIntersecting){const sib=[...e.target.parentElement.children].indexOf(e.target);
+      e.target.style.transitionDelay=Math.min(sib,6)*55+"ms"; e.target.classList.add("in"); io.unobserve(e.target);}});
+  },{threshold:.12, rootMargin:"-50px 0px"});
+  els.forEach(e=>io.observe(e));
+  setTimeout(()=>els.forEach(e=>e.classList.add("in")),1400); // safety net: always reveal, even if the observer is slow/throttled
+})();
+
+/* email capture → Kit (ConvertKit) form 9619648. Auto-confirm ON → link shown on page. */
+const KIT_ENDPOINT = "https://app.kit.com/forms/9619648/subscriptions";
+const valid = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+function wire(formId, errId, okId){
+  const f=document.getElementById(formId), err=document.getElementById(errId), ok=document.getElementById(okId);
+  f.addEventListener("submit", async (ev)=>{ ev.preventDefault();
+    const email=f.email.value.trim(); err.style.display="none";
+    if(!valid(email)){ err.style.display="block"; return; }
+    try{ await fetch(KIT_ENDPOINT,{method:"POST",headers:{"Accept":"application/json"},body:new URLSearchParams({email_address:email})}); }catch(_){}
+    f.style.display="none"; ok.style.display="block";
+  });
+}
+wire("form1","err1","ok1"); wire("form2","err2","ok2");
+
+/* inline hero demo: load the heavy iframe only on click (keeps 2.6 MB out of initial load) */
+document.querySelectorAll(".js-load-inline").forEach(b=>b.addEventListener("click",()=>{
+  const f=document.createElement("iframe");
+  f.src="knosky-demo.html"; f.title="KnoSky live demo city";
+  f.style.cssText="display:block;width:100%;height:420px;border:0;background:#0a1020";
+  b.replaceWith(f);
+}));
+
+/* expandable full-screen demo */
+(function(){
+  const modal=document.getElementById("demoModal"), frame=document.getElementById("demoFrame");
+  if(!modal||!frame) return;
+  function openDemo(){ if(!frame.getAttribute("src")) frame.setAttribute("src","knosky-demo.html"); modal.classList.add("open"); document.body.style.overflow="hidden"; }
+  function closeDemo(){ modal.classList.remove("open"); document.body.style.overflow=""; }
+  document.querySelectorAll(".js-open-demo").forEach(b=>b.addEventListener("click",openDemo));
+  document.getElementById("closeDemo").addEventListener("click",closeDemo);
+  modal.addEventListener("click",e=>{ if(e.target===modal) closeDemo(); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&modal.classList.contains("open")) closeDemo(); });
+})();
+</script>
+</body>
+</html>
