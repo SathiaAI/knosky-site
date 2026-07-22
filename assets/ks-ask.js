@@ -106,12 +106,23 @@
   }
 
   function plainBody(entry) {
-    return entry.simple || entry.answer || "";
-  }
+      // Never fall back to technical blob for first answer
+      if (entry.simple) return entry.simple;
+      if (entry.answer) return entry.answer;
+      return "I have a short answer for that topic, but it’s missing from this FAQ file. Try Install or Docs.";
+    }
 
-  function techBody(entry) {
-    return entry.technical || "";
-  }
+    function techBody(entry) {
+      return entry.technical || "";
+    }
+
+    function bannedInSimple(text) {
+      var t = String(text || "");
+      // Rough guardrails — simple tier must not sound like eng security notes
+      return /single-operator|dual quorum|throwaway domain|FOUNDATION|swarm-safe fleet|ADVISORY_UNAUTH|leaseId|assertOperator|SECURITY\.md/i.test(
+        t
+      );
+    }
 
   function renderLinks(entry) {
     if (!entry.links || !entry.links.length) return "";
@@ -208,55 +219,58 @@
     }
 
     function renderSimple(entry) {
-      lastEntry = entry;
-      detailShownFor = null;
-      var body = plainBody(entry);
-      var html =
-        "<strong>" +
-        esc(entry.title || "Answer") +
-        "</strong><br/>" +
-        formatAnswer(body);
+          lastEntry = entry;
+          detailShownFor = null;
+          var body = plainBody(entry);
+          if (bannedInSimple(body) && entry.simple) {
+            // Prefer incomplete plain over shipping internal jargon in tier-1 UI
+            body = entry.simple;
+          }
+          var html =
+            "<strong>" +
+            esc(entry.title || "Answer") +
+            "</strong><br/>" +
+            formatAnswer(body);
 
-      if (entry.links && entry.links.length) {
-        html += renderLinks(entry);
-      }
+          if (entry.links && entry.links.length) {
+            html += renderLinks(entry);
+          }
 
-      if (techBody(entry)) {
-        var prompt =
-          data.more_detail_prompt || "Want a bit more technical detail?";
-        html +=
-          '<div class="ks-ask-detail-ask">' +
-          "<span>" +
-          esc(prompt) +
-          "</span>" +
-          '<div class="ks-ask-detail-btns">' +
-          '<button type="button" class="ks-ask-yes-detail">Yes, more detail</button>' +
-          '<button type="button" class="ks-ask-no-detail">No thanks</button>' +
-          "</div></div>";
-      }
+          if (techBody(entry)) {
+            var prompt = data.more_detail_prompt || "Want a bit more detail?";
+            html +=
+              '<div class="ks-ask-detail-ask">' +
+              "<span>" +
+              esc(prompt) +
+              "</span>" +
+              '<div class="ks-ask-detail-btns">' +
+              '<button type="button" class="ks-ask-yes-detail">Yes, more detail</button>' +
+              '<button type="button" class="ks-ask-no-detail">No thanks</button>' +
+              "</div></div>";
+          }
 
-      var node = addMsg("bot", html);
-      var yes = node.querySelector(".ks-ask-yes-detail");
-      var no = node.querySelector(".ks-ask-no-detail");
-      if (yes) {
-        yes.addEventListener("click", function () {
-          yes.disabled = true;
-          if (no) no.disabled = true;
-          addMsg("user", esc("Yes, more detail"));
-          showTechnical(entry);
-        });
-      }
-      if (no) {
-        no.addEventListener("click", function () {
-          yes && (yes.disabled = true);
-          no.disabled = true;
-          addMsg(
-            "bot",
-            formatAnswer("OK — ask anything else whenever you’re ready.")
-          );
-        });
-      }
-    }
+          var node = addMsg("bot", html);
+          var yes = node.querySelector(".ks-ask-yes-detail");
+          var no = node.querySelector(".ks-ask-no-detail");
+          if (yes) {
+            yes.addEventListener("click", function () {
+              yes.disabled = true;
+              if (no) no.disabled = true;
+              addMsg("user", esc("Yes, more detail"));
+              showTechnical(entry);
+            });
+          }
+          if (no) {
+            no.addEventListener("click", function () {
+              yes && (yes.disabled = true);
+              no.disabled = true;
+              addMsg(
+                "bot",
+                formatAnswer("OK — ask anything else whenever you’re ready.")
+              );
+            });
+          }
+        }
 
     function ask(q) {
       q = String(q || "").trim();
@@ -301,11 +315,11 @@
     });
 
     addMsg(
-      "bot",
-      formatAnswer(
-        "Hi — I’ll answer in **plain English** first. If you want depth, say **more detail** or tap the button.\n\nTry: install, what is KnoSky, what’s in the package, privacy, or **what is L3 swarm**."
-      )
-    );
+          "bot",
+          formatAnswer(
+            "Hi — answers stay **simple first**. If you want depth, tap **Yes, more detail** or type **more detail**.\n\nPopular: install, what is KnoSky, what’s in the package, privacy, or **what is a swarm?**"
+          )
+        );
 
     fab.addEventListener("click", function () {
       setOpen(!panel.classList.contains("is-open"));
