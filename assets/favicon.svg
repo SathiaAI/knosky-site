@@ -1,18 +1,1 @@
-<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#12203c"/><stop offset="1" stop-color="#0a1226"/></linearGradient></defs>
-  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
-  <!-- blue (back-left) -->
-  <polygon points="11,44 20,48.5 20,32.5 11,28" fill="#7aa2ff"/>
-  <polygon points="20,48.5 29,44 29,28 20,32.5" fill="#5b82e0"/>
-  <polygon points="20,28 29,32.5 20,37 11,32.5" fill="#a9c4ff"/>
-  <!-- gold (center, tall) -->
-  <polygon points="23,47 33,52 33,22 23,17" fill="#f2c14e"/>
-  <polygon points="33,52 43,47 43,17 33,22" fill="#cf9a2c"/>
-  <polygon points="33,12 43,17 33,22 23,17" fill="#ffd884"/>
-  <!-- green (front-right) -->
-  <polygon points="38,46 47,50.5 47,32.5 38,28" fill="#69cf94"/>
-  <polygon points="47,50.5 55,46 55,28 47,32.5" fill="#46ad72"/>
-  <polygon points="47,28 55,32.5 47,37 38,32.5" fill="#9ee3b8"/>
-  <circle cx="49" cy="13" r="3" fill="#ffd680"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs><filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g transform="translate(256.0,256.0) scale(1.5) translate(-256.0,-256.0)"><path d="M 223.00,402.00 C 235.83,389.33 287.17,347.00 300.00,326.00 C 312.83,305.00 314.67,291.00 300.00,276.00 C 285.33,261.00 226.33,251.67 212.00,236.00 C 197.67,220.33 204.00,198.00 214.00,182.00 C 224.00,166.00 262.33,147.00 272.00,140.00" fill="none" stroke="#FF5A3C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="223.00" cy="402.00" r="5.00" fill="#FF5A3C"/><g filter="url(#glow)" transform="translate(251.60,102.60) scale(1.7)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM12 11.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="#FF5A3C" fill-rule="evenodd"/></g><g filter="url(#glow)"><polygon points="143.4,321.0 263.0,268.1 249.0,243.9" fill="#9BD9C4"/><polygon points="368.6,191.0 263.0,268.1 249.0,243.9" fill="#1FA97A"/></g><circle cx="256.00" cy="256.00" r="9.50" fill="#FFFDFB" stroke="#1FA97A" stroke-width="2.6"/><circle cx="256.00" cy="256.00" r="3.20" fill="#0E8A62"/></g></svg>

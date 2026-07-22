@@ -1,0 +1,14 @@
+/* KnoSky palette — sampled from knosky.com */
+:root{
+  --knosky-coral:      #FF5A3C; /* primary accent · route, CTAs */
+  --knosky-coral-deep: #E84428; /* hover / pressed */
+  --knosky-mint:       #1FA97A; /* secondary accent · needle, success */
+  --knosky-mint-deep:  #0E8A62; /* mint on light, depth */
+  --knosky-ink:        #2C2420; /* wordmark, headings */
+  --knosky-body:       #5C534C; /* body text */
+  --knosky-muted:      #8A8178; /* tagline, captions, rings */
+  --knosky-line:       #E8DFD4; /* hairlines, mesh, dividers */
+  --knosky-cream:      #FFF8F1; /* primary background */
+  --knosky-paper:      #FFFCFA; /* cards / elevated surfaces */
+  --knosky-dark:       #26201C; /* dark-mode background */
+}

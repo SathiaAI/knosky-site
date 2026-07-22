@@ -631,3 +631,12 @@ header.is-open .nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rot
 @media (max-width: 720px) {
   .wrap, .wrap-wide, .wrap-narrow { width: calc(100% - 28px); }
 }
+
+
+/* Brand kit lockup */
+.brand.brand-lockup img {
+  width: auto;
+  height: 28px;
+  border-radius: 0;
+  max-width: 150px;
+}
