@@ -28,7 +28,7 @@
         "how to start",
         "begin"
       ],
-      "answer": "From any repo folder:\n\n`npx knosky@latest .`\n\nNeeds **Node 20+**. Builds a local map (city), prints MCP config for your assistant, keeps data on your machine by default.\n\nThen: open Docs → Start here, or wire a pack (Claude / Cursor / Codex / Hermes).",
+      "answer": "Open a terminal in **your project folder** and run:\n\n`npx knosky@latest .`\n\nNeeds **Node 20+**. Builds a local map (and city) from **your** code and docs. No account. Nothing uploaded by default.\n\nThen optionally connect one pack (Claude / Cursor / Codex / Hermes) so your assistant can use the map.",
       "links": [
         {
           "label": "Install page",

@@ -59,36 +59,40 @@
 <main>
 
   <div class="wrap page-hero">
-    <div class="eyebrow">Command-first · local</div>
-    <h1>Try it before the meeting ends</h1>
-    <p class="lede">One command. Your machine. Then connect <strong>one</strong> agent pack. Technical depth lives on the wiki.</p>
-  </div>
-  <section>
-    <div class="wrap" style="max-width:760px">
-      <div class="dock">
-        <code id="cmd">npx knosky .</code>
-        <button class="btn btn-mint" type="button" onclick="navigator.clipboard.writeText('npx knosky .')">Copy command</button>
-      </div>
-      <p class="hint"><strong style="color:var(--ink)">Node 18+</strong> · runs in the current folder · nothing uploaded by default</p>
+      <div class="eyebrow">Command-first · local</div>
+      <h1>Install KnoSky in one command</h1>
+      <p class="lede">
+        Open a terminal in <strong>your</strong> project folder, run the line below, and KnoSky builds a local map (and city view) from <strong>your</strong> code and docs.
+        No account. Nothing uploaded by default. Then connect one assistant pack if you want agents to use the map.
+      </p>
+    </div>
+    <section>
+      <div class="wrap" style="max-width:760px">
+        <div class="dock">
+          <code id="cmd">npx knosky@latest .</code>
+          <button class="btn btn-mint" type="button" onclick="navigator.clipboard.writeText('npx knosky@latest .')">Copy command</button>
+        </div>
+        <p class="hint"><strong style="color:var(--ink)">Node 20+</strong> · runs in the current folder · local-first · free to try</p>
 
-      <h2 style="margin-top:36px">Then pick one pack</h2>
-      <div class="grid-2" style="margin-top:14px">
-        <a class="clay" href="wiki/packs/claude-code.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Claude Code</h3><p class="section-lede" style="margin:0">MCP pack · first lease route</p></a>
-        <a class="clay" href="https://knosky.wiki/wiki/start-here.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Cursor</h3><p class="section-lede" style="margin:0">Drop-in MCP config</p></a>
-        <a class="clay" href="https://knosky.wiki/wiki/start-here.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Codex</h3><p class="section-lede" style="margin:0">CLI + AGENTS.md</p></a>
-        <a class="clay" href="https://knosky.wiki/wiki/start-here.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Hermes</h3><p class="section-lede" style="margin:0">Skill + MCP path</p></a>
-      </div>
+        <h2 style="margin-top:36px">Then connect one assistant (optional)</h2>
+        <p class="section-lede" style="margin-top:8px">Same GPS menu across tools. Start with whichever you already use.</p>
+        <div class="grid-2" style="margin-top:14px">
+          <a class="clay" href="https://knosky.wiki/wiki/packs/claude-code.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Claude Code</h3><p class="section-lede" style="margin:0">MCP pack · first lease route</p></a>
+          <a class="clay" href="https://knosky.wiki/wiki/packs/cursor.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Cursor</h3><p class="section-lede" style="margin:0">Drop-in MCP config</p></a>
+          <a class="clay" href="https://knosky.wiki/wiki/packs/codex.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Codex</h3><p class="section-lede" style="margin:0">CLI + AGENTS.md</p></a>
+          <a class="clay" href="https://knosky.wiki/wiki/packs/hermes.html"><div class="eyebrow" style="margin:0 0 8px">P0</div><h3>Hermes</h3><p class="section-lede" style="margin:0">Skill + MCP path</p></a>
+        </div>
 
-      <div class="clay" style="margin-top:24px;background:var(--bg-mint);border-color:#bfe8d4">
-        <h3>What you should feel</h3>
-        <p style="margin-top:8px">Agents stop thrashing random files. You get a map, a route, and optional allow/deny receipts. Doctor keeps public claims honest.</p>
-        <div class="actions">
-          <a class="btn btn-coral" href="https://knosky.wiki/wiki/start-here.html">Continue on wiki</a>
-          <a class="btn btn-ghost" href="how-it-works.html">How it works</a>
+        <div class="clay" style="margin-top:24px;background:var(--bg-mint);border-color:#bfe8d4">
+          <h3>What success looks like</h3>
+          <p style="margin-top:8px">You see a city built from <em>your</em> folders. Your assistant can search and route to the right files instead of thrashing. Optional Mode B adds allow/deny receipts. Run <code>npx knosky@latest doctor</code> anytime to see what this install can honestly claim.</p>
+          <div class="actions">
+            <a class="btn btn-coral" href="https://knosky.wiki/wiki/start-here.html">Step-by-step on the wiki</a>
+            <a class="btn btn-ghost" href="how-it-works.html">How it works</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
 </main>
 
