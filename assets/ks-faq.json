@@ -14,135 +14,345 @@
     {
       "id": "install",
       "title": "Install / quickstart",
-      "keywords": ["install", "npx", "setup", "quickstart", "get started", "try", "run", "command", "node", "npm", "how to start", "begin"],
+      "keywords": [
+        "install",
+        "npx",
+        "setup",
+        "quickstart",
+        "get started",
+        "try",
+        "run",
+        "command",
+        "node",
+        "npm",
+        "how to start",
+        "begin"
+      ],
       "answer": "From any repo folder:\n\n`npx knosky@latest .`\n\nNeeds **Node 20+**. Builds a local map (city), prints MCP config for your assistant, keeps data on your machine by default.\n\nThen: open Docs → Start here, or wire a pack (Claude / Cursor / Codex / Hermes).",
       "links": [
-        { "label": "Install page", "href": "https://www.knosky.com/install.html" },
-        { "label": "Wiki start here", "href": "https://knosky.wiki/wiki/start-here.html" }
+        {
+          "label": "Install page",
+          "href": "https://www.knosky.com/install.html"
+        },
+        {
+          "label": "Wiki start here",
+          "href": "https://knosky.wiki/wiki/start-here.html"
+        }
       ]
     },
     {
       "id": "package",
       "title": "What’s in the package",
-      "keywords": ["package", "box", "includes", "what do i get", "features", "capabilities", "contains", "ship", "bundle", "what comes", "in the box", "deliver"],
+      "keywords": [
+        "package",
+        "box",
+        "includes",
+        "what do i get",
+        "features",
+        "capabilities",
+        "contains",
+        "ship",
+        "bundle",
+        "what comes",
+        "in the box",
+        "deliver"
+      ],
       "answer": "**In the open-source package (Wave 1):**\n\n1. **Local map / indexer** — folders → navigable city graph (districts & buildings).\n2. **City HTML skin** — human view of the same map (not the agent GPS metaphor).\n3. **MCP server** — Tier 0 map tools + Tier 1 governed route tools (`kc_search`, `kc_route`, …).\n4. **Mode A / Mode B** — advisory tips vs identity + policy + audit receipts.\n5. **Assistant packs** — Claude Code, Cursor, Codex, Hermes (P0) + P1 stubs.\n6. **Doctor + claim ceiling** — honest green/warn for this install.\n7. **L3 swarm coordinator foundation** — leases, claims, quotas, heatmap, bench (local domain, not cloud fleet).\n8. **PR-GPS GitHub Action** — advisory PR navigation comments (never blocks builds by default).\n9. **SSOT** — tool menu, decision codes, L0–L3 ladder docs.\n\n**Not in the box:** a coding model, a hosted vault of your source, or “swarm-safe everywhere” marketing.",
       "links": [
-        { "label": "Home package section", "href": "https://www.knosky.com/#package" },
-        { "label": "GitHub README", "href": "https://github.com/SathiaAI/knosky" }
+        {
+          "label": "Home package section",
+          "href": "https://www.knosky.com/#package"
+        },
+        {
+          "label": "GitHub README",
+          "href": "https://github.com/SathiaAI/knosky"
+        }
       ]
     },
     {
       "id": "what",
       "title": "What is KnoSky?",
-      "keywords": ["what is", "about", "knosky", "gps", "product", "overview", "explain", "mean"],
+      "keywords": [
+        "what is",
+        "about",
+        "knosky",
+        "gps",
+        "product",
+        "overview",
+        "explain",
+        "mean"
+      ],
       "answer": "KnoSky is the **GPS layer for AI agents**: it maps local repos/docs and helps assistants **route to the right files** — with optional allow/deny receipts (Mode B).\n\nThe **isometric city** is a **human skin** for exploring the same map. Product category is **agent GPS**, not “another IDE” or code-intelligence product.",
       "links": [
-        { "label": "Why KnoSky", "href": "https://www.knosky.com/why.html" },
-        { "label": "How it works", "href": "https://www.knosky.com/how-it-works.html" }
+        {
+          "label": "Why KnoSky",
+          "href": "https://www.knosky.com/why.html"
+        },
+        {
+          "label": "How it works",
+          "href": "https://www.knosky.com/how-it-works.html"
+        }
       ]
     },
     {
       "id": "not",
       "title": "What it is not",
-      "keywords": ["not", "vs cursor", "code intelligence", "rag", "ide", "copilot", "compare", "difference"],
+      "keywords": [
+        "not",
+        "vs cursor",
+        "code intelligence",
+        "rag",
+        "ide",
+        "copilot",
+        "compare",
+        "difference"
+      ],
       "answer": "KnoSky is **not**:\n- A coding model or IDE\n- A full code-intelligence / deep RAG replacement\n- Multi-tenant SaaS isolation of customer body source (Wave 1 is local trust domain)\n- A blanket “swarm-safe fleet” claim\n\nIt **complements** Claude, Cursor, Codex, Hermes with map + route (+ optional Mode B).",
       "links": [
-        { "label": "Compare", "href": "https://www.knosky.com/compare.html" }
+        {
+          "label": "Compare",
+          "href": "https://www.knosky.com/compare.html"
+        }
       ]
     },
     {
       "id": "modeab",
       "title": "Mode A vs Mode B",
-      "keywords": ["mode a", "mode b", "advisory", "governed", "allow", "deny", "lease", "receipt", "policy", "auth"],
+      "keywords": [
+        "mode a",
+        "mode b",
+        "advisory",
+        "governed",
+        "allow",
+        "deny",
+        "lease",
+        "receipt",
+        "policy",
+        "auth"
+      ],
       "answer": "**Mode A** — `ADVISORY_UNAUTH`: map tips only. Not policy-certified. Not swarm-safe.\n\n**Mode B** — `ALLOW` / `DENY_*` with audit receipt on ALLOW: identity (lease) + policy + audit before an authorized claim.\n\nCoding packs default to Mode B for governed tools. Mint a lease:\n\n`npx knosky@latest agent-register --domain .knosky --agent my-agent --role coder`\n\nPass **leaseId** into route tools — bare agentId is not identity.",
       "links": [
-        { "label": "Mode A vs B (wiki)", "href": "https://knosky.wiki/wiki/protocol/mode-a-vs-b.html" }
+        {
+          "label": "Mode A vs B (wiki)",
+          "href": "https://knosky.wiki/wiki/protocol/mode-a-vs-b.html"
+        }
       ]
     },
     {
       "id": "packs",
       "title": "Works with / packs",
-      "keywords": ["pack", "claude", "cursor", "codex", "hermes", "vscode", "mcp", "connect", "assistant", "tool", "integration"],
+      "keywords": [
+        "pack",
+        "claude",
+        "cursor",
+        "codex",
+        "hermes",
+        "vscode",
+        "mcp",
+        "connect",
+        "assistant",
+        "tool",
+        "integration"
+      ],
       "answer": "**P0 packs:** Claude Code · Cursor · Codex CLI · Hermes — same DEC-108 tool menu via MCP.\n\n**P1:** VS Code MCP stub · Greptile recipe · GHA PR-GPS (advisory).\n\nTypical MCP env: absolute `KC_CITY` → city-data.json, `KC_PROFILE=coding`, command `node …/mcp/server.mjs`.",
       "links": [
-        { "label": "Works with", "href": "https://www.knosky.com/works-with.html" },
-        { "label": "Claude pack", "href": "https://knosky.wiki/wiki/packs/claude-code.html" },
-        { "label": "Cursor pack", "href": "https://knosky.wiki/wiki/packs/cursor.html" }
+        {
+          "label": "Works with",
+          "href": "https://www.knosky.com/works-with.html"
+        },
+        {
+          "label": "Claude pack",
+          "href": "https://knosky.wiki/wiki/packs/claude-code.html"
+        },
+        {
+          "label": "Cursor pack",
+          "href": "https://knosky.wiki/wiki/packs/cursor.html"
+        }
       ]
     },
     {
       "id": "privacy",
       "title": "Privacy / local-first",
-      "keywords": ["privacy", "local", "upload", "cloud", "egress", "secret", "safe", "data", "leave machine", "telemetry"],
+      "keywords": [
+        "privacy",
+        "local",
+        "upload",
+        "cloud",
+        "egress",
+        "secret",
+        "safe",
+        "data",
+        "leave machine",
+        "telemetry"
+      ],
       "answer": "**Local-first by default.** Wave 1 core path does not upload your source or call knosky.com as runtime telemetry.\n\nindex faile-closed secret scanning with `--share-safe` before you share artifacts. Site links are docs only.\n\nPublic claims never exceed `knosky doctor` on that install. Windows network lockdown may warn as unsupported until packaging proves it.",
       "links": [
-        { "label": "Trust", "href": "https://www.knosky.com/trust.html" },
-        { "label": "Wiki trust", "href": "https://knosky.wiki/wiki/govern/trust.html" }
+        {
+          "label": "Trust",
+          "href": "https://www.knosky.com/trust.html"
+        },
+        {
+          "label": "Wiki trust",
+          "href": "https://knosky.wiki/wiki/govern/trust.html"
+        }
       ]
     },
     {
       "id": "city",
       "title": "City map skin",
-      "keywords": ["city", "map", "isometric", "skin", "human", "visual", "skyline", "demo"],
-      "answer": "The **city** is how **humans** walk the same local graph agents route through — multi-depth isometric “skin.”\n\nIt is **not** the product hero metaphor. Agents care about **GPS routes** through the maze; people get a place to browse districts and buildings.",
+      "keywords": [
+        "city",
+        "map",
+        "isometric",
+        "skin",
+        "human",
+        "visual",
+        "skyline",
+        "demo"
+      ],
+      "answer": "The **city** is how **humans** walk the same local graph agents route through — multi-depth isometric skin.\n\nIt is **not** the product hero metaphor. **Install KnoSky on your repo** (`npx knosky@latest .`) to build a city from **your** code and docs — not a canned demo skyline on the marketing site.",
       "links": [
-        { "label": "City band on home", "href": "https://www.knosky.com/#skin" }
+        {
+          "label": "Install — your city",
+          "href": "https://www.knosky.com/install.html"
+        },
+        {
+          "label": "Human skin band",
+          "href": "https://www.knosky.com/#skin"
+        }
       ]
     },
     {
       "id": "l3",
       "title": "L3 swarm foundation",
-      "keywords": ["l3", "swarm", "lease", "quota", "heatmap", "coordinator", "multi-agent", "fleet", "bench"],
+      "keywords": [
+        "l3",
+        "swarm",
+        "lease",
+        "quota",
+        "heatmap",
+        "coordinator",
+        "multi-agent",
+        "fleet",
+        "bench"
+      ],
       "answer": "Wave 1 ships an **L3 swarm coordinator foundation** on the **local** trust domain: multi-agent leases, file/district claims, quotas/backpressure, FIFO fairness, anti-probe, audit stream, heatmap + `swarm status` / `swarm bench`.\n\n**Do not** market production “swarm-safe fleet everywhere.” Doctor marks L3 as **FOUNDATION**. Operator lease revoke is **single-operator** (not dual quorum) — accepted risk documented in SECURITY.md.\n\nBench using a **throwaway** domain, never your live `.knosky`.",
       "links": [
-        { "label": "Ladder wiki", "href": "https://knosky.wiki/wiki/govern/ladder.html" },
-        { "label": "GitHub SECURITY", "href": "https://github.com/SathiaAI/knosky/blob/main/SECURITY.md" }
+        {
+          "label": "Ladder wiki",
+          "href": "https://knosky.wiki/wiki/govern/ladder.html"
+        },
+        {
+          "label": "GitHub SECURITY",
+          "href": "https://github.com/SathiaAI/knosky/blob/main/SECURITY.md"
+        }
       ]
     },
     {
       "id": "doctor",
       "title": "Doctor / claim ceiling",
-      "keywords": ["doctor", "claim", "ceiling", "ready", "health", "scorecard", "green"],
+      "keywords": [
+        "doctor",
+        "claim",
+        "ceiling",
+        "ready",
+        "health",
+        "scorecard",
+        "green"
+      ],
       "answer": "Run:\n\n`npx knosky@latest doctor`\n\nIt reports Mode B wiring, packs, ladder honesty, L3 foundation presence, Windows lockdown realism. **Public wording ≤ doctor on that install.**",
       "links": [
-        { "label": "Install / try", "href": "https://www.knosky.com/install.html" }
+        {
+          "label": "Install / try",
+          "href": "https://www.knosky.com/install.html"
+        }
       ]
     },
     {
       "id": "proof",
       "title": "Evidence / SAT-439",
-      "keywords": ["proof", "sat-439", "tokens", "benchmark", "faster", "68", "70", "evidence", "measure"],
+      "keywords": [
+        "proof",
+        "sat-439",
+        "tokens",
+        "benchmark",
+        "faster",
+        "68",
+        "70",
+        "evidence",
+        "measure"
+      ],
       "answer": "First-party SAT-439 (5 tasks): ~**68% fewer tokens**, ~**70% fewer tool calls**, ~**6× faster** to the right file (guided vs naive). Methodology in repo/wiki.\n\nIndustry personal: GitHub’s agentic-workflow token-efficiency blog is **problem proof**, not a KnoSky score — don’t mix claims.",
       "links": [
-        { "label": "Why / evidence framing", "href": "https://www.knosky.com/why.html" }
+        {
+          "label": "Why / evidence framing",
+          "href": "https://www.knosky.com/why.html"
+        }
       ]
     },
     {
       "id": "tools",
       "title": "MCP tool menu",
-      "keywords": ["kc_", "tool", "menu", "search", "route", "bundle", "policy", "tier", "mcp tool"],
+      "keywords": [
+        "kc_",
+        "tool",
+        "menu",
+        "search",
+        "route",
+        "bundle",
+        "policy",
+        "tier",
+        "mcp tool"
+      ],
       "answer": "**Tier 0 map (not authorizing):** `kc_search`, `kc_get_node`, `kc_list_categories`, `kc_get_provenance`, `kc_related`.\n\n**Tier 1 governed:** `kc_route` (dual-mode), `kc_bundle`, `kc_policy_check`.\n\n**Security profile only:** `kc_audit_query`, `kc_audit_verify` — not on coding packs.\n\nClosed decision codes include ALLOW, DENY_*, ADVISORY_UNAUTH, ERROR_*.",
       "links": [
-        { "label": "Protocol overview", "href": "https://knosky.wiki/wiki/protocol/overview.html" }
+        {
+          "label": "Protocol overview",
+          "href": "https://knosky.wiki/wiki/protocol/overview.html"
+        }
       ]
     },
     {
       "id": "pricing",
       "title": "Price / license",
-      "keywords": ["price", "cost", "free", "license", "fsl", "open source", "paid"],
+      "keywords": [
+        "price",
+        "cost",
+        "free",
+        "license",
+        "fsl",
+        "open source",
+        "paid"
+      ],
       "answer": "Core protocol is **free** under **FSL-1.1-MIT** (Functional Source License → MIT after two years). Run locally with `npx knosky@latest`. No account wall for the default local path.",
       "links": [
-        { "label": "GitHub", "href": "https://github.com/SathiaAI/knosky" }
+        {
+          "label": "GitHub",
+          "href": "https://github.com/SathiaAI/knosky"
+        }
       ]
     },
     {
       "id": "docs",
       "title": "Where are docs?",
-      "keywords": ["docs", "wiki", "documentation", "guide", "read", "help"],
+      "keywords": [
+        "docs",
+        "wiki",
+        "documentation",
+        "guide",
+        "read",
+        "help"
+      ],
       "answer": "**Marketing:** knosky.com (why, how, use cases, compare, install, trust, works-with).\n**Docs hub:** knosky.wiki (start-here, protocol, packs, ladder, trust).\n**Code + README:** github.com/SathiaAI/knosky",
       "links": [
-        { "label": "knosky.wiki", "href": "https://knosky.wiki/" },
-        { "label": "Start here", "href": "https://knosky.wiki/wiki/start-here.html" }
+        {
+          "label": "knosky.wiki",
+          "href": "https://knosky.wiki/"
+        },
+        {
+          "label": "Start here",
+          "href": "https://knosky.wiki/wiki/start-here.html"
+        }
       ]
     }
   ]
