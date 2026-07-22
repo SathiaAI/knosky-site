@@ -1,6 +1,6 @@
 /**
  * Ask KnoSky — client-side NL FAQ (no LLM / no egress).
- * Plain-English first; optional technical detail on request.
+ * Plain-English first; optional more detail; resilient matching + graceful OOS.
  */
 (function () {
   "use strict";
@@ -18,6 +18,18 @@
     }
     return "assets/";
   })();
+
+  // Cache-bust FAQ JSON when we ship content changes
+  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=3";
+
+  var STOP = {
+    a: 1, an: 1, the: 1, is: 1, are: 1, was: 1, were: 1, be: 1, been: 1, being: 1,
+    what: 1, whats: 1, who: 1, whom: 1, which: 1, where: 1, when: 1, why: 1, how: 1,
+    do: 1, does: 1, did: 1, can: 1, could: 1, should: 1, would: 1, will: 1,
+    to: 1, of: 1, in: 1, on: 1, for: 1, and: 1, or: 1, with: 1, about: 1,
+    please: 1, tell: 1, me: 1, my: 1, your: 1, you: 1, i: 1, it: 1, its: 1,
+    this: 1, that: 1, from: 1, into: 1, than: 1, then: 1
+  };
 
   function el(tag, cls, html) {
     var n = document.createElement(tag);
@@ -46,53 +58,119 @@
     return out;
   }
 
-  function tokenize(q) {
+  function normalize(q) {
     return String(q || "")
       .toLowerCase()
+      .replace(/[’']/g, "")
       .replace(/[^a-z0-9+#.\s/-]/g, " ")
-      .split(/\s+/)
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function tokenize(q) {
+    return normalize(q)
+      .split(" ")
       .filter(function (t) {
-        return t.length > 1;
+        return t.length > 1 && !STOP[t];
       });
   }
 
-  function scoreEntry(entry, tokens, raw) {
+  function scoreEntry(entry, tokens, rawNorm) {
     var score = 0;
-    var hay = (entry.keywords || [])
-      .concat([entry.title || "", entry.id || "", entry.simple || "", entry.answer || ""])
-      .join(" ")
-      .toLowerCase();
+    var title = String(entry.title || "").toLowerCase();
+    var id = String(entry.id || "").toLowerCase();
+    var kws = entry.keywords || [];
+    var hay =
+      kws.join(" ").toLowerCase() +
+      " " +
+      title +
+      " " +
+      id +
+      " " +
+      String(entry.simple || entry.answer || "")
+        .toLowerCase()
+        .slice(0, 280);
+
+    // Strong: multi-word keyword / title phrase fully present
+    kws.forEach(function (kw) {
+      var k = String(kw || "")
+        .toLowerCase()
+        .replace(/[’']/g, "");
+      if (k.length < 3) return;
+      if (rawNorm.indexOf(k) !== -1) {
+        // multi-word phrases score hard
+        score += k.indexOf(" ") !== -1 ? 24 : 14;
+      }
+    });
+
+    if (title && rawNorm.indexOf(title.replace(/[’']/g, "")) !== -1) score += 18;
+
+    // Token overlap — contentful tokens only
     for (var i = 0; i < tokens.length; i++) {
       var t = tokens[i];
-      if (hay.indexOf(t) !== -1) score += t.length > 4 ? 3 : 2;
+      if (id === t) score += 20;
+      else if (title.indexOf(t) !== -1) score += 10;
+      else if (hay.indexOf(t) !== -1) score += t.length > 5 ? 6 : 4;
     }
-    var low = raw.toLowerCase();
-    (entry.keywords || []).forEach(function (kw) {
-      if (kw.length > 3 && low.indexOf(String(kw).toLowerCase()) !== -1) score += 5;
-    });
+
+    // Prefer dedicated topic ids when distinctive token hits
+    if (tokens.indexOf("swarm") !== -1 && (id === "l3" || /swarm/.test(title) || /swarm/.test(kws.join(" "))))
+      score += 30;
+    if (tokens.indexOf("l3") !== -1 && id === "l3") score += 30;
+    if ((tokens.indexOf("install") !== -1 || tokens.indexOf("npx") !== -1) && id === "install")
+      score += 18;
+    if (tokens.indexOf("privacy") !== -1 || tokens.indexOf("uploaded") !== -1 || tokens.indexOf("upload") !== -1) {
+      if (id === "privacy") score += 18;
+    }
+
+    // Soft penalty for ultra-generic "what" page unless query is really about product identity
+    if (id === "what") {
+      var identity =
+        /\b(knosky|product|this tool|the tool|gps for)\b/.test(rawNorm) ||
+        rawNorm === "what is it" ||
+        rawNorm === "what is this";
+      if (!identity) score -= 8;
+    }
+
     return score;
   }
 
   function bestMatch(data, question) {
+    var rawNorm = normalize(question);
     var tokens = tokenize(question);
-    if (!tokens.length) return null;
+    if (!tokens.length && !rawNorm) return { entry: null, score: 0, second: 0 };
+
     var best = null;
-    var bestScore = 0;
+    var bestScore = -999;
+    var second = -999;
+
     (data.entries || []).forEach(function (e) {
-      var s = scoreEntry(e, tokens, question);
+      var s = scoreEntry(e, tokens, rawNorm);
       if (s > bestScore) {
+        second = bestScore;
         bestScore = s;
         best = e;
+      } else if (s > second) {
+        second = s;
       }
     });
-    if (bestScore < 3) return null;
-    return best;
+
+    return { entry: best, score: bestScore, second: second };
+  }
+
+  function isConfident(match) {
+    if (!match || !match.entry) return false;
+    // Need solid absolute score and enough separation from runner-up
+    if (match.score < 12) return false;
+    if (match.second > 0 && match.score - match.second < 4 && match.score < 20)
+      return false;
+    return true;
   }
 
   function wantsMoreDetail(q) {
-    var low = String(q || "").toLowerCase();
+    var low = normalize(q);
     return (
-      /\b(more detail|more technical|technical detail|go deeper|dig deeper|yes more|yes,? please|show tech|internals|under the hood|advanced)\b/.test(
+      /\b(more detail|more technical|technical detail|go deeper|dig deeper|yes more|yes please|show tech|internals|under the hood|advanced)\b/.test(
         low
       ) ||
       low === "yes" ||
@@ -106,23 +184,21 @@
   }
 
   function plainBody(entry) {
-      // Never fall back to technical blob for first answer
-      if (entry.simple) return entry.simple;
-      if (entry.answer) return entry.answer;
-      return "I have a short answer for that topic, but it’s missing from this FAQ file. Try Install or Docs.";
-    }
+    if (entry.simple) return entry.simple;
+    if (entry.answer) return entry.answer;
+    return "I have a short answer for that topic, but it’s missing from this FAQ file. Try Install or Docs.";
+  }
 
-    function techBody(entry) {
-      return entry.technical || "";
-    }
+  function techBody(entry) {
+    return entry.technical || "";
+  }
 
-    function bannedInSimple(text) {
-      var t = String(text || "");
-      // Rough guardrails — simple tier must not sound like eng security notes
-      return /single-operator|dual quorum|throwaway domain|FOUNDATION|swarm-safe fleet|ADVISORY_UNAUTH|leaseId|assertOperator|SECURITY\.md/i.test(
-        t
-      );
-    }
+  function bannedInSimple(text) {
+    var t = String(text || "");
+    return /single-operator|dual quorum|throwaway domain|FOUNDATION|swarm-safe fleet|ADVISORY_UNAUTH|leaseId|assertOperator|SECURITY\.md/i.test(
+      t
+    );
+  }
 
   function renderLinks(entry) {
     if (!entry.links || !entry.links.length) return "";
@@ -133,6 +209,18 @@
     });
     html += "</div>";
     return html;
+  }
+
+  function oosMessage(data, question) {
+    var chips = (data.chips || []).slice(0, 5).join(" · ");
+    return (
+      "I’m not sure I have a solid answer for **“" +
+      question +
+      "”** in this fellowship FAQ.\n\n" +
+      "I’m best at KnoSky topics like: install, what KnoSky is, what’s in the package, privacy, which tools work, Mode A vs B, and **what a swarm means here**.\n\n" +
+      (chips ? "Try a chip: " + chips + "\n\n" : "") +
+      "Or browse docs: https://knosky.wiki/ · https://www.knosky.com/install.html"
+    );
   }
 
   function mount(data) {
@@ -169,7 +257,7 @@
       '<div class="ks-ask-chips" role="list"></div>' +
       '<div class="ks-ask-log" aria-live="polite"></div>' +
       '<form class="ks-ask-form" autocomplete="off">' +
-      '<input type="text" name="q" maxlength="280" placeholder="e.g. What is L3 swarm?" aria-label="Your question" />' +
+      '<input type="text" name="q" maxlength="280" placeholder="e.g. What is a swarm?" aria-label="Your question" />' +
       '<button type="submit">Ask</button>' +
       "</form>" +
       '<div class="ks-ask-foot">Plain answers first · optional detail · no cloud chat</div>';
@@ -211,79 +299,75 @@
         return;
       }
       detailShownFor = entry.id;
-      var html =
-        "<strong>A bit more technical</strong><br/>" +
-        formatAnswer(tech) +
-        renderLinks(entry);
-      addMsg("bot", html);
+      addMsg(
+        "bot",
+        "<strong>A bit more detail</strong><br/>" +
+          formatAnswer(tech) +
+          renderLinks(entry)
+      );
     }
 
     function renderSimple(entry) {
-          lastEntry = entry;
-          detailShownFor = null;
-          var body = plainBody(entry);
-          if (bannedInSimple(body) && entry.simple) {
-            // Prefer incomplete plain over shipping internal jargon in tier-1 UI
-            body = entry.simple;
-          }
-          var html =
-            "<strong>" +
-            esc(entry.title || "Answer") +
-            "</strong><br/>" +
-            formatAnswer(body);
+      lastEntry = entry;
+      detailShownFor = null;
+      var body = plainBody(entry);
+      if (bannedInSimple(body) && entry.simple) body = entry.simple;
 
-          if (entry.links && entry.links.length) {
-            html += renderLinks(entry);
-          }
+      var html =
+        "<strong>" +
+        esc(entry.title || "Answer") +
+        "</strong><br/>" +
+        formatAnswer(body);
 
-          if (techBody(entry)) {
-            var prompt = data.more_detail_prompt || "Want a bit more detail?";
-            html +=
-              '<div class="ks-ask-detail-ask">' +
-              "<span>" +
-              esc(prompt) +
-              "</span>" +
-              '<div class="ks-ask-detail-btns">' +
-              '<button type="button" class="ks-ask-yes-detail">Yes, more detail</button>' +
-              '<button type="button" class="ks-ask-no-detail">No thanks</button>' +
-              "</div></div>";
-          }
+      if (entry.links && entry.links.length) html += renderLinks(entry);
 
-          var node = addMsg("bot", html);
-          var yes = node.querySelector(".ks-ask-yes-detail");
-          var no = node.querySelector(".ks-ask-no-detail");
-          if (yes) {
-            yes.addEventListener("click", function () {
-              yes.disabled = true;
-              if (no) no.disabled = true;
-              addMsg("user", esc("Yes, more detail"));
-              showTechnical(entry);
-            });
-          }
-          if (no) {
-            no.addEventListener("click", function () {
-              yes && (yes.disabled = true);
-              no.disabled = true;
-              addMsg(
-                "bot",
-                formatAnswer("OK — ask anything else whenever you’re ready.")
-              );
-            });
-          }
-        }
+      if (techBody(entry)) {
+        var prompt = data.more_detail_prompt || "Want a bit more detail?";
+        html +=
+          '<div class="ks-ask-detail-ask">' +
+          "<span>" +
+          esc(prompt) +
+          "</span>" +
+          '<div class="ks-ask-detail-btns">' +
+          '<button type="button" class="ks-ask-yes-detail">Yes, more detail</button>' +
+          '<button type="button" class="ks-ask-no-detail">No thanks</button>' +
+          "</div></div>";
+      }
+
+      var node = addMsg("bot", html);
+      var yes = node.querySelector(".ks-ask-yes-detail");
+      var no = node.querySelector(".ks-ask-no-detail");
+      if (yes) {
+        yes.addEventListener("click", function () {
+          yes.disabled = true;
+          if (no) no.disabled = true;
+          addMsg("user", esc("Yes, more detail"));
+          showTechnical(entry);
+        });
+      }
+      if (no) {
+        no.addEventListener("click", function () {
+          if (yes) yes.disabled = true;
+          no.disabled = true;
+          addMsg(
+            "bot",
+            formatAnswer("OK — ask anything else whenever you’re ready.")
+          );
+        });
+      }
+    }
 
     function ask(q) {
       q = String(q || "").trim();
       if (!q) return;
       addMsg("user", esc(q));
 
-      // Follow-up: more detail on last topic
       if (lastEntry && wantsMoreDetail(q)) {
         if (detailShownFor === lastEntry.id) {
           addMsg(
             "bot",
             formatAnswer(
-              "I already shared the technical note for that. Try another question, or open the links under the answer."
+              "I already shared the extra detail for that. Try another question, or open the links under the answer."
             ) + renderLinks(lastEntry)
           );
           return;
@@ -292,16 +376,23 @@
         return;
       }
 
-      var hit = bestMatch(data, q);
-      if (hit) renderSimple(hit);
-      else
-        addMsg(
-          "bot",
-          formatAnswer(
-            data.fallback ||
-              "Try: install, what is KnoSky, package, privacy, or L3 swarm."
-          )
-        );
+      var match = bestMatch(data, q);
+      if (isConfident(match)) {
+        renderSimple(match.entry);
+        return;
+      }
+
+      // Soft near-miss: if one topic clearly leads but under threshold, still take it when score is decent and separation exists
+      if (
+        match.entry &&
+        match.score >= 10 &&
+        match.score - Math.max(match.second, 0) >= 6
+      ) {
+        renderSimple(match.entry);
+        return;
+      }
+
+      addMsg("bot", formatAnswer(oosMessage(data, q)));
     }
 
     (data.chips || []).forEach(function (c) {
@@ -315,11 +406,11 @@
     });
 
     addMsg(
-          "bot",
-          formatAnswer(
-            "Hi — answers stay **simple first**. If you want depth, tap **Yes, more detail** or type **more detail**.\n\nPopular: install, what is KnoSky, what’s in the package, privacy, or **what is a swarm?**"
-          )
-        );
+      "bot",
+      formatAnswer(
+        "Hi — answers stay **simple first**. If you want depth, tap **Yes, more detail** or type **more detail**.\n\nPopular: install, what is KnoSky, what’s in the package, privacy, or **what is a swarm?**"
+      )
+    );
 
     fab.addEventListener("click", function () {
       setOpen(!panel.classList.contains("is-open"));
@@ -339,8 +430,7 @@
   }
 
   function boot() {
-    var url = ASSET_BASE + "ks-faq.json";
-    fetch(url, { credentials: "same-origin" })
+    fetch(FAQ_URL, { credentials: "same-origin", cache: "no-cache" })
       .then(function (r) {
         if (!r.ok) throw new Error("faq " + r.status);
         return r.json();
@@ -349,9 +439,10 @@
       .catch(function () {
         mount({
           greeting: "FAQ unavailable offline — open knosky.com / knosky.wiki.",
-          fallback: "See https://knosky.wiki/ and https://github.com/SathiaAI/knosky",
-          more_detail_prompt: "Want a bit more technical detail?",
-          chips: ["Install", "What is KnoSky?"],
+          fallback:
+            "See https://knosky.wiki/ and https://www.knosky.com/install.html",
+          more_detail_prompt: "Want a bit more detail?",
+          chips: ["How do I install?", "What is a swarm?"],
           entries: [
             {
               id: "install",
@@ -360,11 +451,26 @@
               simple:
                 "In your project folder run `npx knosky@latest .` (Node 20+). Builds a local map from your code.",
               technical:
-                "CLI from npm latest; writes local `.knosky` artifacts and can print MCP connect snippets.",
+                "Uses the published npm package and writes local map files under `.knosky/`.",
               links: [
                 {
                   label: "Install",
                   href: "https://www.knosky.com/install.html",
+                },
+              ],
+            },
+            {
+              id: "l3",
+              title: "What is a swarm? (L3)",
+              keywords: ["swarm", "l3", "multiple agents"],
+              simple:
+                "A swarm here means more than one AI helper on the same project. L3 is early traffic help so they collide less—not a finished multi-AI factory.",
+              technical:
+                "Optional multi-agent coordinator foundation on your machine. Not required for basic map + routing.",
+              links: [
+                {
+                  label: "Levels wiki",
+                  href: "https://knosky.wiki/wiki/govern/ladder.html",
                 },
               ],
             },
