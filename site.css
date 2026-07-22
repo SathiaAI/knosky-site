@@ -63,18 +63,20 @@ header.site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
-  gap: 16px;
+  min-height: 72px;
+  height: auto;
+  padding: 10px 0;
+  gap: 20px;
 }
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-weight: 700;
   color: var(--ink);
   flex-shrink: 0;
 }
-.brand img { width: 28px; height: 28px; border-radius: 8px; }
+.brand img { width: 40px; height: 40px; border-radius: 10px; }
 .nav-links {
   display: flex;
   gap: 18px;
@@ -633,10 +635,14 @@ header.is-open .nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rot
 }
 
 
-/* Brand kit lockup */
+/* Brand kit lockup — readable in header */
+.brand.brand-lockup {
+  margin-right: 8px;
+}
 .brand.brand-lockup img {
-  width: auto;
-  height: 28px;
-  border-radius: 0;
-  max-width: 150px;
+  width: auto !important;
+  height: 40px !important;
+  border-radius: 0 !important;
+  max-width: min(240px, 42vw);
+  display: block;
 }

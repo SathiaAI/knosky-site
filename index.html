@@ -71,9 +71,10 @@
       background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
     }
-    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; height: auto; padding: 10px 0; gap: 20px; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); }
-    .brand img { width: 28px; height: 28px; border-radius: 8px; }
+    .brand img { width: 40px; height: 40px; border-radius: 10px; }
+    .brand.brand-lockup img { width: auto !important; height: 40px !important; border-radius: 0 !important; max-width: min(240px, 42vw); display: block; }
     .nav-links { display: flex; gap: 20px; font-size: 14px; font-weight: 500; }
     .nav-cta { display: flex; align-items: center; gap: 14px; font-size: 14px; font-weight: 500; }
     .nav-cta .quiet { color: var(--muted); }
@@ -275,7 +276,7 @@
 
   <header id="siteHeader">
   <div class="wrap nav">
-    <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="28" style="height:28px;width:auto;display:block" /></a>
+    <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
     <nav class="nav-links" aria-label="Primary">
         <a href="why.html">Why</a>
         <a href="how-it-works.html">How</a>

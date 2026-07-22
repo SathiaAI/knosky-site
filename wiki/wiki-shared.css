@@ -83,12 +83,22 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
 .side .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 14px;
+  margin-bottom: 0;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  min-width: 0;
 }
-.side .brand img { border-radius: 8px; }
+.side .brand img {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  flex-shrink: 0;
+  display: block;
+}
 .side .brand .muted { color: var(--muted); font-weight: 600; }
 .gps-mark {
   display: flex;
@@ -97,7 +107,8 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   background: var(--mint-soft);
   border: 1px solid #bfe8d4;
   border-radius: 14px;
-  padding: 8px 10px;
+  padding: 10px 12px;
+  margin-top: 18px;
   margin-bottom: 18px;
   font-size: 12px;
   font-weight: 700;
@@ -427,8 +438,19 @@ footer.wiki-foot a { color: var(--mint-d); font-weight: 600; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-bottom: 4px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
 }
 .side-top .brand { margin-bottom: 0; }
+/* space brand row from GPS chip / nav panel */
+.side-panel {
+  padding-top: 4px;
+}
+.side-top + .side-panel > .gps-mark:first-child,
+.side-panel > .gps-mark:first-child {
+  margin-top: 14px;
+}
 .nav-toggle {
   display: none;
   align-items: center;
