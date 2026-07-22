@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Install — knosky.wiki</title>
+  <title>Cursor pack — knosky.wiki</title>
   <link rel="icon" href="../assets/favicon-32.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../wiki-shared.css" />
@@ -52,7 +52,7 @@
         <nav>
 
         <a href="../packs/claude-code.html">Claude Code · P0</a>
-        <a href="../packs/cursor.html">Cursor · P0</a>
+        <a href="../packs/cursor.html" class="active">Cursor · P0</a>
         <a href="../packs/codex.html">Codex · P0</a>
         <a href="../packs/hermes.html">Hermes · P0</a>
 
@@ -71,29 +71,60 @@
     </aside>
     <div class="main-col">
       <header class="top">
-        <div class="crumbs">Wiki / Install</div>
+        <div class="crumbs">Wiki / Packs / Cursor</div>
         <div class="top-actions">
           <span class="chip mint">claims ≤ doctor</span>
           <a class="btn btn-coral" href="https://www.knosky.com/install.html">Try it free</a>
         </div>
       </header>
       <article class="content">
-        <h1>Install</h1>
+        <h1>Cursor pack</h1>
         
-    <p class="lede">Chooser: one-liner first, then a single pack. No account wall.</p>
+    <p class="lede">P0 consumer pack for <strong>Cursor</strong> — command-first. Full stub detail lives in the product repo; this page is the wiki path to try today.</p>
+    <div class="maturity"><strong>Honesty:</strong> coding profile tools only — <strong>no</strong> audit tools. Do <strong>not</strong> claim swarm-safe or L3 production from this pack alone. Ceiling = <code>knosky doctor</code>.</div>
+
+    <h2>1 · Map locally</h2>
     <div class="dock"><code>npx knosky .</code>
       <button class="btn btn-mint" type="button" onclick="navigator.clipboard.writeText('npx knosky .')">Copy</button>
     </div>
-    <p class="hint">Node 20+ · local folder. Until npm publishes 0.7 Mode B, prefer clone of <code>main</code> for latest, or install from a release tarball.</p>
-    <h2>Packs (Wave 1 P0)</h2>
-    <div class="card-grid">
-      <a class="clay pack" href="../packs/claude-code.html"><span class="meta">P0</span><h3>Claude Code</h3><p>MCP pack</p></a>
-      <a class="clay pack" href="../packs/cursor.html"><span class="meta">P0</span><h3>Cursor</h3><p>MCP JSON</p></a>
-      <a class="clay pack" href="../packs/codex.html"><span class="meta">P0</span><h3>Codex</h3><p>CLI MCP</p></a>
-      <a class="clay pack" href="../packs/hermes.html"><span class="meta">P0</span><h3>Hermes</h3><p>MCP + skill</p></a>
+    <p class="hint"><strong>Node 20+</strong> · current folder · local-first. Produces <code>.knosky/city-data.json</code> (and city.html).</p>
+    <p class="muted">Note: registry <code>npx knosky</code> may still resolve an older package until npm publishes 0.7 Mode B. Clone/main path always works.</p>
+
+    <h2>2 · Mode B lease (governed tools)</h2>
+    <pre class="snippet">node bin/knosky.mjs agent-register --domain .knosky --agent cursor-local --role coder</pre>
+    <p>Pass the returned <code>leaseId</code> into <code>kc_route</code> / <code>kc_policy_check</code> / <code>kc_bundle</code>. Bare <code>agentId</code> cannot mint identity.</p>
+
+    <h2>3 · MCP config</h2>
+    <p>Point your host at <code>mcp/server.mjs</code> with absolute paths:</p>
+    <pre class="snippet">{
+  "mcpServers": {
+    "knosky": {
+      "command": "node",
+      "args": ["ABS/PATH/TO/knosky/mcp/server.mjs"],
+      "env": {
+        "KC_CITY": "ABS/PATH/TO/.knosky/city-data.json",
+        "KC_PROFILE": "coding"
+      }
+    }
+  }
+}</pre>
+    <p>Paste JSON into Cursor MCP settings (UI or project <code>.cursor/mcp.json</code> — location varies by version).</p>
+    <p>Coding path tools (SSOT): Tier0 map + Tier1 <code>kc_route</code>, <code>kc_bundle</code>, <code>kc_policy_check</code>. Not on coding: audit tools.</p>
+
+    <h2>4 · Prove a route</h2>
+    <pre class="snippet">Using KnoSky, route me to where authentication or billing is implemented.
+Prefer a guided path — not a free monorepo walk. Use Mode B if leased.</pre>
+
+    <h2>5 · Claim ceiling</h2>
+    <div class="dock"><code>npx knosky doctor</code></div>
+    <p class="muted">L3 multi-agent = <strong>foundation module</strong> unless doctor reports full L3 green for this domain. Windows: do not claim kernel no-egress if doctor warns.</p>
+
+    <div class="next">
+      <a class="btn btn-coral" href="https://github.com/SathiaAI/knosky/tree/main/packs/cursor">Pack on GitHub</a>
+      <a class="btn btn-ghost" href="../start-here.html">Start here</a>
+      <a class="btn btn-ghost" href="../protocol/mode-a-vs-b.html">Mode A vs B</a>
     </div>
-    <div class="maturity" style="margin-top:18px">Mode B: <code>agent-register</code> → pass <code>leaseId</code>. Domain parent should match <code>KC_CITY</code>.</div>
-    
+
       </article>
     </div>
   </div>

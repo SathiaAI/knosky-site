@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Install — knosky.wiki</title>
+  <title>Trust & privacy — knosky.wiki</title>
   <link rel="icon" href="../assets/favicon-32.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../wiki-shared.css" />
@@ -60,7 +60,7 @@
         <p class="side-label">Govern</p>
         <nav>
           <a href="../govern/ladder.html">Ladder L0–L3</a>
-          <a href="../govern/trust.html">Trust / privacy</a>
+          <a href="../govern/trust.html" class="active">Trust / privacy</a>
         </nav>
         <div class="side-foot">
           <a class="btn btn-coral btn-block" href="https://www.knosky.com/install.html">Try it free</a>
@@ -71,28 +71,33 @@
     </aside>
     <div class="main-col">
       <header class="top">
-        <div class="crumbs">Wiki / Install</div>
+        <div class="crumbs">Wiki / Govern / Trust</div>
         <div class="top-actions">
           <span class="chip mint">claims ≤ doctor</span>
           <a class="btn btn-coral" href="https://www.knosky.com/install.html">Try it free</a>
         </div>
       </header>
       <article class="content">
-        <h1>Install</h1>
+        <h1>Trust & privacy</h1>
         
-    <p class="lede">Chooser: one-liner first, then a single pack. No account wall.</p>
-    <div class="dock"><code>npx knosky .</code>
-      <button class="btn btn-mint" type="button" onclick="navigator.clipboard.writeText('npx knosky .')">Copy</button>
+    <p class="lede">Local-first by design. No KnoSky hosted body-store of your source in Wave 1.</p>
+    <div class="clay">
+      <h3>What leaves the machine</h3>
+      <ul style="margin:8px 0 0 18px">
+        <li>Default path: map stays local; no always-on product telemetry (DEC-114).</li>
+        <li>You choose when to share a city/artifact — review first.</li>
+        <li>Windows: doctor must not be used to claim kernel no-egress until packaging proves it.</li>
+      </ul>
     </div>
-    <p class="hint">Node 20+ · local folder. Until npm publishes 0.7 Mode B, prefer clone of <code>main</code> for latest, or install from a release tarball.</p>
-    <h2>Packs (Wave 1 P0)</h2>
-    <div class="card-grid">
-      <a class="clay pack" href="../packs/claude-code.html"><span class="meta">P0</span><h3>Claude Code</h3><p>MCP pack</p></a>
-      <a class="clay pack" href="../packs/cursor.html"><span class="meta">P0</span><h3>Cursor</h3><p>MCP JSON</p></a>
-      <a class="clay pack" href="../packs/codex.html"><span class="meta">P0</span><h3>Codex</h3><p>CLI MCP</p></a>
-      <a class="clay pack" href="../packs/hermes.html"><span class="meta">P0</span><h3>Hermes</h3><p>MCP + skill</p></a>
+    <div class="clay" style="margin-top:12px">
+      <h3>Claim ceiling</h3>
+      <p>Public wording ≤ <code>knosky doctor</code> on that install. L3 coordinator modules on disk ≠ “swarm-safe fleet everywhere.”</p>
     </div>
-    <div class="maturity" style="margin-top:18px">Mode B: <code>agent-register</code> → pass <code>leaseId</code>. Domain parent should match <code>KC_CITY</code>.</div>
+    <div class="next">
+      <a class="btn btn-coral" href="https://github.com/SathiaAI/knosky/blob/main/PRIVACY.md">PRIVACY.md</a>
+      <a class="btn btn-ghost" href="https://github.com/SathiaAI/knosky/blob/main/SECURITY.md">SECURITY.md</a>
+      <a class="btn btn-ghost" href="ladder.html">Ladder</a>
+    </div>
     
       </article>
     </div>

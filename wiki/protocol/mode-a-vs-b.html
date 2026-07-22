@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Install — knosky.wiki</title>
+  <title>Mode A vs Mode B — knosky.wiki</title>
   <link rel="icon" href="../assets/favicon-32.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../wiki-shared.css" />
@@ -46,7 +46,7 @@
         <p class="side-label">Protocol</p>
         <nav>
           <a href="../protocol/overview.html">Overview</a>
-          <a href="../protocol/mode-a-vs-b.html">Mode A vs B</a>
+          <a href="../protocol/mode-a-vs-b.html" class="active">Mode A vs B</a>
         </nav>
         <p class="side-label">Packs</p>
         <nav>
@@ -71,28 +71,31 @@
     </aside>
     <div class="main-col">
       <header class="top">
-        <div class="crumbs">Wiki / Install</div>
+        <div class="crumbs">Wiki / Protocol / Mode A vs B</div>
         <div class="top-actions">
           <span class="chip mint">claims ≤ doctor</span>
           <a class="btn btn-coral" href="https://www.knosky.com/install.html">Try it free</a>
         </div>
       </header>
       <article class="content">
-        <h1>Install</h1>
+        <h1>Mode A vs Mode B</h1>
         
-    <p class="lede">Chooser: one-liner first, then a single pack. No account wall.</p>
-    <div class="dock"><code>npx knosky .</code>
-      <button class="btn btn-mint" type="button" onclick="navigator.clipboard.writeText('npx knosky .')">Copy</button>
+    <p class="lede">Two speeds on the same GPS. The mode label is part of the product honesty.</p>
+    <div class="split">
+      <div class="clay">
+        <h3 class="good">Mode A — advisory</h3>
+        <p>Map tips labeled <code>ADVISORY_UNAUTH</code>. Not policy-certified. Not swarm-safe. Use via <code>KC_PROFILE=advisory</code> or advisory flag on dual-mode route.</p>
+      </div>
+      <div class="clay">
+        <h3>Mode B — governed</h3>
+        <p>Identity (lease) + policy + audit receipt on <strong>ALLOW</strong>, or a useful <strong>DENY_*</strong>. Default for coding profile governed tools.</p>
+      </div>
     </div>
-    <p class="hint">Node 20+ · local folder. Until npm publishes 0.7 Mode B, prefer clone of <code>main</code> for latest, or install from a release tarball.</p>
-    <h2>Packs (Wave 1 P0)</h2>
-    <div class="card-grid">
-      <a class="clay pack" href="../packs/claude-code.html"><span class="meta">P0</span><h3>Claude Code</h3><p>MCP pack</p></a>
-      <a class="clay pack" href="../packs/cursor.html"><span class="meta">P0</span><h3>Cursor</h3><p>MCP JSON</p></a>
-      <a class="clay pack" href="../packs/codex.html"><span class="meta">P0</span><h3>Codex</h3><p>CLI MCP</p></a>
-      <a class="clay pack" href="../packs/hermes.html"><span class="meta">P0</span><h3>Hermes</h3><p>MCP + skill</p></a>
+    <div class="maturity" style="margin-top:16px">Never market Mode A as “authorized.” Never claim Mode B success without a lease when the install is secured.</div>
+    <div class="next">
+      <a class="btn btn-coral" href="../start-here.html">Start here</a>
+      <a class="btn btn-ghost" href="../govern/ladder.html">Ladder</a>
     </div>
-    <div class="maturity" style="margin-top:18px">Mode B: <code>agent-register</code> → pass <code>leaseId</code>. Domain parent should match <code>KC_CITY</code>.</div>
     
       </article>
     </div>
