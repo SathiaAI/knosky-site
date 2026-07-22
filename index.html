@@ -257,6 +257,7 @@
     }
 
   </style>
+  <link rel="stylesheet" href="assets/ks-ask.css" />
 </head>
 <body>
   <aside class="agent-rail" data-ai="product-summary" aria-label="Quick facts">
@@ -280,6 +281,7 @@
     <nav class="nav-links" aria-label="Primary">
         <a href="why.html">Why</a>
         <a href="how-it-works.html">How</a>
+        <a href="#package">Package</a>
         <a href="use-cases.html">Use cases</a>
         <a href="compare.html">Compare</a>
         <a href="#skin">City</a>
@@ -297,6 +299,7 @@
     <div class="wrap">
       <a href="why.html">Why</a>
         <a href="how-it-works.html">How</a>
+        <a href="#package">Package</a>
         <a href="use-cases.html">Use cases</a>
         <a href="compare.html">Compare</a>
         <a href="#skin">City</a>
@@ -407,6 +410,138 @@
       </div>
     </section>
 
+
+    <!-- What's in the package -->
+    <section class="pkg-showcase band-sand" id="package">
+      <div class="wrap">
+        <div class="pkg-intro">
+          <div>
+            <div class="pkg-kicker">What's in the box</div>
+            <h2>Everything that ships with KnoSky</h2>
+            <p class="section-lede" style="margin:10px 0 0;max-width:40em">
+              One local protocol for <strong>map to route to optional receipt</strong> —
+              not a mystery AI platform. Here is the open-source package Wave 1 actually includes.
+            </p>
+          </div>
+          <a class="btn btn-ghost" href="https://github.com/SathiaAI/knosky">See package on GitHub</a>
+        </div>
+
+        <div class="pkg-grid">
+          <div class="pkg-card featured">
+            <div class="pkg-icon">1</div>
+            <h3>Local maze map</h3>
+            <p>Indexer turns repos and docs into a navigable graph on <strong>your machine</strong>.</p>
+            <ul>
+              <li>Districts and buildings from folders/files</li>
+              <li>Share-safe / fail-closed secret scan options</li>
+              <li><code>npx knosky@latest .</code></li>
+            </ul>
+            <span class="tag">L0 map</span>
+          </div>
+          <div class="pkg-card">
+            <div class="pkg-icon">2</div>
+            <h3>City HTML (human skin)</h3>
+            <p>Isometric city so people can walk the same map agents route through.</p>
+            <ul>
+              <li>Not the agent GPS hero metaphor</li>
+              <li>Self-contained city file</li>
+              <li>Teammate-shareable picture of the system</li>
+            </ul>
+            <span class="tag">Human skin</span>
+          </div>
+          <div class="pkg-card featured">
+            <div class="pkg-icon">3</div>
+            <h3>MCP GPS tools</h3>
+            <p>One frozen menu assistants share — search, route, bundle, policy check.</p>
+            <ul>
+              <li>Tier 0 map tools</li>
+              <li>Tier 1 governed route tools</li>
+              <li>Security profile: audit query / verify</li>
+            </ul>
+            <span class="tag">DEC-108 menu</span>
+          </div>
+          <div class="pkg-card">
+            <div class="pkg-icon">4</div>
+            <h3>Mode A and Mode B</h3>
+            <p>Advisory tips or identity + policy + audit receipts.</p>
+            <ul>
+              <li>Mode A: labeled <code>ADVISORY_UNAUTH</code></li>
+              <li>Mode B: <code>ALLOW</code> / <code>DENY_*</code> + lease</li>
+              <li><code>agent-register</code> mints leaseId</li>
+            </ul>
+            <span class="tag">L2 governed</span>
+          </div>
+          <div class="pkg-card">
+            <div class="pkg-icon">5</div>
+            <h3>Assistant packs</h3>
+            <p>Wire once, same GPS across tools you already use.</p>
+            <ul>
+              <li>P0: Claude Code, Cursor, Codex, Hermes</li>
+              <li>P1: VS Code, Greptile recipe, GHA PR-GPS</li>
+              <li>Coding packs omit audit tools on purpose</li>
+            </ul>
+            <span class="tag">Wave 1 packs</span>
+          </div>
+          <div class="pkg-card">
+            <div class="pkg-icon">6</div>
+            <h3>Doctor and claim ceiling</h3>
+            <p>Know what you may honestly say for <em>this</em> install.</p>
+            <ul>
+              <li><code>knosky doctor</code> scorecard</li>
+              <li>Ladder L0 to L3 honesty</li>
+              <li>Windows lockdown realism</li>
+            </ul>
+            <span class="tag">Truth layer</span>
+          </div>
+          <div class="pkg-card coralish">
+            <div class="pkg-icon" style="background:#ffe0d6;color:#e84428">7</div>
+            <h3>L3 swarm foundation</h3>
+            <p>Local multi-agent coordinator — leases, claims, quotas, heatmap, bench.</p>
+            <ul>
+              <li>Not multi-tenant cloud fleet product</li>
+              <li>Not swarm-safe everywhere marketing</li>
+              <li>Doctor: FOUNDATION present</li>
+            </ul>
+            <span class="tag">L3 foundation</span>
+          </div>
+          <div class="pkg-card">
+            <div class="pkg-icon">8</div>
+            <h3>PR-GPS Action</h3>
+            <p>Advisory navigation comments on pull requests.</p>
+            <ul>
+              <li><strong>Never blocks</strong> the build by default</li>
+              <li>Structure/import hints — not a body store</li>
+            </ul>
+            <span class="tag">GitHub Action</span>
+          </div>
+          <div class="pkg-card">
+            <div class="pkg-icon">9</div>
+            <h3>SSOT and docs rails</h3>
+            <p>Tool menu, decision codes, ladder, wiki, llms.txt.</p>
+            <ul>
+              <li>knosky.com and knosky.wiki</li>
+              <li>Agent-readable product summary</li>
+              <li>Open protocol under FSL-1.1-MIT</li>
+            </ul>
+            <span class="tag">Docs and SSOT</span>
+          </div>
+        </div>
+
+        <div class="pkg-not">
+          <strong>Not in the box:</strong>
+          a coding model, a hosted vault of your source, always-on product telemetry,
+          or a promise of production swarm-safe fleets on every laptop.
+          Those are either non-goals or later packaging/DEC work —
+          public copy stays within <code>doctor</code> on that install.
+        </div>
+        <div class="pkg-actions">
+          <a class="btn btn-coral" href="install.html">Try it free</a>
+          <a class="btn btn-ghost" href="https://knosky.wiki/wiki/start-here.html">10-minute start</a>
+          <a class="btn btn-ghost" href="works-with.html">Works with</a>
+        </div>
+      </div>
+    </section>
+
     <!-- CITY = human skin only, separate band -->
     <section id="skin" class="band-sand">
       <div class="wrap city-band">
@@ -495,5 +630,6 @@
 })();
 </script>
 
+  <script src="assets/ks-ask.js" defer></script>
 </body>
 </html>
