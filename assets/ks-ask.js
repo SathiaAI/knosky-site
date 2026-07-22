@@ -115,7 +115,12 @@
     fab.type = "button";
     fab.setAttribute("aria-haspopup", "dialog");
     fab.setAttribute("aria-expanded", "false");
-    fab.innerHTML = '<span class="ks-ask-fab-ico" aria-hidden="true">?</span><span>Ask KnoSky</span>';
+    fab.innerHTML =
+      '<span class="ks-ask-fab-ico" aria-hidden="true">' +
+      '<img src="' +
+      ASSET_BASE +
+      'logo-mark.png" width="22" height="22" alt="" />' +
+      "</span><span>Ask KnoSky</span>";
 
     var panel = el("div", "ks-ask-panel");
     panel.setAttribute("role", "dialog");
