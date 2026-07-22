@@ -1,6 +1,6 @@
 /**
  * Ask KnoSky — client-side NL FAQ (no LLM / no egress).
- * Scores keyword overlap against assets/ks-faq.json.
+ * Plain-English first; optional technical detail on request.
  */
 (function () {
   "use strict";
@@ -8,32 +8,9 @@
   var ROOT_ID = "ks-ask-root";
   if (document.getElementById(ROOT_ID)) return;
 
-  function resolveAssetBase() {
-    var scripts = document.getElementsByTagName("script");
-    for (var i = scripts.length - 1; i >= 0; i--) {
-      var s = scripts[i].getAttribute("src") || "";
-      if (s.indexOf("ks-ask.js") !== -1) {
-        return s.replace(/ks-ask\.js(?:\?.*)?$/, "");
-      }
-    }
-    // fallbacks
-    if (location.pathname.indexOf("/wiki") === 0 || location.hostname.indexOf("knosky.wiki") !== -1) {
-      if (location.pathname.indexOf("/wiki/") !== -1) {
-        // under /wiki/...
-        var depth = location.pathname.replace(/^\/wiki\/?/, "").split("/").filter(Boolean).length;
-        // page in /wiki/ → assets at /wiki/assets or site /assets
-        return depth <= 1 ? "assets/".replace(/^/, "../assets/").replace("../assets/", "/assets/") : "/assets/";
-      }
-      return "/assets/";
-    }
-    return "assets/";
-  }
-
-  // Prefer absolute site assets for dual-host deploy
   var ASSET_BASE = (function () {
     if (location.hostname.indexOf("knosky.wiki") !== -1) return "/assets/";
     if (location.hostname.indexOf("knosky.com") !== -1) return "/assets/";
-    // local file or preview: relative to script
     var scripts = document.getElementsByTagName("script");
     for (var i = scripts.length - 1; i >= 0; i--) {
       var s = scripts[i].getAttribute("src") || "";
@@ -58,10 +35,13 @@
   }
 
   function formatAnswer(text) {
-    var parts = String(text).split(/`([^`]+)`/g);
+    var parts = String(text || "").split(/`([^`]+)`/g);
     var out = "";
     for (var i = 0; i < parts.length; i++) {
-      out += i % 2 === 1 ? "<code>" + esc(parts[i]) + "</code>" : esc(parts[i]).replace(/\n/g, "<br/>");
+      out +=
+        i % 2 === 1
+          ? "<code>" + esc(parts[i]) + "</code>"
+          : esc(parts[i]).replace(/\n/g, "<br/>");
     }
     return out;
   }
@@ -78,15 +58,17 @@
 
   function scoreEntry(entry, tokens, raw) {
     var score = 0;
-    var hay = (entry.keywords || []).concat([entry.title || "", entry.id || ""]).join(" ").toLowerCase();
+    var hay = (entry.keywords || [])
+      .concat([entry.title || "", entry.id || "", entry.simple || "", entry.answer || ""])
+      .join(" ")
+      .toLowerCase();
     for (var i = 0; i < tokens.length; i++) {
       var t = tokens[i];
       if (hay.indexOf(t) !== -1) score += t.length > 4 ? 3 : 2;
     }
-    // phrase bonuses
     var low = raw.toLowerCase();
     (entry.keywords || []).forEach(function (kw) {
-      if (kw.length > 3 && low.indexOf(kw.toLowerCase()) !== -1) score += 5;
+      if (kw.length > 3 && low.indexOf(String(kw).toLowerCase()) !== -1) score += 5;
     });
     return score;
   }
@@ -107,9 +89,47 @@
     return best;
   }
 
+  function wantsMoreDetail(q) {
+    var low = String(q || "").toLowerCase();
+    return (
+      /\b(more detail|more technical|technical detail|go deeper|dig deeper|yes more|yes,? please|show tech|internals|under the hood|advanced)\b/.test(
+        low
+      ) ||
+      low === "yes" ||
+      low === "y" ||
+      low === "more" ||
+      low === "details" ||
+      low === "detail" ||
+      low === "tech" ||
+      low === "technical"
+    );
+  }
+
+  function plainBody(entry) {
+    return entry.simple || entry.answer || "";
+  }
+
+  function techBody(entry) {
+    return entry.technical || "";
+  }
+
+  function renderLinks(entry) {
+    if (!entry.links || !entry.links.length) return "";
+    var html = '<div class="ks-ask-more">';
+    entry.links.forEach(function (L, idx) {
+      if (idx) html += " · ";
+      html += '<a href="' + esc(L.href) + '">' + esc(L.label || L.href) + "</a>";
+    });
+    html += "</div>";
+    return html;
+  }
+
   function mount(data) {
     var root = el("div", "ks-ask-root");
     root.id = ROOT_ID;
+
+    var lastEntry = null;
+    var detailShownFor = null;
 
     var fab = el("button", "ks-ask-fab");
     fab.type = "button";
@@ -128,17 +148,20 @@
     panel.innerHTML =
       '<div class="ks-ask-head">' +
       "<div><h2>Ask KnoSky</h2><p>" +
-      esc(data.greeting || "FAQ about install, packs, Mode B, and more.") +
+      esc(
+        data.greeting ||
+          "Plain English first. You can ask for more detail anytime."
+      ) +
       "</p></div>" +
       '<button type="button" class="ks-ask-x" aria-label="Close">×</button>' +
       "</div>" +
       '<div class="ks-ask-chips" role="list"></div>' +
       '<div class="ks-ask-log" aria-live="polite"></div>' +
       '<form class="ks-ask-form" autocomplete="off">' +
-      '<input type="text" name="q" maxlength="280" placeholder="e.g. How do I install?" aria-label="Your question" />' +
+      '<input type="text" name="q" maxlength="280" placeholder="e.g. What is L3 swarm?" aria-label="Your question" />' +
       '<button type="submit">Ask</button>' +
       "</form>" +
-      '<div class="ks-ask-foot">On-page FAQ · no account · answers from published KnoSky docs</div>';
+      '<div class="ks-ask-foot">Plain answers first · optional detail · no cloud chat</div>';
 
     root.appendChild(panel);
     root.appendChild(fab);
@@ -161,28 +184,110 @@
       m.innerHTML = html;
       log.appendChild(m);
       log.scrollTop = log.scrollHeight;
+      return m;
     }
 
-    function renderEntry(entry) {
-      var html = "<strong>" + esc(entry.title || "Answer") + "</strong><br/>" + formatAnswer(entry.answer || "");
-      if (entry.links && entry.links.length) {
-        html += '<div class="ks-ask-more">';
-        entry.links.forEach(function (L, idx) {
-          if (idx) html += " · ";
-          html += '<a href="' + esc(L.href) + '">' + esc(L.label || L.href) + "</a>";
-        });
-        html += "</div>";
+    function showTechnical(entry) {
+      if (!entry) return;
+      var tech = techBody(entry);
+      if (!tech) {
+        addMsg(
+          "bot",
+          formatAnswer(
+            "That’s already the full plain answer. These links go deeper if you want:"
+          ) + renderLinks(entry)
+        );
+        return;
       }
+      detailShownFor = entry.id;
+      var html =
+        "<strong>A bit more technical</strong><br/>" +
+        formatAnswer(tech) +
+        renderLinks(entry);
       addMsg("bot", html);
+    }
+
+    function renderSimple(entry) {
+      lastEntry = entry;
+      detailShownFor = null;
+      var body = plainBody(entry);
+      var html =
+        "<strong>" +
+        esc(entry.title || "Answer") +
+        "</strong><br/>" +
+        formatAnswer(body);
+
+      if (entry.links && entry.links.length) {
+        html += renderLinks(entry);
+      }
+
+      if (techBody(entry)) {
+        var prompt =
+          data.more_detail_prompt || "Want a bit more technical detail?";
+        html +=
+          '<div class="ks-ask-detail-ask">' +
+          "<span>" +
+          esc(prompt) +
+          "</span>" +
+          '<div class="ks-ask-detail-btns">' +
+          '<button type="button" class="ks-ask-yes-detail">Yes, more detail</button>' +
+          '<button type="button" class="ks-ask-no-detail">No thanks</button>' +
+          "</div></div>";
+      }
+
+      var node = addMsg("bot", html);
+      var yes = node.querySelector(".ks-ask-yes-detail");
+      var no = node.querySelector(".ks-ask-no-detail");
+      if (yes) {
+        yes.addEventListener("click", function () {
+          yes.disabled = true;
+          if (no) no.disabled = true;
+          addMsg("user", esc("Yes, more detail"));
+          showTechnical(entry);
+        });
+      }
+      if (no) {
+        no.addEventListener("click", function () {
+          yes && (yes.disabled = true);
+          no.disabled = true;
+          addMsg(
+            "bot",
+            formatAnswer("OK — ask anything else whenever you’re ready.")
+          );
+        });
+      }
     }
 
     function ask(q) {
       q = String(q || "").trim();
       if (!q) return;
       addMsg("user", esc(q));
+
+      // Follow-up: more detail on last topic
+      if (lastEntry && wantsMoreDetail(q)) {
+        if (detailShownFor === lastEntry.id) {
+          addMsg(
+            "bot",
+            formatAnswer(
+              "I already shared the technical note for that. Try another question, or open the links under the answer."
+            ) + renderLinks(lastEntry)
+          );
+          return;
+        }
+        showTechnical(lastEntry);
+        return;
+      }
+
       var hit = bestMatch(data, q);
-      if (hit) renderEntry(hit);
-      else addMsg("bot", formatAnswer(data.fallback || "Try install, Mode B, packs, or package."));
+      if (hit) renderSimple(hit);
+      else
+        addMsg(
+          "bot",
+          formatAnswer(
+            data.fallback ||
+              "Try: install, what is KnoSky, package, privacy, or L3 swarm."
+          )
+        );
     }
 
     (data.chips || []).forEach(function (c) {
@@ -195,11 +300,10 @@
       chips.appendChild(b);
     });
 
-    // welcome
     addMsg(
       "bot",
       formatAnswer(
-        "Hi — ask in plain English. Popular: **what’s in the package**, install, Mode A/B, packs, privacy, L3."
+        "Hi — I’ll answer in **plain English** first. If you want depth, say **more detail** or tap the button.\n\nTry: install, what is KnoSky, what’s in the package, privacy, or **what is L3 swarm**."
       )
     );
 
@@ -229,24 +333,33 @@
       })
       .then(mount)
       .catch(function () {
-        // hard-coded minimal fallback if fetch blocked (file://)
         mount({
           greeting: "FAQ unavailable offline — open knosky.com / knosky.wiki.",
           fallback: "See https://knosky.wiki/ and https://github.com/SathiaAI/knosky",
-          chips: ["Install", "Docs"],
+          more_detail_prompt: "Want a bit more technical detail?",
+          chips: ["Install", "What is KnoSky?"],
           entries: [
             {
               id: "install",
               title: "Install",
               keywords: ["install", "npx"],
-              answer: "Run `npx knosky@latest .` with Node 20+.",
-              links: [{ label: "Install", href: "https://www.knosky.com/install.html" }],
+              simple:
+                "In your project folder run `npx knosky@latest .` (Node 20+). Builds a local map from your code.",
+              technical:
+                "CLI from npm latest; writes local `.knosky` artifacts and can print MCP connect snippets.",
+              links: [
+                {
+                  label: "Install",
+                  href: "https://www.knosky.com/install.html",
+                },
+              ],
             },
           ],
         });
       });
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  if (document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", boot);
   else boot();
 })();

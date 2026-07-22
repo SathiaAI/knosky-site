@@ -270,6 +270,47 @@
   font-size: 12px;
   color: var(--ks-muted);
 }
+.ks-ask-detail-ask {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ks-line);
+  font-size: 12.5px;
+  color: var(--ks-body);
+}
+.ks-ask-detail-ask > span {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--ks-ink);
+}
+.ks-ask-detail-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ks-ask-detail-btns button {
+  border-radius: 999px;
+  border: 1px solid var(--ks-line);
+  background: #fff;
+  color: var(--ks-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.ks-ask-detail-btns button.ks-ask-yes-detail {
+  background: var(--ks-mint-soft);
+  border-color: #bfe8d4;
+  color: var(--ks-mint-d);
+}
+.ks-ask-detail-btns button:hover {
+  border-color: var(--ks-mint);
+}
+.ks-ask-detail-btns button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
 .ks-ask-form {
   display: flex;
   gap: 8px;
