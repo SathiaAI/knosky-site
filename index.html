@@ -159,8 +159,14 @@
     .stage-note { display: none; }
     .hud-strip { display: none; }
     .hero-caption {
-      text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px;
-    }
+          /* Keep class for potential lit captions elsewhere; GPS hero uses sr-only */
+          text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px;
+        }
+        .sr-only {
+          position: absolute !important; width: 1px !important; height: 1px !important;
+          padding: 0 !important; margin: -1px !important; overflow: hidden !important;
+          clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important;
+        }
 
 
     /* rest of page */
@@ -333,16 +339,18 @@
       </div>
 
       <div class="hero-figure-wrap">
-        <figure class="gps-stage" aria-labelledby="gps-cap">
+        <figure class="gps-stage">
           <img
             class="gps-hero-img"
             src="assets/hero-gps-infographic.png"
             width="1920"
             height="1080"
-            alt="Large infographic: circular KnoSky GPS navigation hub (compass ring, not a diamond) at the center of a boundless knowledge field of documents and code. Multi-agent paths in mint reach the right files; coral thrash paths die out. Shared protocol for all agents."
+            alt="Circular KnoSky GPS hub: multi-agent mint routes reach the right files across a knowledge field; coral thrash paths fade out. Compass-ring hub, not a diamond."
           />
+          <figcaption class="hero-caption sr-only" id="gps-cap">
+            Circular GPS hub infographic for agent routing. Decorative large hero; product is GPS for AI agents.
+          </figcaption>
         </figure>
-        <p class="hero-caption" id="gps-cap">Large view · circular GPS hub (not a crystal) · multi-agent routes across a boundless knowledge field · thrash contrast on the edge</p>
       </div>
     </div>
 
