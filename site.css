@@ -556,13 +556,76 @@ p a.inline,
   text-decoration: underline;
 }
 
+
+/* Mobile header hamburger */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--elev, #fff);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+}
+.nav-toggle-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 18px;
+}
+.nav-toggle-bars i {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform .15s ease, opacity .15s ease;
+}
+header.is-open .nav-toggle-bars i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+header.is-open .nav-toggle-bars i:nth-child(2) { opacity: 0; }
+header.is-open .nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.nav-panel-mobile { display: none; }
+
 @media (max-width: 920px) {
-  .nav-links { display: none; }
+  .nav-toggle { display: inline-flex; }
+  .nav-links,
+  .nav-cta .quiet { display: none; }
+  header.site-header,
+  header {
+    position: sticky;
+  }
+  /* Dropdown panel under header row */
+  .nav-panel-mobile {
+    display: none;
+    border-top: 1px solid var(--line);
+    background: rgba(255,255,255,.98);
+    padding: 10px 0 14px;
+  }
+  header.is-open .nav-panel-mobile { display: block; }
+  .nav-panel-mobile .wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nav-panel-mobile a {
+    display: block;
+    padding: 12px 4px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    border-radius: 10px;
+  }
+  .nav-panel-mobile a:hover { background: var(--bg-warm, #FFF1E4); }
+  .nav-panel-mobile .btn { width: 100%; margin-top: 8px; }
   .grid-4, .grid-3, .grid-2, .stats, .city-band, .foot-grid {
     grid-template-columns: 1fr;
   }
   .gps-hero-img { min-height: 260px; max-height: none; }
   .dock { flex-direction: column; align-items: stretch; }
+  .agent-rail { font-size: 12px; }
 }
 
 @media (max-width: 720px) {

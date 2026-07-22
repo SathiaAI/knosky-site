@@ -21,7 +21,7 @@
     <div><strong>Try:</strong> <code>npx knosky .</code> · <a href="install.html">Install</a> · <a href="llms.txt">llms.txt</a></div>
   </div>
 </aside>
-<header>
+<header id="siteHeader" class="site-header">
   <div class="wrap nav">
     <a class="brand" href="index.html"><img src="assets/logo-mark.png" width="28" height="28" alt="" />KnoSky</a>
     <nav class="nav-links" aria-label="Primary">
@@ -32,6 +32,21 @@
       <a href="install.html">Install</a>
     </nav>
     <div class="nav-cta">
+      <a class="quiet" href="https://knosky.wiki/">Docs</a>
+      <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
+      <a class="btn btn-coral" href="install.html">Try it free</a>
+    </div>
+    <button type="button" class="nav-toggle" id="comNavToggle" aria-expanded="false" aria-controls="comNavPanel" aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+  </div>
+  <div class="nav-panel-mobile" id="comNavPanel">
+    <div class="wrap">
+      <a href="why.html">Why</a>
+      <a href="how-it-works.html">How</a>
+      <a href="use-cases.html">Use cases</a>
+      <a href="compare.html">Compare</a>
+      <a href="install.html">Install</a>
       <a class="quiet" href="https://knosky.wiki/">Docs</a>
       <a class="quiet" href="https://github.com/SathiaAI/knosky" rel="noopener">GitHub</a>
       <a class="btn btn-coral" href="install.html">Try it free</a>
@@ -91,6 +106,30 @@
     </div>
   </div>
 </footer>
+
+
+<script>
+(function () {
+  var header = document.getElementById("siteHeader") || document.querySelector("header");
+  var btn = document.getElementById("comNavToggle");
+  var panel = document.getElementById("comNavPanel");
+  if (!header || !btn || !panel) return;
+  function setOpen(open) {
+    header.classList.toggle("is-open", open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  btn.addEventListener("click", function () {
+    setOpen(!header.classList.contains("is-open"));
+  });
+  panel.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () { setOpen(false); });
+  });
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setOpen(false);
+  });
+})();
+</script>
 
 </body>
 </html>

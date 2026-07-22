@@ -226,11 +226,33 @@
     }
     .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 
+    
+    /* Mobile collapsible header */
+    .nav-toggle {
+      display: none; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 12px;
+      border: 1px solid var(--line); background: #fff; cursor: pointer; flex-shrink: 0;
+    }
+    .nav-toggle-bars { display: flex; flex-direction: column; gap: 4px; width: 18px; }
+    .nav-toggle-bars i { display: block; height: 2px; background: var(--ink); border-radius: 2px; transition: .15s ease; }
+    header.is-open .nav-toggle-bars i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    header.is-open .nav-toggle-bars i:nth-child(2) { opacity: 0; }
+    header.is-open .nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-panel-mobile { display: none; }
+
     @media (max-width: 920px) {
       .hero, .city-band, .grid-4, .grid-3, .grid-2, .stats { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
+      .nav-toggle { display: inline-flex; }
+      .nav-links, .nav-cta .quiet { display: none; }
+      .nav-panel-mobile { display: none; border-top: 1px solid var(--line); background: rgba(255,255,255,.98); padding: 10px 0 14px; }
+      header.is-open .nav-panel-mobile { display: block; }
+      .nav-panel-mobile .wrap { display: flex; flex-direction: column; gap: 4px; }
+      .nav-panel-mobile a { display: block; padding: 12px 4px; font-size: 15px; font-weight: 600; color: var(--ink); border-radius: 10px; }
+      .nav-panel-mobile .btn { width: 100%; margin-top: 8px; text-align: center; }
       .gps-hero-img { min-height: 260px; max-height: none; }
+      .agent-rail { font-size: 12px; }
     }
+
   </style>
 </head>
 <body>
@@ -249,26 +271,41 @@
     </div>
   </aside>
 
-  <header>
-    <div class="wrap nav">
-      <a class="brand" href="index.html">
+  <header id="siteHeader">
+  <div class="wrap nav">
+    <a class="brand" href="index.html">
         <img src="assets/logo-mark.png" width="28" height="28" alt="KnoSky" />
         KnoSky
       </a>
-      <nav class="nav-links" aria-label="Primary">
+    <nav class="nav-links" aria-label="Primary">
         <a href="why.html">Why</a>
         <a href="how-it-works.html">How</a>
         <a href="use-cases.html">Use cases</a>
         <a href="compare.html">Compare</a>
         <a href="#skin">City</a>
       </nav>
-      <div class="nav-cta">
+    <div class="nav-cta">
         <a class="quiet" href="https://knosky.wiki/">Docs</a>
         <a class="quiet" href="https://github.com/SathiaAI/knosky">GitHub</a>
         <a class="btn btn-coral" href="install.html">Try it free</a>
       </div>
+    <button type="button" class="nav-toggle" id="comNavToggle" aria-expanded="false" aria-controls="comNavPanel" aria-label="Open menu">
+        <span class="nav-toggle-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+  </div>
+  <div class="nav-panel-mobile" id="comNavPanel">
+    <div class="wrap">
+      <a href="why.html">Why</a>
+        <a href="how-it-works.html">How</a>
+        <a href="use-cases.html">Use cases</a>
+        <a href="compare.html">Compare</a>
+        <a href="#skin">City</a>
+      <a class="quiet" href="https://knosky.wiki/">Docs</a>
+        <a class="quiet" href="https://github.com/SathiaAI/knosky">GitHub</a>
+        <a class="btn btn-coral" href="install.html">Try it free</a>
     </div>
-  </header>
+  </div>
+</header>
 
   <main id="main">
         <div class="wrap wrap-wide hero" id="gps">
@@ -434,5 +471,29 @@
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
+
+<script>
+(function () {
+  var header = document.getElementById("siteHeader") || document.querySelector("header");
+  var btn = document.getElementById("comNavToggle");
+  var panel = document.getElementById("comNavPanel");
+  if (!header || !btn || !panel) return;
+  function setOpen(open) {
+    header.classList.toggle("is-open", open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  btn.addEventListener("click", function () {
+    setOpen(!header.classList.contains("is-open"));
+  });
+  panel.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () { setOpen(false); });
+  });
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setOpen(false);
+  });
+})();
+</script>
+
 </body>
 </html>
