@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "greeting": "Ask simply — install, what KnoSky is, privacy, helpers, or working with more than one AI. Short plain answers first. You can ask for more detail anytime.",
+  "greeting": "Ask in plain English. I'll think through a real answer, grounded on KnoSky docs (install, package, privacy, swarm, packs).",
   "fallback": "I only answer from the published KnoSky FAQ. Try asking:\n• How do I install?\n• What is KnoSky?\n• What’s in the package?\n• Is my code uploaded?\n• What is a swarm / L3?\n• Which tools work?\n\nDocs: https://knosky.wiki/\nInstall: https://www.knosky.com/install.html",
   "more_detail_prompt": "Want a bit more detail?",
   "chips": [

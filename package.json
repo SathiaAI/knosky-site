@@ -1,0 +1,8 @@
+{
+  "name": "knosky-site",
+  "private": true,
+  "description": "Static knosky.com / knosky.wiki + Ask KnoSky API",
+  "engines": {
+    "node": ">=20"
+  }
+}

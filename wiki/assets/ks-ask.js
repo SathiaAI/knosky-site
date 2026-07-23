@@ -1,6 +1,6 @@
 /**
- * Ask KnoSky — client-side NL FAQ (no LLM / no egress).
- * Plain-English first; optional more detail; resilient matching + graceful OOS.
+ * Ask KnoSky — Haiku-backed when /api/ask is configured; FAQ keyword fallback.
+ * Plain English; optional more detail; resilient matching + graceful OOS.
  */
 (function () {
   "use strict";
@@ -19,8 +19,10 @@
     return "assets/";
   })();
 
-  // Cache-bust FAQ JSON when we ship content changes
-  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=5";
+  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=6";
+  var ASK_API = "/api/ask";
+  var HISTORY_MAX = 6;
+  var haikuEnabled = null; // null unknown, true/false after first result
 
   var STOP = {
     a: 1, an: 1, the: 1, is: 1, are: 1, was: 1, were: 1, be: 1, been: 1, being: 1,
@@ -47,7 +49,27 @@
   }
 
   function formatAnswer(text) {
-    var parts = String(text || "").split(/`([^`]+)`/g);
+    // markdown links [label](url)
+    var withLinks = String(text || "").replace(
+      /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+      function (_, label, href) {
+        return (
+          '<a href="' +
+          esc(href) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(label) +
+          "</a>"
+        );
+      }
+    );
+    // protect links from further escaping by temp tokens
+    var links = [];
+    withLinks = withLinks.replace(/<a href=[^>]+>.*?<\/a>/g, function (m) {
+      links.push(m);
+      return "\u0000L" + (links.length - 1) + "\u0000";
+    });
+
+    var parts = withLinks.split(/`([^`]+)`/g);
     var out = "";
     for (var i = 0; i < parts.length; i++) {
       out +=
@@ -55,6 +77,11 @@
           ? "<code>" + esc(parts[i]) + "</code>"
           : esc(parts[i]).replace(/\n/g, "<br/>");
     }
+    out = out.replace(/\u0000L(\d+)\u0000/g, function (_, n) {
+      return links[Number(n)] || "";
+    });
+    // restore bold ** **
+    out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     return out;
   }
 
@@ -91,21 +118,18 @@
         .toLowerCase()
         .slice(0, 280);
 
-    // Strong: multi-word keyword / title phrase fully present
     kws.forEach(function (kw) {
       var k = String(kw || "")
         .toLowerCase()
         .replace(/[’']/g, "");
       if (k.length < 3) return;
       if (rawNorm.indexOf(k) !== -1) {
-        // multi-word phrases score hard
         score += k.indexOf(" ") !== -1 ? 24 : 14;
       }
     });
 
     if (title && rawNorm.indexOf(title.replace(/[’']/g, "")) !== -1) score += 18;
 
-    // Token overlap — contentful tokens only
     for (var i = 0; i < tokens.length; i++) {
       var t = tokens[i];
       if (id === t) score += 20;
@@ -113,17 +137,25 @@
       else if (hay.indexOf(t) !== -1) score += t.length > 5 ? 6 : 4;
     }
 
-    // Prefer dedicated topic ids when distinctive token hits
-    if (tokens.indexOf("swarm") !== -1 && (id === "l3" || /swarm/.test(title) || /swarm/.test(kws.join(" "))))
+    if (
+      tokens.indexOf("swarm") !== -1 &&
+      (id === "l3" || /swarm/.test(title) || /swarm/.test(kws.join(" ")))
+    )
       score += 30;
     if (tokens.indexOf("l3") !== -1 && id === "l3") score += 30;
-    if ((tokens.indexOf("install") !== -1 || tokens.indexOf("npx") !== -1) && id === "install")
+    if (
+      (tokens.indexOf("install") !== -1 || tokens.indexOf("npx") !== -1) &&
+      id === "install"
+    )
       score += 18;
-    if (tokens.indexOf("privacy") !== -1 || tokens.indexOf("uploaded") !== -1 || tokens.indexOf("upload") !== -1) {
+    if (
+      tokens.indexOf("privacy") !== -1 ||
+      tokens.indexOf("uploaded") !== -1 ||
+      tokens.indexOf("upload") !== -1
+    ) {
       if (id === "privacy") score += 18;
     }
 
-    // Soft penalty for ultra-generic "what" page unless query is really about product identity
     if (id === "what") {
       var identity =
         /\b(knosky|product|this tool|the tool|gps for)\b/.test(rawNorm) ||
@@ -160,7 +192,6 @@
 
   function isConfident(match) {
     if (!match || !match.entry) return false;
-    // Need solid absolute score and enough separation from runner-up
     if (match.score < 12) return false;
     if (match.second > 0 && match.score - match.second < 4 && match.score < 20)
       return false;
@@ -216,8 +247,8 @@
     return (
       "I’m not sure I have a solid answer for **“" +
       question +
-      "”** in this fellowship FAQ.\n\n" +
-      "I’m best at KnoSky topics like: install, what KnoSky is, what’s in the package, privacy, which tools work, Mode A vs B, and **what a swarm means here**.\n\n" +
+      "”** in this KnoSky FAQ.\n\n" +
+      "I’m best at topics like: install, what KnoSky is, what’s in the package, privacy, which tools work, Mode A vs B, and **what a swarm means here**.\n\n" +
       (chips ? "Try a chip: " + chips + "\n\n" : "") +
       "Or browse docs: https://knosky.wiki/ · https://www.knosky.com/install.html"
     );
@@ -229,6 +260,8 @@
 
     var lastEntry = null;
     var detailShownFor = null;
+    var history = [];
+    var busy = false;
 
     var fab = el("button", "ks-ask-fab");
     fab.type = "button";
@@ -249,7 +282,7 @@
       "<div><h2>Ask KnoSky</h2><p>" +
       esc(
         data.greeting ||
-          "Plain English first. You can ask for more detail anytime."
+          "Ask in plain English. I’ll think through KnoSky answers for you."
       ) +
       "</p></div>" +
       '<button type="button" class="ks-ask-x" aria-label="Close">×</button>' +
@@ -257,10 +290,10 @@
       '<div class="ks-ask-chips" role="list"></div>' +
       '<div class="ks-ask-log" aria-live="polite"></div>' +
       '<form class="ks-ask-form" autocomplete="off">' +
-      '<input type="text" name="q" maxlength="280" placeholder="e.g. What is a swarm?" aria-label="Your question" />' +
+      '<input type="text" name="q" maxlength="400" placeholder="e.g. What is a swarm?" aria-label="Your question" />' +
       '<button type="submit">Ask</button>' +
       "</form>" +
-      '<div class="ks-ask-foot">Plain answers first · optional detail · no cloud chat</div>';
+      '<div class="ks-ask-foot">Thinks with Haiku when available · grounded on KnoSky docs · FAQ backup</div>';
 
     root.appendChild(panel);
     root.appendChild(fab);
@@ -271,11 +304,21 @@
     var input = panel.querySelector('input[name="q"]');
     var chips = panel.querySelector(".ks-ask-chips");
     var closeBtn = panel.querySelector(".ks-ask-x");
+    var submitBtn = panel.querySelector('button[type="submit"]');
 
     function setOpen(open) {
       panel.classList.toggle("is-open", open);
       fab.setAttribute("aria-expanded", open ? "true" : "false");
       if (open) setTimeout(function () { input.focus(); }, 20);
+    }
+
+    function setBusy(on) {
+      busy = !!on;
+      if (submitBtn) submitBtn.disabled = busy;
+      if (input) input.disabled = busy;
+      chips.querySelectorAll("button").forEach(function (b) {
+        b.disabled = busy;
+      });
     }
 
     function addMsg(role, html) {
@@ -284,6 +327,11 @@
       log.appendChild(m);
       log.scrollTop = log.scrollHeight;
       return m;
+    }
+
+    function pushHistory(role, content) {
+      history.push({ role: role, content: String(content || "").slice(0, 1200) });
+      if (history.length > HISTORY_MAX) history = history.slice(-HISTORY_MAX);
     }
 
     function showTechnical(entry) {
@@ -299,10 +347,12 @@
         return;
       }
       detailShownFor = entry.id;
+      var text = tech;
+      pushHistory("assistant", text);
       addMsg(
         "bot",
         "<strong>A bit more detail</strong><br/>" +
-          formatAnswer(tech) +
+          formatAnswer(text) +
           renderLinks(entry)
       );
     }
@@ -312,6 +362,8 @@
       detailShownFor = null;
       var body = plainBody(entry);
       if (bannedInSimple(body) && entry.simple) body = entry.simple;
+
+      pushHistory("assistant", body);
 
       var html =
         "<strong>" +
@@ -342,6 +394,7 @@
           yes.disabled = true;
           if (no) no.disabled = true;
           addMsg("user", esc("Yes, more detail"));
+          pushHistory("user", "Yes, more detail");
           showTechnical(entry);
         });
       }
@@ -357,11 +410,89 @@
       }
     }
 
+    function faqFallback(q) {
+      var match = bestMatch(data, q);
+      if (isConfident(match)) {
+        renderSimple(match.entry);
+        return;
+      }
+      if (
+        match.entry &&
+        match.score >= 10 &&
+        match.score - Math.max(match.second, 0) >= 6
+      ) {
+        renderSimple(match.entry);
+        return;
+      }
+      var oos = oosMessage(data, q);
+      pushHistory("assistant", oos);
+      addMsg("bot", formatAnswer(oos));
+    }
+
+    function renderHaiku(answer) {
+      lastEntry = null;
+      detailShownFor = null;
+      pushHistory("assistant", answer);
+      addMsg("bot", formatAnswer(answer));
+    }
+
+    function askHaiku(q) {
+      var thinking = addMsg(
+        "bot thinking",
+        '<span class="ks-ask-dots" aria-hidden="true"><i></i><i></i><i></i></span> Thinking…'
+      );
+      setBusy(true);
+
+      var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+      var timer = setTimeout(function () {
+        if (ctrl) ctrl.abort();
+      }, 28000);
+
+      fetch(ASK_API, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ question: q, history: history.slice(0, -1) }),
+        signal: ctrl ? ctrl.signal : undefined,
+        credentials: "same-origin",
+      })
+        .then(function (r) {
+          return r.json().then(function (j) {
+            return { ok: r.ok, status: r.status, body: j || {} };
+          });
+        })
+        .then(function (res) {
+          clearTimeout(timer);
+          if (thinking && thinking.parentNode) thinking.parentNode.removeChild(thinking);
+          setBusy(false);
+
+          if (res.ok && res.body.answer) {
+            haikuEnabled = true;
+            renderHaiku(res.body.answer);
+            return;
+          }
+          // 503 missing key or model down → fallback quietly once
+          haikuEnabled = res.status === 404 ? false : haikuEnabled;
+          if (res.body && res.body.fallback) {
+            faqFallback(q);
+            return;
+          }
+          faqFallback(q);
+        })
+        .catch(function () {
+          clearTimeout(timer);
+          if (thinking && thinking.parentNode) thinking.parentNode.removeChild(thinking);
+          setBusy(false);
+          faqFallback(q);
+        });
+    }
+
     function ask(q) {
       q = String(q || "").trim();
-      if (!q) return;
+      if (!q || busy) return;
       addMsg("user", esc(q));
+      pushHistory("user", q);
 
+      // FAQ-local more-detail follow-up stays instant when last was FAQ entry
       if (lastEntry && wantsMoreDetail(q)) {
         if (detailShownFor === lastEntry.id) {
           addMsg(
@@ -376,23 +507,21 @@
         return;
       }
 
-      var match = bestMatch(data, q);
-      if (isConfident(match)) {
-        renderSimple(match.entry);
+      // Prefer Haiku when not known-disabled (local file may 404 /api)
+      var host = location.hostname || "";
+      var canApi =
+        haikuEnabled !== false &&
+        (host.indexOf("knosky.com") !== -1 ||
+          host.indexOf("knosky.wiki") !== -1 ||
+          host.indexOf("vercel.app") !== -1 ||
+          host === "localhost" ||
+          host === "127.0.0.1");
+
+      if (canApi) {
+        askHaiku(q);
         return;
       }
-
-      // Soft near-miss: if one topic clearly leads but under threshold, still take it when score is decent and separation exists
-      if (
-        match.entry &&
-        match.score >= 10 &&
-        match.score - Math.max(match.second, 0) >= 6
-      ) {
-        renderSimple(match.entry);
-        return;
-      }
-
-      addMsg("bot", formatAnswer(oosMessage(data, q)));
+      faqFallback(q);
     }
 
     (data.chips || []).forEach(function (c) {
@@ -408,7 +537,7 @@
     addMsg(
       "bot",
       formatAnswer(
-        "Hi — answers stay **simple first**. If you want depth, tap **Yes, more detail** or type **more detail**.\n\nPopular: install, what is KnoSky, what’s in the package, privacy, or **what is a swarm?**"
+        "Hi — ask in plain English. I’ll **think** through a real answer (when the helper is online), grounded on KnoSky docs.\n\nTry: install, what is KnoSky, what’s in the package, privacy, or **what is a swarm?**"
       )
     );
 
