@@ -82,3 +82,13 @@ Haiku is cheap; cadence depends on traffic. Rate limit + short answers keep it p
 | **Key** | Server-only `ANTHROPIC_API_KEY` / `OPENROUTER_API_KEY` |
 
 This is **abuse-resistant for a marketing FAQ**, not a bank vault. We still recommend watching Vercel usage after the key is live.
+
+## Exact env names (case-sensitive)
+
+| You can set | Also accepted |
+| :--- | :--- |
+| `ANTHROPIC_API_KEY` | `Anthropic_API_Key` |
+| `KS_ASK_MODEL` | `Model` (e.g. `claude-haiku-4-5` → normalized to dated Haiku id) |
+
+After adding/changing env vars: **Redeploy Production** or the serverless function keeps the old empty env.
+

@@ -19,9 +19,24 @@
 const fs = require("fs");
 const path = require("path");
 
-const MODEL_ANTHROPIC = process.env.KS_ASK_MODEL || "claude-haiku-4-5-20251001";
-const MODEL_OPENROUTER =
-  process.env.KS_ASK_MODEL_OPENROUTER || "anthropic/claude-haiku-4.5";
+// Env aliases: Vercel dashboard names are case-sensitive.
+// Prefer ANTHROPIC_API_KEY / KS_ASK_MODEL; also accept Paul's UI names.
+function envFirst(names, fallback) {
+  for (const n of names) {
+    const v = process.env[n];
+    if (v != null && String(v).trim()) return String(v).trim();
+  }
+  return fallback;
+}
+
+const MODEL_ANTHROPIC = envFirst(
+  ["KS_ASK_MODEL", "Model", "ANTHROPIC_MODEL", "ASK_MODEL"],
+  "claude-haiku-4-5-20251001"
+);
+const MODEL_OPENROUTER = envFirst(
+  ["KS_ASK_MODEL_OPENROUTER", "OPENROUTER_MODEL"],
+  "anthropic/claude-haiku-4.5"
+);
 
 const MAX_Q = 320;
 const MAX_HISTORY = 4;
@@ -240,6 +255,16 @@ function json(res, status, obj) {
   res.end(JSON.stringify(obj));
 }
 
+function resolveAnthropicModel(id) {
+  const m = String(id || "").trim();
+  if (!m) return "claude-haiku-4-5-20251001";
+  // Allow short form from dashboard
+  if (m === "claude-haiku-4-5" || m === "haiku" || m === "claude-haiku-4.5") {
+    return "claude-haiku-4-5-20251001";
+  }
+  return m;
+}
+
 async function callAnthropic(apiKey, system, messages) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -249,7 +274,7 @@ async function callAnthropic(apiKey, system, messages) {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: MODEL_ANTHROPIC,
+      model: resolveAnthropicModel(MODEL_ANTHROPIC),
       max_tokens: MAX_TOKENS,
       temperature: 0.25,
       system,
@@ -430,8 +455,14 @@ module.exports = async function handler(req, res) {
     if (histBudget <= 0) break;
   }
 
-  const anthropicKey = process.env.ANTHROPIC_API_KEY || "";
-  const openrouterKey = process.env.OPENROUTER_API_KEY || "";
+  const anthropicKey = envFirst(
+    ["ANTHROPIC_API_KEY", "Anthropic_API_Key", "ANTHROPIC_KEY", "CLAUDE_API_KEY"],
+    ""
+  );
+  const openrouterKey = envFirst(
+    ["OPENROUTER_API_KEY", "OpenRouter_API_Key", "OPENROUTER_KEY"],
+    ""
+  );
   if (!anthropicKey && !openrouterKey) {
     return json(res, 503, {
       error: "Ask KnoSky is not configured yet (missing API key on the server).",
