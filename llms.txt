@@ -47,5 +47,5 @@ Public claims should stay at or below what `npx knosky@latest doctor` shows on t
 - enterprise/regulated profile: security report, audit pack/verify, architecture intel
 - private synthetic adversarial gauntlet (not public by default; not customer data)
 - map tools read-only; Mode B separate; doctor honesty ceilings
-- clone: node bin/knosky.mjs enterprise . --no-serve
+- install: npx knosky@latest enterprise . --no-serve
 
