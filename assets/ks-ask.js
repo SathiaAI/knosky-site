@@ -19,7 +19,7 @@
     return "assets/";
   })();
 
-  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=6";
+  var FAQ_URL = ASSET_BASE + "ks-faq.json?v=7";
   var ASK_API = "/api/ask";
   var HISTORY_MAX = 6;
   var haikuEnabled = null; // null unknown, true/false after first result
@@ -271,7 +271,7 @@
       '<span class="ks-ask-fab-ico" aria-hidden="true">' +
       '<img src="' +
       ASSET_BASE +
-      'ks-ask-mark.svg?v=5" width="24" height="24" alt="" />' +
+      'ks-ask-mark.svg?v=7" width="24" height="24" alt="" />' +
       "</span><span>Ask KnoSky</span>";
 
     var panel = el("div", "ks-ask-panel");
@@ -290,7 +290,7 @@
       '<div class="ks-ask-chips" role="list"></div>' +
       '<div class="ks-ask-log" aria-live="polite"></div>' +
       '<form class="ks-ask-form" autocomplete="off">' +
-      '<input type="text" name="q" maxlength="400" placeholder="e.g. What is a swarm?" aria-label="Your question" />' +
+      '<input type="text" name="q" maxlength="320" placeholder="e.g. What is a swarm?" aria-label="Your question" />' +
       '<button type="submit">Ask</button>' +
       "</form>" +
       '<div class="ks-ask-foot">Thinks with Haiku when available · grounded on KnoSky docs · FAQ backup</div>';
@@ -451,7 +451,7 @@
       fetch(ASK_API, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ question: q, history: history.slice(0, -1) }),
+        body: JSON.stringify({ question: q, history: history.slice(0, -1), website: "" }),
         signal: ctrl ? ctrl.signal : undefined,
         credentials: "same-origin",
       })

@@ -65,3 +65,20 @@ On the site: Ask KnoSky → you should see **Thinking…** then a natural answer
 ## Cost note
 
 Haiku is cheap; cadence depends on traffic. Rate limit + short answers keep it predictable.
+
+
+## Security (already in `/api/ask`)
+
+| Guard | Detail |
+| :--- | :--- |
+| **Origin allowlist** | Only knosky.com / knosky.wiki (+ localhost / knosky-site Vercel previews) |
+| **CORS** | Locked to those origins — not `*` |
+| **Rate limits** | ~8/minute and ~40/hour per IP (per region isolate) |
+| **Body cap** | ~8KB JSON |
+| **Honeypot** | Hidden `website` field must stay empty |
+| **Injection filter** | Jailbreak-style prompts answered with a short refuse (no model spend when obvious) |
+| **Grounding** | System prompt + FAQ; user text is treated as untrusted |
+| **Output cap** | Short max tokens; strip accidental script tags |
+| **Key** | Server-only `ANTHROPIC_API_KEY` / `OPENROUTER_API_KEY` |
+
+This is **abuse-resistant for a marketing FAQ**, not a bank vault. We still recommend watching Vercel usage after the key is live.
