@@ -42,3 +42,10 @@ Our own small test: about 68% fewer tokens, 70% fewer tool calls, about 6× fast
 ## Honesty
 
 Public claims should stay at or below what `npx knosky@latest doctor` shows on that install. L3 multi-helper support is early scaffolding.
+
+## Enterprise path (optional)
+- enterprise/regulated profile: security report, audit pack/verify, architecture intel
+- private synthetic adversarial gauntlet (not public by default; not customer data)
+- map tools read-only; Mode B separate; doctor honesty ceilings
+- clone: node bin/knosky.mjs enterprise . --no-serve
+
