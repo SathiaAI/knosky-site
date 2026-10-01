@@ -16,3 +16,8 @@ h1 em,h2 em{font-style:normal;color:var(--kn-midnight);background:linear-gradien
 .brand img{border-radius:0!important;}
 .by-vx{display:inline-flex;align-items:center;gap:6px;color:#3A4466;font-weight:600;text-decoration:none;vertical-align:middle;}
 .by-vx img{height:11px;width:auto;display:block;}
+.side .brand .wiki-lockup{width:auto!important;height:34px!important;border-radius:0!important;display:block;}
+.wiki-tag{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;background:#E3ECFF;color:#0E1F4D;font:600 11px/1.2 'Switzer',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;}
+.wiki-home-v2{display:block!important;}
+.wiki-home-v2 .mini{margin-top:22px;max-width:none!important;width:100%!important;}
+.wiki-home-v2 .mini img{width:100%!important;height:auto!important;border-radius:18px;border:1px solid #DDE3EF;}
