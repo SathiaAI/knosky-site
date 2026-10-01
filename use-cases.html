@@ -6,14 +6,24 @@
  <title>KnoSky use cases</title>
  <meta name="description" content="Builders, platform leads, OSS owners — how KnoSky GPS applies without replacing your stack." />
  <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
- <link rel="icon" href="assets/favicon-32.png" />
- <link rel="apple-touch-icon" href="assets/favicon-180.png" />
-  <link rel="stylesheet" href="/assets/fonts.css?v=1" />
+ <link rel="icon" type="image/svg+xml" href="assets/favicon-kn.svg" />
+  <link rel="icon" href="assets/favicon-kn-32.png" />
+ <link rel="apple-touch-icon" href="assets/favicon-kn-180.png" />
+  <link rel="stylesheet" href="/assets/fonts.css?v=2" />
 <link rel="stylesheet" href="site.css" />
  <script type="application/ld+json">
  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"KnoSky","applicationCategory":"DeveloperApplication","operatingSystem":"Cross-platform","description":"GPS protocol for AI agents — map and route through code and documents.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
  </script>
- <link rel="stylesheet" href="assets/ks-ask.css?v=7" />
+ <link rel="stylesheet" href="assets/ks-ask.css?v=8" />
+<link rel="stylesheet" href="/assets/kn-brand.css?v=3" />
+<link rel="canonical" href="https://www.knosky.com/use-cases.html" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="KnoSky use cases" />
+<meta property="og:description" content="Builders, platform leads, OSS owners — how KnoSky GPS applies without replacing your stack." />
+<meta property="og:image" content="https://www.knosky.com/assets/og-kn.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 </head>
 <body>
 
@@ -25,7 +35,7 @@
 </aside>
 <header id="siteHeader" class="site-header">
  <div class="wrap nav">
- <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
+ <a class="brand brand-lockup" href="index.html" aria-label="KnoSky home"><img src="assets/knosky-lockup.svg" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
  <nav class="nav-links" aria-label="Primary">
  <a href="why.html">Why</a>
  <a href="how-it-works.html">How</a>
@@ -115,7 +125,7 @@
 </footer>
 
 <script>
-(function {
+(function () {
  var header = document.getElementById("siteHeader") || document.querySelector("header");
  var btn = document.getElementById("comNavToggle");
  var panel = document.getElementById("comNavPanel");
@@ -125,18 +135,18 @@
  btn.setAttribute("aria-expanded", open ? "true" : "false");
  btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
  }
- btn.addEventListener("click", function {
+ btn.addEventListener("click", function () {
  setOpen(!header.classList.contains("is-open"));
  });
  panel.querySelectorAll("a").forEach(function (a) {
- a.addEventListener("click", function { setOpen(false); });
+ a.addEventListener("click", function () { setOpen(false); });
  });
  window.addEventListener("keydown", function (e) {
  if (e.key === "Escape") setOpen(false);
  });
-});
+})();
 </script>
 
- <script src="assets/ks-ask.js?v=7" defer></script>
+ <script src="assets/ks-ask.js?v=8" defer></script>
 </body>
 </html>

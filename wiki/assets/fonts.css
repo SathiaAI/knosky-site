@@ -1,43 +1,7 @@
-/* Self-hosted Inter + JetBrains Mono (latin). No Google Fonts hosts. */
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/assets/fonts/inter-latin-400.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/assets/fonts/inter-latin-500.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("/assets/fonts/inter-latin-600.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("/assets/fonts/inter-latin-700.woff2") format("woff2");
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("/assets/fonts/jetbrains-mono-latin-500.woff2") format("woff2");
-}
-@font-face {
-  font-family: "JetBrains Mono";
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url("/assets/fonts/jetbrains-mono-latin-600.woff2") format("woff2");
-}
+/* Self-hosted Viaknox family type: Clash Display (headings) + Switzer (text), Fontshare licence; JetBrains Mono for code. No external font hosts. */
+@font-face{font-family:"Clash Display";font-style:normal;font-weight:600;font-display:swap;src:url("/assets/fonts/ClashDisplay-600-latin.woff2") format("woff2");}
+@font-face{font-family:"Switzer";font-style:normal;font-weight:400;font-display:swap;src:url("/assets/fonts/Switzer-400-latin.woff2") format("woff2");}
+@font-face{font-family:"Switzer";font-style:normal;font-weight:500;font-display:swap;src:url("/assets/fonts/Switzer-500-latin.woff2") format("woff2");}
+@font-face{font-family:"Switzer";font-style:normal;font-weight:600 800;font-display:swap;src:url("/assets/fonts/Switzer-600-latin.woff2") format("woff2");}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url("/assets/fonts/jetbrains-mono-latin-500.woff2") format("woff2");}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:600;font-display:swap;src:url("/assets/fonts/jetbrains-mono-latin-600.woff2") format("woff2");}

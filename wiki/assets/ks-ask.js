@@ -263,16 +263,16 @@
     var history = [];
     var busy = false;
 
-    var fab = el("button", "ks-ask-fab");
+    var fab = el("button", "ks-ask-fab ask-dial");
     fab.type = "button";
     fab.setAttribute("aria-haspopup", "dialog");
     fab.setAttribute("aria-expanded", "false");
+    fab.setAttribute("aria-label", "Ask KnoSky");
     fab.innerHTML =
-      '<span class="ks-ask-fab-ico" aria-hidden="true">' +
-      '<img src="' +
-      ASSET_BASE +
-      'ks-ask-mark.svg?v=7" width="24" height="24" alt="" />' +
-      "</span><span>Ask KnoSky</span>";
+      '<span class="dial-name" aria-hidden="true"><span>Ask</span><b>KnoSky</b></span>' +
+      '<span class="dial-base" aria-hidden="true"></span>' +
+      '<span class="dial-ring" aria-hidden="true"></span>' +
+      '<span class="dial-cap" aria-hidden="true"><img src="' + ASSET_BASE + 'ask-cap-knosky.svg" width="108" height="108" alt="" /></span>';
 
     var panel = el("div", "ks-ask-panel");
     panel.setAttribute("role", "dialog");

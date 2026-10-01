@@ -1,0 +1,18 @@
+/* KnoSky — Viaknox family brand layer (Oct 2026). Midnight #0E1F4D + Starlight #9CC2FF, Clash Display / Switzer.
+   Loaded last on every page; overrides the older cream/coral/mint styling without changing layout. */
+:root{--kn-midnight:#0E1F4D;--kn-starlight:#9CC2FF;--kn-star-deep:#2E5BC9;--kn-star-tint:#E3ECFF;--kn-paper:#FFF8F2;--kn-cream:#FFFCF8;--kn-ink-2:#1A2E66;}
+body{font-family:'Switzer',system-ui,-apple-system,'Segoe UI',sans-serif;}
+h1,h2,h3,.display,.hero-title{font-family:'Clash Display','Arial Narrow',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+h1 em,h2 em{font-style:normal;color:var(--kn-midnight);background:linear-gradient(transparent 60%,var(--kn-starlight) 60%,var(--kn-starlight) 92%,transparent 92%);padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone;}
+.btn-coral,.btn-primary{background:var(--kn-starlight)!important;color:var(--kn-midnight)!important;border-color:var(--kn-starlight)!important;box-shadow:0 10px 24px -14px rgba(14,31,77,.55)!important;}
+.btn-coral:hover,.btn-primary:hover{background:#B5D2FF!important;color:var(--kn-midnight)!important;}
+.btn-mint{background:var(--kn-midnight)!important;color:var(--kn-paper)!important;}
+.btn-mint:hover{background:var(--kn-ink-2)!important;color:var(--kn-paper)!important;}
+.chip.coral{background:var(--kn-midnight)!important;color:var(--kn-starlight)!important;border-color:var(--kn-midnight)!important;}
+::selection{background:var(--kn-starlight);color:var(--kn-midnight);}
+.brand-lockup{display:inline-flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-lockup img{border-radius:0!important;}
+.kn-word{font-family:'Clash Display','Arial Narrow',sans-serif;font-weight:600;font-size:24px;letter-spacing:-0.01em;color:#0E1F4D;line-height:1;}
+.brand img{border-radius:0!important;}
+.by-vx{display:inline-flex;align-items:center;gap:6px;color:#3A4466;font-weight:600;text-decoration:none;vertical-align:middle;}
+.by-vx img{height:11px;width:auto;display:block;}

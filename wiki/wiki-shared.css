@@ -1,25 +1,25 @@
 /* knosky.wiki production shell — VISUAL-LOCK v3.3 (Atlas Light Clay) */
 :root {
-  --bg: #FFF8F1;
-  --bg-warm: #FFF1E4;
-  --bg-mint: #EAF7F1;
-  --elev: #FFFFFF;
-  --paper: #FFFCFA;
-  --ink: #2C2420;
-  --body: #5C534C;
-  --muted: #8A8178;
-  --line: #E8DFD4;
-  --coral: #FF5A3C;
-  --coral-h: #E84428;
-  --coral-soft: #FFE0D6;
-  --mint: #1FA97A;
-  --mint-d: #0E8A62;
-  --mint-soft: #D8F3E7;
-  --sand: #F0E6D8;
-  --code: #3D3834;
-  --code-ink: #FFF6EE;
-  --shadow: 0 10px 30px rgba(44, 36, 32, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
-  --shadow-sm: 0 2px 8px rgba(44, 36, 32, 0.05);
+  --bg: #FFF8F2;
+  --bg-warm: #EEF3FF;
+  --bg-mint: #EEF3FF;
+  --elev: #FFFCF8;
+  --paper: #FFFCF8;
+  --ink: #0E1F4D;
+  --body: #3A4466;
+  --muted: #5E6888;
+  --line: #DDE3EF;
+  --coral: #2E5BC9;
+  --coral-h: #234AA8;
+  --coral-soft: #E3ECFF;
+  --mint: #0E1F4D;
+  --mint-d: #2E5BC9;
+  --mint-soft: #E3ECFF;
+  --sand: #E6ECF7;
+  --code: #0E1F4D;
+  --code-ink: #FFF8F2;
+  --shadow: 0 10px 30px rgba(14, 31, 77, 0.08), 0 1px 0 rgba(255, 252, 248, 0.9) inset;
+  --shadow-sm: 0 2px 8px rgba(14, 31, 77, 0.05);
   --r: 14px;
   --rl: 18px;
   --side-w: 268px;
@@ -27,7 +27,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body.wiki {
-  font-family: Inter, system-ui, sans-serif;
+  font-family: 'Switzer', system-ui, sans-serif;
   background: var(--bg);
   color: var(--body);
   line-height: 1.55;
@@ -40,7 +40,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
 /* Agent rail — machine + human chrome (no prototype banners) */
 .agent-rail {
   background: var(--mint-soft);
-  border-bottom: 1px solid #c6ebd9;
+  border-bottom: 1px solid #C7D8FB;
   font-size: 13px;
   padding: 10px 0;
   color: var(--ink);
@@ -56,7 +56,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
 }
 .agent-rail strong { color: var(--mint-d); }
 .agent-rail code {
-  background: #fff;
+  background: #FFFCF8;
   border: 1px solid var(--line);
   padding: 3px 8px;
   border-radius: 8px;
@@ -105,7 +105,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   align-items: center;
   gap: 10px;
   background: var(--mint-soft);
-  border: 1px solid #bfe8d4;
+  border: 1px solid #C7D8FB;
   border-radius: 14px;
   padding: 10px 12px;
   margin-top: 18px;
@@ -157,11 +157,11 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
 .btn-block { width: 100%; }
 .btn-coral {
   background: var(--coral);
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(255, 90, 60, 0.25);
+  color: #FFFCF8;
+  box-shadow: 0 6px 16px rgba(46, 91, 201, 0.25);
 }
 .btn-coral:hover { background: var(--coral-h); }
-.btn-mint { background: var(--mint); color: #fff; }
+.btn-mint { background: var(--mint); color: #FFFCF8; }
 .btn-mint:hover { background: var(--mint-d); }
 .btn-ghost {
   background: var(--elev);
@@ -169,7 +169,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   border-color: var(--line);
   box-shadow: var(--shadow-sm);
 }
-.btn-ghost:hover { border-color: #D4C8BA; }
+.btn-ghost:hover { border-color: #C3CDE3; }
 
 .main-col { min-width: 0; }
 .top {
@@ -180,7 +180,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   gap: 12px;
   padding: 14px 28px;
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 252, 248, 0.9);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
@@ -198,11 +198,11 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   padding: 5px 10px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: #FFFCF8;
 }
-.chip.mint { background: var(--mint-soft); color: var(--mint-d); border-color: #bfe8d4; }
+.chip.mint { background: var(--mint-soft); color: var(--mint-d); border-color: #C7D8FB; }
 .chip.sand { background: var(--sand); color: var(--ink); }
-.chip.coral { background: var(--coral-soft); color: var(--coral-h); border-color: #f5c4b8; }
+.chip.coral { background: var(--coral-soft); color: var(--coral-h); border-color: #C7D8FB; }
 
 .content {
   width: min(760px, calc(100% - 48px));
@@ -239,7 +239,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   margin-bottom: 8px;
 }
 .maturity code {
-  background: #fff;
+  background: #FFFCF8;
   border: 1px solid var(--line);
   padding: 1px 6px;
   border-radius: 6px;
@@ -254,7 +254,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   overflow: hidden;
   margin: 18px 0 8px;
 }
-.diagram-card img { display: block; width: 100%; height: auto; background: #FFF8F1; }
+.diagram-card img { display: block; width: 100%; height: auto; background: #FFF8F2; }
 .diagram-card figcaption {
   font-size: 12px;
   color: var(--muted);
@@ -301,7 +301,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   box-shadow: var(--shadow-sm);
   padding: 16px 18px;
 }
-.pack:hover, .topic:hover { border-color: #D4C8BA; box-shadow: var(--shadow); }
+.pack:hover, .topic:hover { border-color: #C3CDE3; box-shadow: var(--shadow); }
 .pack .meta, .topic .meta {
   font-size: 11px;
   font-weight: 700;
@@ -317,9 +317,9 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   padding: 16px 18px;
   margin: 12px 0;
 }
-.callout.mint { background: #f5fcf8; border-color: #bfe8d4; }
+.callout.mint { background: #F5F8FF; border-color: #C7D8FB; }
 .callout.sand { background: var(--bg-warm); border-color: var(--line); }
-.callout.coral { background: #fff8f6; border-color: #f5c4b8; }
+.callout.coral { background: #FFF8F2; border-color: #C7D8FB; }
 
 .snippet {
   background: var(--code);
@@ -352,7 +352,7 @@ code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   border: 1px solid var(--line);
   overflow: hidden;
   box-shadow: var(--shadow);
-  background: #FFF8F1;
+  background: #FFF8F2;
 }
 .hero-home .mini img { display: block; width: 100%; height: auto; }
 .topic-grid {
@@ -504,7 +504,7 @@ footer.wiki-foot a { color: var(--mint-d); font-weight: 600; }
     border-right: 0;
     border-bottom: 1px solid var(--line);
     padding: 12px 14px;
-    background: rgba(255,255,255,.97);
+    background: rgba(255, 252, 248,.97);
     backdrop-filter: blur(10px);
   }
   .nav-toggle { display: inline-flex; }

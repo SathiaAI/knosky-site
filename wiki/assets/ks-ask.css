@@ -14,7 +14,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--mint-d, #168a62);
+  color: var(--mint-d, #2E5BC9);
 }
 .pkg-grid {
   display: grid;
@@ -22,11 +22,11 @@
   gap: 14px;
 }
 .pkg-card {
-  background: var(--elev, #fff);
-  border: 1px solid var(--line, #e8dfd4);
+  background: var(--elev, #FFFCF8);
+  border: 1px solid var(--line, #DDE3EF);
   border-radius: 18px;
   padding: 20px 18px 18px;
-  box-shadow: 0 8px 24px rgba(44, 36, 32, 0.04);
+  box-shadow: 0 8px 24px rgba(14, 31, 77, 0.04);
   min-height: 100%;
 }
 .pkg-card .pkg-icon {
@@ -35,8 +35,8 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: var(--mint-soft, #eaf7f1);
-  color: var(--mint-d, #168a62);
+  background: var(--mint-soft, #EEF3FF);
+  color: var(--mint-d, #2E5BC9);
   font-weight: 800;
   font-size: 14px;
   margin-bottom: 12px;
@@ -45,19 +45,19 @@
   font-size: 1.05rem;
   margin: 0 0 8px;
   letter-spacing: -0.02em;
-  color: var(--ink, #2c2420);
+  color: var(--ink, #0E1F4D);
 }
 .pkg-card p {
   margin: 0;
   font-size: 0.92rem;
   line-height: 1.55;
-  color: var(--body, #5c534c);
+  color: var(--body, #3A4466);
 }
 .pkg-card ul {
   margin: 10px 0 0;
   padding: 0 0 0 1.1em;
   font-size: 0.86rem;
-  color: var(--body, #5c534c);
+  color: var(--body, #3A4466);
   line-height: 1.45;
 }
 .pkg-card li { margin: 4px 0; }
@@ -68,27 +68,27 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--muted, #8a8178);
+  color: var(--muted, #5E6888);
 }
 .pkg-card.featured {
-  border-color: #bfe8d4;
-  background: linear-gradient(180deg, #f3fbf7 0%, #fff 55%);
+  border-color: #C7D8FB;
+  background: linear-gradient(180deg, #F5F8FF 0%, #FFFCF8 55%);
 }
 .pkg-card.coralish {
-  border-color: #ffd4c8;
-  background: linear-gradient(180deg, #fff5f1 0%, #fff 60%);
+  border-color: #C7D8FB;
+  background: linear-gradient(180deg, #EEF3FF 0%, #FFFCF8 60%);
 }
 .pkg-not {
   margin-top: 18px;
   padding: 16px 18px;
   border-radius: 16px;
-  border: 1px dashed var(--line, #e8dfd4);
-  background: var(--bg-warm, #fff1e4);
+  border: 1px dashed var(--line, #DDE3EF);
+  background: var(--bg-warm, #EEF3FF);
   font-size: 0.92rem;
-  color: var(--body, #5c534c);
+  color: var(--body, #3A4466);
   line-height: 1.5;
 }
-.pkg-not strong { color: var(--ink, #2c2420); }
+.pkg-not strong { color: var(--ink, #0E1F4D); }
 .pkg-actions {
   display: flex;
   flex-wrap: wrap;
@@ -105,18 +105,18 @@
 
 /* ---- Ask KnoSky FAB + panel ---- */
 .ks-ask-root {
-  --ks-ink: #2c2420;
-  --ks-body: #5c534c;
-  --ks-muted: #8a8178;
-  --ks-line: #e8dfd4;
-  --ks-cream: #fff8f1;
-  --ks-elev: #ffffff;
-  --ks-coral: #ff5a3c;
-  --ks-coral-h: #e84428;
-  --ks-mint: #1fa97a;
-  --ks-mint-d: #168a62;
-  --ks-mint-soft: #eaf7f1;
-  font-family: Inter, system-ui, sans-serif;
+  --ks-ink: #0E1F4D;
+  --ks-body: #3A4466;
+  --ks-muted: #5E6888;
+  --ks-line: #DDE3EF;
+  --ks-cream: #FFF8F2;
+  --ks-elev: #FFFCF8;
+  --ks-coral: #2E5BC9;
+  --ks-coral-h: #234AA8;
+  --ks-mint: #0E1F4D;
+  --ks-mint-d: #2E5BC9;
+  --ks-mint-soft: #EEF3FF;
+  font-family: 'Switzer', system-ui, sans-serif;
   z-index: 80;
 }
 .ks-ask-fab {
@@ -132,30 +132,30 @@
   border: none;
   border-radius: 999px;
   background: var(--ks-coral);
-  color: #fff;
+  color: #FFFCF8;
   font: inherit;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: -0.01em;
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(255, 90, 60, 0.35);
+  box-shadow: 0 12px 28px rgba(46, 91, 201, 0.35);
 }
 .ks-ask-fab:hover { background: var(--ks-coral-h); }
 .ks-ask-fab:focus-visible {
-  outline: 3px solid #ffb4a4;
+  outline: 3px solid #9CC2FF;
   outline-offset: 2px;
 }
 .ks-ask-fab .ks-ask-fab-ico {
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  background: #FFF8F1;
+  background: #FFF8F2;
   display: grid;
   place-items: center;
   overflow: hidden;
   flex-shrink: 0;
-  box-shadow: 0 1px 0 rgba(255,255,255,.55) inset;
-  border: 1px solid rgba(255,255,255,.35);
+  box-shadow: 0 1px 0 rgba(255, 252, 248,.55) inset;
+  border: 1px solid rgba(255, 252, 248,.35);
 }
 .ks-ask-fab .ks-ask-fab-ico img {
   width: 24px;
@@ -176,7 +176,7 @@
   background: var(--ks-elev);
   border: 1px solid var(--ks-line);
   border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(44, 36, 32, 0.18);
+  box-shadow: 0 24px 60px rgba(14, 31, 77, 0.18);
   overflow: hidden;
 }
 .ks-ask-panel.is-open { display: flex; }
@@ -186,7 +186,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 14px 14px 12px;
-  background: linear-gradient(180deg, #fff8f1 0%, #fff 100%);
+  background: linear-gradient(180deg, #FFF8F2 0%, #FFFCF8 100%);
   border-bottom: 1px solid var(--ks-line);
 }
 .ks-ask-head h2 {
@@ -204,7 +204,7 @@
 }
 .ks-ask-x {
   border: 1px solid var(--ks-line);
-  background: #fff;
+  background: #FFFCF8;
   border-radius: 10px;
   width: 36px;
   height: 36px;
@@ -231,7 +231,7 @@
   font-weight: 600;
   cursor: pointer;
 }
-.ks-ask-chips button:hover { border-color: #bfe8d4; }
+.ks-ask-chips button:hover { border-color: #C7D8FB; }
 .ks-ask-log {
   flex: 1;
   overflow: auto;
@@ -239,7 +239,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #fffcfa;
+  background: #FFFCF8;
 }
 .ks-ask-msg {
   max-width: 92%;
@@ -251,7 +251,7 @@
 }
 .ks-ask-msg.bot {
   align-self: flex-start;
-  background: #fff;
+  background: #FFFCF8;
   border: 1px solid var(--ks-line);
 }
 .ks-ask-msg.bot.thinking {
@@ -270,7 +270,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--ks-coral, #ff5a3c);
+  background: var(--ks-coral, #2E5BC9);
   opacity: 0.35;
   animation: ks-ask-bounce 1s infinite ease-in-out;
   display: inline-block;
@@ -284,7 +284,7 @@
 .ks-ask-msg.user {
   align-self: flex-end;
   background: var(--ks-mint-soft);
-  border: 1px solid #bfe8d4;
+  border: 1px solid #C7D8FB;
   color: var(--ks-mint-d);
   font-weight: 600;
 }
@@ -323,7 +323,7 @@
 .ks-ask-detail-btns button {
   border-radius: 999px;
   border: 1px solid var(--ks-line);
-  background: #fff;
+  background: #FFFCF8;
   color: var(--ks-ink);
   font: inherit;
   font-size: 12px;
@@ -333,7 +333,7 @@
 }
 .ks-ask-detail-btns button.ks-ask-yes-detail {
   background: var(--ks-mint-soft);
-  border-color: #bfe8d4;
+  border-color: #C7D8FB;
   color: var(--ks-mint-d);
 }
 .ks-ask-detail-btns button:hover {
@@ -348,7 +348,7 @@
   gap: 8px;
   padding: 10px 12px 12px;
   border-top: 1px solid var(--ks-line);
-  background: #fff;
+  background: #FFFCF8;
 }
 .ks-ask-form input {
   flex: 1;
@@ -362,7 +362,7 @@
   background: var(--ks-cream);
 }
 .ks-ask-form input:focus {
-  outline: 2px solid #bfe8d4;
+  outline: 2px solid #C7D8FB;
   border-color: var(--ks-mint);
 }
 .ks-ask-form button[type="submit"] {
@@ -370,7 +370,7 @@
   border-radius: 12px;
   padding: 0 14px;
   background: var(--ks-coral);
-  color: #fff;
+  color: #FFFCF8;
   font: inherit;
   font-weight: 700;
   font-size: 13px;
@@ -381,9 +381,30 @@
   padding: 0 12px 10px;
   font-size: 11px;
   color: var(--ks-muted);
-  background: #fff;
+  background: #FFFCF8;
 }
 @media (max-width: 480px) {
   .ks-ask-fab { right: 14px; bottom: 14px; }
   .ks-ask-panel { right: 10px; bottom: 74px; height: min(70vh, 520px); }
 }
+
+/* ---- Ask KnoSky: destination dial (same control as Ask Viaknox, KnoSky colours). Design 212x192, scaled by --dial-k. ---- */
+.ks-ask-fab.ask-dial{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:81;display:block;width:212px;height:192px;min-height:0;padding:0;border:0;border-radius:0;background:none!important;box-shadow:none;color:#FFF8F2;cursor:pointer;transform:scale(var(--dial-k,.42));transform-origin:bottom right;isolation:isolate;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.ask-dial span,.ask-dial img{pointer-events:none}
+.ks-ask-fab.ask-dial:focus-visible{outline:3px solid #9CC2FF;outline-offset:6px}
+.ask-dial .dial-name{position:absolute;bottom:0;left:13px;right:13px;height:80px;background:linear-gradient(150deg,#22356E,#0E1F4D 60%);border:1px solid #9CC2FF66;border-radius:14px 14px 28px 28px;box-shadow:inset 0 1px 0 #fff8f244,0 6px 0 #071131,0 16px 20px -6px #0009;display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px;gap:8px}
+.ask-dial .dial-name>span{font-family:'Switzer',system-ui,sans-serif;font-size:18px;font-weight:600;letter-spacing:.03em}
+.ask-dial .dial-name>b{font-family:'Clash Display','Arial Narrow',sans-serif;font-weight:600;font-size:27px;letter-spacing:-0.01em;line-height:1}
+.ask-dial .dial-base{position:absolute;top:9px;left:36px;width:140px;height:140px;background:#071131;border-radius:50%;box-shadow:0 6px 1px #060e29,0 14px 22px #0007}
+.ask-dial .dial-ring{position:absolute;top:0;left:36px;width:140px;height:140px;border-radius:50%;background:repeating-conic-gradient(from 2deg,#CFE0FF 0deg 1deg,#4E6AAE 1.5deg 3deg,#0E1F4D 3deg 5deg);border:2px solid #9CC2FF9c;box-shadow:inset 0 2px 4px #fff8f2a0,inset 0 -3px 5px #0009;transition:transform .32s cubic-bezier(.2,.7,.25,1)}
+.ask-dial .dial-ring:after{content:'';position:absolute;inset:7px;border-radius:50%;background:linear-gradient(145deg,#CFE0FF,#4A64A6 48%,#0E1F4D 85%);box-shadow:inset 0 1px 0 #fff8f299,0 2px 0 #0008}
+.ask-dial .dial-cap{position:absolute;top:16px;left:52px;width:108px;height:108px;border-radius:50%;overflow:hidden;background:#9CC2FF;box-shadow:0 5px 1px #3E5A9C,0 8px 6px #0007;transform:translateY(-2px);transition:transform .15s,box-shadow .15s}
+.ask-dial .dial-cap img{position:absolute;inset:0;width:100%;height:100%}
+.ask-dial .dial-cap:after{content:'';position:absolute;inset:0;background:linear-gradient(145deg,#fff8f249,transparent 40%,#0e1f4d24 77%,#0e1f4d66);border-radius:50%;box-shadow:inset 0 2px 3px #fff8f27a,inset 0 -2px 3px #0e1f4d66}
+.ask-dial:active .dial-cap{transform:translateY(4px);box-shadow:0 1px 0 #3E5A9C,0 2px 2px #0008}
+.ask-dial:hover .dial-ring{transform:rotate(7deg)}
+.ask-dial:hover .dial-cap{transform:translateY(-4px)}
+.ask-dial:active:hover .dial-cap{transform:translateY(4px)}
+.ks-ask-panel{bottom:104px!important;}
+@media (max-width:720px){.ks-ask-fab.ask-dial{--dial-k:.38;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}.ks-ask-panel{bottom:92px!important;right:10px}}
+@media (prefers-reduced-motion:reduce){.ask-dial *{transition:none!important}.ask-dial:hover .dial-ring{transform:none}}
