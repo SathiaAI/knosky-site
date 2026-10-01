@@ -83,6 +83,26 @@
   ],
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.knosky.wiki"
+        }
+      ],
+      "destination": "/sitemap-wiki.xml"
+    },
+    {
+      "source": "/robots.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.knosky.wiki"
+        }
+      ],
+      "destination": "/robots-wiki.txt"
+    },
+    {
       "source": "/wiki",
       "destination": "/wiki/index.html"
     },

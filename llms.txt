@@ -1,6 +1,6 @@
 # KnoSky
 
-Local GPS for AI assistants in code and doc folders.
+Local GPS for AI assistants in code and doc folders. KnoSky is built by Viaknox.
 
 ## Install
 
@@ -29,8 +29,18 @@ Requires Node.js 20+. Runs on your machine. No account.
 
 ## Sites
 
+- Sitemaps: https://www.knosky.com/sitemap.xml and https://www.knosky.wiki/sitemap.xml
+- Why KnoSky: https://www.knosky.com/why.html
+- How it works: https://www.knosky.com/how-it-works.html
+- Use cases: https://www.knosky.com/use-cases.html
+- Compare: https://www.knosky.com/compare.html
+- Works with: https://www.knosky.com/works-with.html
+- Trust: https://www.knosky.com/trust.html
+- Start here (docs): https://www.knosky.wiki/wiki/start-here.html
+- Protocol overview: https://www.knosky.wiki/wiki/protocol/overview.html
+
 - Product: https://www.knosky.com/
-- Docs: https://knosky.wiki/
+- Docs: https://www.knosky.wiki/
 - GitHub: https://github.com/SathiaAI/knosky
 - Install: https://www.knosky.com/install.html
 - What’s in the box: https://www.knosky.com/#package

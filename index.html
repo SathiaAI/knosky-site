@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <link rel="icon" href="assets/favicon-32.png" />
- <link rel="apple-touch-icon" href="assets/favicon-180.png" />
-   <link rel="stylesheet" href="/assets/fonts.css?v=1" />
+ <link rel="icon" type="image/svg+xml" href="assets/favicon-kn.svg" />
+  <link rel="icon" href="assets/favicon-kn-32.png" />
+ <link rel="apple-touch-icon" href="assets/favicon-kn-180.png" />
+   <link rel="stylesheet" href="/assets/fonts.css?v=2" />
 <meta charset="UTF-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
  <title>KnoSky — GPS for AI agents</title>
@@ -12,63 +13,87 @@
  <link rel="alternate" type="text/plain" href="llms.txt" title="LLM summary" />
 <style>
  :root {
- --bg: #FFF8F1;
- --bg-warm: #FFF1E4;
- --bg-mint: #EAF7F1;
- --bg-peach: #FFE8DC;
- --elev: #FFFFFF;
- --ink: #2C2420;
- --body: #5C534C;
- --muted: #8A8178;
- --line: #E8DFD4;
- --coral: #FF5A3C;
- --coral-h: #E84428;
- --coral-soft: #FFE0D6;
- --mint: #1FA97A;
- --mint-d: #0E8A62;
- --mint-soft: #D8F3E7;
- --sand: #F0E6D8;
- --paper: #FFFCFA;
- --code: #3D3834;
- --code-ink: #FFF6EE;
- --shadow: 0 10px 30px rgba(44,36,32,.08), 0 1px 0 rgba(255,255,255,.9) inset;
+ --bg: #FFF8F2;
+ --bg-warm: #EEF3FF;
+ --bg-mint: #EEF3FF;
+ --bg-peach: #E3ECFF;
+ --elev: #FFFCF8;
+ --ink: #0E1F4D;
+ --body: #3A4466;
+ --muted: #5E6888;
+ --line: #DDE3EF;
+ --coral: #2E5BC9;
+ --coral-h: #234AA8;
+ --coral-soft: #E3ECFF;
+ --mint: #0E1F4D;
+ --mint-d: #2E5BC9;
+ --mint-soft: #E3ECFF;
+ --sand: #E6ECF7;
+ --paper: #FFFCF8;
+ --code: #0E1F4D;
+ --code-ink: #FFF8F2;
+ --shadow: 0 10px 30px rgba(14, 31, 77,.08), 0 1px 0 rgba(255, 252, 248,.9) inset;
  --r: 14px; --rl: 22px;
  }
  * { box-sizing: border-box; margin: 0; padding: 0; }
  body {
- font-family: Inter, system-ui, sans-serif;
+ font-family: 'Switzer', system-ui, sans-serif;
  background: var(--bg);
  color: var(--body);
  line-height: 1.55;
  -webkit-font-smoothing: antialiased;
  }
  a { color: inherit; text-decoration: none; }.wrap { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }.wrap-wide { width: min(1280px, calc(100% - 32px)); margin: 0 auto; }.proto-banner {
- background: #2C2420; color: #FFF6EE; text-align: center;
+ background: #0E1F4D; color: #FFF8F2; text-align: center;
  font-size: 12px; font-weight: 600; letter-spacing:.04em; text-transform: uppercase; padding: 8px;
- }.proto-banner a { color: #FFB59F; text-decoration: underline; margin: 0 8px; }.agent-rail {
- background: var(--mint-soft); border-bottom: 1px solid #c6ebd9;
+ }.proto-banner a { color: #9CC2FF; text-decoration: underline; margin: 0 8px; }.agent-rail {
+ background: var(--mint-soft); border-bottom: 1px solid #C7D8FB;
  font-size: 13px; padding: 10px 0; color: var(--ink);
- }.agent-rail.wrap {
+ }.agent-rail .wrap {
  display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between;
  }.agent-rail strong { color: var(--mint-d); }.agent-rail code {
- font-family: "JetBrains Mono", monospace; background: #fff; border: 1px solid var(--line);
+ font-family: "JetBrains Mono", monospace; background: #FFFCF8; border: 1px solid var(--line);
  padding: 4px 8px; border-radius: 8px; font-size: 12px;
  }.agent-rail a { color: var(--coral-h); font-weight: 600; text-decoration: underline; }
 
  header {
  position: sticky; top: 0; z-index: 40;
- background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+ background: rgba(255, 252, 248,.92); backdrop-filter: blur(12px);
  border-bottom: 1px solid var(--line);
- }.nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; height: auto; padding: 10px 0; gap: 20px; }.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); }.brand img { width: 40px; height: 40px; border-radius: 10px; }.brand.brand-lockup img { width: auto !important; height: 40px !important; border-radius: 0 !important; max-width: min(240px, 42vw); display: block; }.nav-links { display: flex; gap: 20px; font-size: 14px; font-weight: 500; }.nav-cta { display: flex; align-items: center; gap: 14px; font-size: 14px; font-weight: 500; }.nav-cta.quiet { color: var(--muted); }.btn {
+ }.nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; height: auto; padding: 10px 0; gap: 20px; }.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); }.brand img { width: 40px; height: 40px; border-radius: 10px; }.brand.brand-lockup img { width: auto !important; height: 40px !important; border-radius: 0 !important; max-width: min(240px, 42vw); display: block; }.nav-links { display: flex; gap: 20px; font-size: 14px; font-weight: 500; }.nav-cta { display: flex; align-items: center; gap: 14px; font-size: 14px; font-weight: 500; }.nav-cta .quiet { color: var(--muted); }.btn {
  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
  border-radius: var(--r); font-weight: 600; font-size: 14px;
  padding: 11px 18px; border: 1px solid transparent; cursor: pointer;
  transition: transform.15s ease, background.15s ease;
  }.btn:active { transform: translateY(1px); }.btn-coral {
- background: var(--coral); color: #fff;
- box-shadow: 0 6px 16px rgba(255,90,60,.28), 0 1px 0 rgba(255,255,255,.35) inset;
+ background: var(--coral); color: #FFFCF8;
+ box-shadow: 0 6px 16px rgba(46, 91, 201,.28), 0 1px 0 rgba(255, 252, 248,.35) inset;
  }.btn-coral:hover { background: var(--coral-h); }.btn-ghost { background: var(--elev); color: var(--ink); border-color: var(--line); }
 
+
+/* ===== HERO v2 (Viaknox family, Oct 2026): ink GPS city panorama + message directly below ===== */
+.kn-hero{background:var(--bg);margin-top:0;padding:0!important;}
+.kn-band{--bh:clamp(300px,46vh,540px);position:relative;height:var(--bh);overflow:hidden;border-bottom:1px solid var(--line);background:#FFF8F2;}
+.kn-art{position:absolute;left:50%;top:64%;width:max(100%,calc(var(--bh) * 2.3333));aspect-ratio:2688/1152;transform:translate(-50%,-64%);}
+.kn-art img{display:block;width:100%;height:100%;}
+.kn-tag{position:absolute;transform:translate(-50%,-100%);display:inline-flex;align-items:center;gap:8px;padding:7px 13px 7px 7px;border-radius:999px;background:rgba(255,252,248,.95);border:1px solid var(--line);box-shadow:0 10px 24px -14px rgba(14,31,77,.45);font:600 13px/1 'Switzer',system-ui,sans-serif;color:var(--ink);white-space:nowrap;animation:knRise .7s cubic-bezier(.22,1,.36,1) both;}
+.kn-tag b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#0E1F4D;color:#9CC2FF;font-size:11px;}
+.kn-tag.t-lost b{background:#E3ECFF;color:#0E1F4D;border:1px solid #C3CDE3;}
+.kn-tag i{font-style:normal;font-weight:400;color:var(--muted);}
+.kn-tag.t-map{animation-delay:.2s}.kn-tag.t-route{animation-delay:.4s}.kn-tag.t-prove{animation-delay:.6s}.kn-tag.t-lost{animation-delay:.8s}
+@keyframes knRise{from{opacity:0;transform:translate(-50%,-80%)}to{opacity:1;transform:translate(-50%,-100%)}}
+.kn-hero-inner{display:grid;grid-template-columns:1.1fr 1fr;align-items:end;gap:clamp(20px,4vw,56px);padding:clamp(26px,3vw,40px) 0 clamp(32px,4vw,52px);}
+.kn-hero-inner h1{font-size:clamp(2.4rem,4.6vw,4.4rem);line-height:1.02;margin-bottom:0;}
+.kn-hero-side .lede{margin-bottom:16px;}
+@media (max-width:900px){
+ .kn-band{--bh:clamp(230px,56vw,360px);}
+ .kn-tag{font-size:11px;padding:5px 9px 5px 5px;gap:5px}.kn-tag b{width:18px;height:18px;font-size:10px}.kn-tag i{display:none}
+ .kn-tag.t-lost{display:none}
+ .kn-tag.t-prove{transform:translate(-88%,-100%);animation:none}
+ .kn-tag.t-map{transform:translate(-30%,-100%);animation:none}
+ .kn-hero-inner{grid-template-columns:1fr;align-items:start;}
+}
+@media (prefers-reduced-motion:reduce){.kn-tag{animation:none}}
  /* ===== HERO: large GPS infographic first ===== */.hero {
  padding: 36px 0 28px;
  display: flex;
@@ -99,23 +124,23 @@
  /* ===== GPS INFOGRAPHIC STAGE (large) ===== */.gps-stage {
  position: relative;
  border-radius: 28px;
- background: #FFFCFA;
+ background: #FFFCF8;
  border: 1px solid var(--line);
  box-shadow: var(--shadow);
  overflow: hidden;
  padding: 0;
  width: 100%;
- }.gps-stage.chrome { display: none; }.chip {
+ }.gps-stage .chrome { display: none; }.chip {
  font-size: 11px; font-weight: 700; letter-spacing:.04em; text-transform: uppercase;
- padding: 5px 10px; border-radius: 999px; background: rgba(255,255,255,.95);
- border: 1px solid var(--line); color: var(--ink); box-shadow: 0 2px 8px rgba(44,36,32,.05);
- }.chip.mint { color: var(--mint-d); background: var(--mint-soft); border-color: #bfe8d4; }.chip.coral { color: var(--coral-h); background: var(--coral-soft); border-color: #ffc9b8; }.gps-hero-img {
+ padding: 5px 10px; border-radius: 999px; background: rgba(255, 252, 248,.95);
+ border: 1px solid var(--line); color: var(--ink); box-shadow: 0 2px 8px rgba(14, 31, 77,.05);
+ }.chip.mint { color: var(--mint-d); background: var(--mint-soft); border-color: #C7D8FB; }.chip.coral { color: var(--coral-h); background: var(--coral-soft); border-color: #C7D8FB; }.gps-hero-img {
  display: block; width: 100%; height: auto;
  min-height: min(62vh, 720px);
  max-height: 820px;
  object-fit: contain;
  object-position: center center;
- background: #FFF8F1;
+ background: #FFF8F2;
  border-radius: 28px;
  }.stage-note { display: none; }.hud-strip { display: none; }.hero-caption {
  /* Keep class for potential lit captions elsewhere; GPS hero uses sr-only */
@@ -145,16 +170,16 @@
  /* City as human skin — separate philosophy */.city-band {
  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: center;
  }.city-frame {
- background: linear-gradient(180deg, #F7FBFF 0%, #EEF9F3 55%, #FFF6EE 100%);
+ background: linear-gradient(180deg, #F5F8FF 0%, #EEF3FF 55%, #FFF8F2 100%);
  border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow);
  padding: 20px 16px 12px; text-align: center; overflow: hidden;
  }.city-frame img {
  width: 100%; max-width: 100%; height: auto; display: block; margin: 0 auto;
  border-radius: 16px;
- filter: drop-shadow(0 12px 20px rgba(44,36,32,.1));
- }.city-band { grid-template-columns: 1.25fr 0.85fr; gap: 32px; }.city-frame.cap {
+ filter: drop-shadow(0 12px 20px rgba(14, 31, 77,.1));
+ }.city-band { grid-template-columns: 1.25fr 0.85fr; gap: 32px; }.city-frame .cap {
  margin-top: 10px; font-size: 12px; color: var(--muted); font-weight: 500;
- }.city-copy.pill {
+ }.city-copy .pill {
  display: inline-block; font-size: 12px; font-weight: 700; letter-spacing:.04em;
  text-transform: uppercase; color: var(--muted); background: var(--sand);
  padding: 5px 10px; border-radius: 999px; margin-bottom: 12px;
@@ -172,18 +197,26 @@
  /* Mobile collapsible header */.nav-toggle {
  display: none; align-items: center; justify-content: center;
  width: 44px; height: 44px; border-radius: 12px;
- border: 1px solid var(--line); background: #fff; cursor: pointer; flex-shrink: 0;
+ border: 1px solid var(--line); background: #FFFCF8; cursor: pointer; flex-shrink: 0;
  }.nav-toggle-bars { display: flex; flex-direction: column; gap: 4px; width: 18px; }.nav-toggle-bars i { display: block; height: 2px; background: var(--ink); border-radius: 2px; transition:.15s ease; }
  header.is-open.nav-toggle-bars i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
  header.is-open.nav-toggle-bars i:nth-child(2) { opacity: 0; }
  header.is-open.nav-toggle-bars i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }.nav-panel-mobile { display: none; }
 
- @media (max-width: 920px) {.hero,.city-band,.grid-4,.grid-3,.grid-2,.stats { grid-template-columns: 1fr; }.nav-toggle { display: inline-flex; }.nav-links,.nav-cta.quiet { display: none; }.nav-panel-mobile { display: none; border-top: 1px solid var(--line); background: rgba(255,255,255,.98); padding: 10px 0 14px; }
- header.is-open.nav-panel-mobile { display: block; }.nav-panel-mobile.wrap { display: flex; flex-direction: column; gap: 4px; }.nav-panel-mobile a { display: block; padding: 12px 4px; font-size: 15px; font-weight: 600; color: var(--ink); border-radius: 10px; }.nav-panel-mobile.btn { width: 100%; margin-top: 8px; text-align: center; }.gps-hero-img { min-height: 260px; max-height: none; }.agent-rail { font-size: 12px; }
+ @media (max-width: 920px) {.hero,.city-band,.grid-4,.grid-3,.grid-2,.stats { grid-template-columns: 1fr; }.nav-toggle { display: inline-flex; }.nav-links,.nav-cta .quiet { display: none; }.nav-panel-mobile { display: none; border-top: 1px solid var(--line); background: rgba(255, 252, 248,.98); padding: 10px 0 14px; }
+ header.is-open.nav-panel-mobile { display: block; }.nav-panel-mobile .wrap { display: flex; flex-direction: column; gap: 4px; }.nav-panel-mobile a { display: block; padding: 12px 4px; font-size: 15px; font-weight: 600; color: var(--ink); border-radius: 10px; }.nav-panel-mobile .btn { width: 100%; margin-top: 8px; text-align: center; }.gps-hero-img { min-height: 260px; max-height: none; }.agent-rail { font-size: 12px; }
  }
 
  </style>
- <link rel="stylesheet" href="assets/ks-ask.css?v=7" />
+ <link rel="stylesheet" href="assets/ks-ask.css?v=8" />
+<link rel="stylesheet" href="/assets/kn-brand.css?v=4" />
+<link rel="canonical" href="https://www.knosky.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="KnoSky — GPS for AI agents" />
+<meta property="og:image" content="https://www.knosky.com/assets/og-kn.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 </head>
 <body>
  <aside class="agent-rail" data-ai="product-summary" aria-label="Quick facts">
@@ -191,7 +224,7 @@
  <div>
  <strong>What:</strong> GPS protocol for AI agents ·
  <strong>Does:</strong> routes through code/docs maze ·
- <strong>Skin:</strong> city map for humans (not the hero story)
+ <strong>Skin:</strong> a city map your team can walk
  </div>
  <div>
  <strong>Try:</strong> <code>npx knosky.</code>
@@ -203,7 +236,7 @@
 
  <header id="siteHeader">
  <div class="wrap nav">
- <a class="brand brand-lockup" href="index.html"><img src="assets/lockup-header.png" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
+ <a class="brand brand-lockup" href="index.html" aria-label="KnoSky home"><img src="assets/knosky-lockup.svg" alt="KnoSky" height="40" style="height:40px;width:auto;max-width:min(240px,42vw);display:block" /></a>
  <nav class="nav-links" aria-label="Primary">
  <a href="why.html">Why</a>
  <a href="how-it-works.html">How</a>
@@ -237,41 +270,42 @@
 </header>
 
  <main id="main">
- <div class="wrap wrap-wide hero" id="gps">
- <div class="hero-copy">
- <div class="eyebrow">GPS protocol · for agentic systems</div>
- <h1>Your agents can write code.<br /><em>They still get lost.</em></h1>
- <p class="lede">
- <strong style="color:var(--ink)">KnoSky turns any repo or folder into an explorable city</strong> —
- and grounds your AI in your own source, with optional allow/deny receipts.
- </p>
- <div class="hero-actions">
- <a class="btn btn-coral" href="install.html">Try it free</a>
- <a class="btn btn-ghost" href="#why">See the problem</a>
+ <section class="kn-hero" id="gps">
+ <div class="kn-band" role="img" aria-label="Ink drawing of a city made of your files and docs. A KnoSky satellite overhead, one AI agent walking a light-blue route through the streets straight to the right building where it gets a receipt, while other agents without a route are lost in a hedge maze, a fenced dead end and at a blank signpost.">
+  <div class="kn-art">
+   <picture>
+    <source media="(max-width: 900px)" srcset="assets/hero-gps-city-1400.webp">
+    <img src="assets/hero-gps-city.webp" alt="" width="2688" height="1152" fetchpriority="high" decoding="async">
+   </picture>
+   <span class="kn-tag t-map" style="left:20%;top:31%"><b>1</b> Map <i>your repo as a city</i></span>
+   <span class="kn-tag t-route" style="left:29.5%;top:68%"><b>2</b> Route <i>one shared GPS</i></span>
+   <span class="kn-tag t-prove" style="left:85%;top:62%"><b>3</b> Prove <i>a receipt</i></span>
+   <span class="kn-tag t-lost" style="left:75%;top:30%"><b>&times;</b> Thrash <i>no map</i></span>
+  </div>
  </div>
- <div class="trust-micro">
- <span>Local-first</span>
- <span>Free protocol</span>
- <span>Claude · Cursor Codex Hermes</span>
- <span>Not code intelligence</span>
+ <div class="wrap wrap-wide kn-hero-inner">
+  <div class="hero-copy">
+   <div class="eyebrow">GPS protocol · for agentic systems</div>
+   <h1>Your agents can write code.<br /><em>They still get lost.</em></h1>
+  </div>
+  <div class="kn-hero-side">
+   <p class="lede">
+    <strong style="color:var(--ink)">KnoSky turns any repo or folder into an explorable city</strong> —
+    and grounds your AI in your own source, with optional allow/deny receipts.
+   </p>
+   <div class="hero-actions">
+    <a class="btn btn-coral" href="install.html">Try it free</a>
+    <a class="btn btn-ghost" href="#why">See the problem</a>
+   </div>
+   <div class="trust-micro">
+    <span>Local-first</span>
+    <span>Free protocol</span>
+    <span>Claude · Cursor Codex Hermes</span>
+    <span>Not code intelligence</span>
+   </div>
+  </div>
  </div>
- </div>
-
- <div class="hero-figure-wrap">
- <figure class="gps-stage">
- <img
- class="gps-hero-img"
- src="assets/hero-gps-infographic.png"
- width="1920"
- height="1080"
- alt="Circular KnoSky GPS hub: multi-agent mint routes reach the right files across a knowledge field; coral thrash paths fade out. Compass-ring hub, not a diamond."
- />
- <figcaption class="hero-caption sr-only" id="gps-cap">
- Circular GPS hub infographic for agent routing. Decorative large hero; product is GPS for AI agents.
- </figcaption>
- </figure>
- </div>
- </div>
+ </section>
 
  <!-- Problem -->
  <section class="band-sand" id="why">
@@ -437,7 +471,7 @@
  <span class="tag">Health check</span>
  </div>
  <div class="pkg-card coralish">
- <div class="pkg-icon" style="background:#ffe0d6;color:#e84428">7</div>
+ <div class="pkg-icon" style="background:#E3ECFF;color:#234AA8">7</div>
  <h3>L3 swarm foundation</h3>
  <p>Local multi-agent coordinator — leases, claims, quotas, heatmap, bench.</p>
  <ul>
@@ -524,12 +558,13 @@
  <div class="wrap city-band">
  <div class="city-frame">
  <img
- src="assets/city-isometric-hf.png"
+ src="assets/city-ink.webp"
  width="1600"
- height="900"
- alt="True multi-depth isometric KnoSky city skin — buildings, streets, and districts in 3D isometric view for humans exploring the map"
+ height="1194"
+ loading="lazy"
+ alt="Ink drawing of two teammates on a terrace looking over a town of districts, one pointing, the other holding a paper map whose light-blue route matches the route on the streets"
  />
- <p class="cap">Human skin · multi-depth isometric city · not the agent GPS metaphor</p>
+ <p class="cap">Human skin · your folders and docs as a town you can walk</p>
  </div>
  <div class="city-copy">
  <span class="pill">For people, not agents</span>
@@ -537,7 +572,7 @@
  <p class="section-lede" style="margin-bottom:14px;">
  Agents need routes through a maze. Humans need a place they can walk.
  The multi-depth isometric city is the <strong>skin</strong> of KnoSky — a place humans walk, on the same local map agents route through.
- It is intentionally not the hero: product category is <strong>GPS for agents</strong>.
+ Agents get the route; people get the city — the product is still <strong>GPS for agents</strong>.
  </p>
  <p style="font-size:.95rem;color:var(--muted);margin-bottom:18px;">
  Explore districts, find buildings, hand a teammate a picture of the system.
@@ -574,7 +609,7 @@
  <a href="llms.txt" style="color:var(--mint-d);font-weight:600;">llms.txt</a>
  <a href="privacy.html" style="color:var(--mint-d);font-weight:600;">Privacy</a>
  <a href="https://github.com/SathiaAI/knosky" style="color:var(--mint-d);font-weight:600;">GitHub</a>
- <a href="https://viaknox.com/products" style="color:var(--mint-d);font-weight:600;">by Viaknox</a>
+ <a href="https://viaknox.com/products" class="by-vx" aria-label="KnoSky by Viaknox"><span>by</span><img src="assets/viaknox-wordmark-aubergine.svg" alt="Viaknox" width="76" height="11"></a>
  </div>
  </div>
  </footer>
@@ -591,7 +626,7 @@
  </script>
 
 <script>
-(function {
+(function () {
  var header = document.getElementById("siteHeader") || document.querySelector("header");
  var btn = document.getElementById("comNavToggle");
  var panel = document.getElementById("comNavPanel");
@@ -601,18 +636,18 @@
  btn.setAttribute("aria-expanded", open ? "true" : "false");
  btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
  }
- btn.addEventListener("click", function {
+ btn.addEventListener("click", function () {
  setOpen(!header.classList.contains("is-open"));
  });
  panel.querySelectorAll("a").forEach(function (a) {
- a.addEventListener("click", function { setOpen(false); });
+ a.addEventListener("click", function () { setOpen(false); });
  });
  window.addEventListener("keydown", function (e) {
  if (e.key === "Escape") setOpen(false);
  });
-});
+})();
 </script>
 
- <script src="assets/ks-ask.js?v=7" defer></script>
+ <script src="assets/ks-ask.js?v=8" defer></script>
 </body>
 </html>

@@ -3,32 +3,32 @@
  * Cream / coral / mint infographic system. No diamond brand mark; circular GPS hub.
  */
 :root {
-  --bg: #FFF8F1;
-  --bg-warm: #FFF1E4;
-  --bg-mint: #EAF7F1;
-  --bg-peach: #FFE8DC;
-  --elev: #FFFFFF;
-  --paper: #FFFCFA;
-  --ink: #2C2420;
-  --body: #5C534C;
-  --muted: #8A8178;
-  --line: #E8DFD4;
-  --line-strong: #D4C8BA;
-  --coral: #FF5A3C;
-  --coral-h: #E84428;
-  --coral-soft: #FFE0D6;
-  --mint: #1FA97A;
-  --mint-d: #0E8A62;
-  --mint-soft: #D8F3E7;
-  --sand: #F0E6D8;
+  --bg: #FFF8F2;
+  --bg-warm: #EEF3FF;
+  --bg-mint: #EEF3FF;
+  --bg-peach: #E3ECFF;
+  --elev: #FFFCF8;
+  --paper: #FFFCF8;
+  --ink: #0E1F4D;
+  --body: #3A4466;
+  --muted: #5E6888;
+  --line: #DDE3EF;
+  --line-strong: #C3CDE3;
+  --coral: #2E5BC9;
+  --coral-h: #234AA8;
+  --coral-soft: #E3ECFF;
+  --mint: #0E1F4D;
+  --mint-d: #2E5BC9;
+  --mint-soft: #E3ECFF;
+  --sand: #E6ECF7;
   --warn: #C47B0A;
   --danger: #D14343;
-  --code: #3D3834;
-  --code-ink: #FFF6EE;
-  --shadow: 0 10px 30px rgba(44, 36, 32, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
-  --shadow-sm: 0 2px 8px rgba(44, 36, 32, 0.05);
+  --code: #0E1F4D;
+  --code-ink: #FFF8F2;
+  --shadow: 0 10px 30px rgba(14, 31, 77, 0.08), 0 1px 0 rgba(255, 252, 248, 0.9) inset;
+  --shadow-sm: 0 2px 8px rgba(14, 31, 77, 0.05);
   --r: 14px;
   --rl: 22px;
-  --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font: 'Switzer', system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
