@@ -1,0 +1,15 @@
+name: IndexNow
+# Vercel reports each deployment back to GitHub; when a Production deploy succeeds, ping IndexNow
+# with every URL in the sitemap(s). The site is already live at this point.
+on: deployment_status
+permissions: { contents: read }
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: '${{ github.event.deployment.sha }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/indexnow.mjs
