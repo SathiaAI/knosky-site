@@ -103,6 +103,14 @@
       "destination": "/robots-wiki.txt"
     },
     {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap-com.xml"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/robots-com.txt"
+    },
+    {
       "source": "/wiki",
       "destination": "/wiki/index.html"
     },
